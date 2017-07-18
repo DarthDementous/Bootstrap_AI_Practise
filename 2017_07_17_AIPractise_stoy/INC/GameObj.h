@@ -3,14 +3,16 @@
 #include <glm/vec2.hpp>
 #include "Utility.h"
 
-/**
-*	@brief Base class for game entities. Is able to update and render.
-*/
 
+#pragma region Forward Declarations
 namespace aie {
 	class Renderer2D;
 }
+#pragma endregion
 
+/**
+*	@brief Base class for game entities. Is able to update and render.
+*/
 class GameObj {
 public:
 	GameObj(glm::vec2& a_pos = glm::vec2(0, 0), glm::vec2& a_vel = glm::vec2( 0, 0 ), float a_friction = PLAYER_FRICTION) : m_pos(a_pos), m_vel(a_vel), m_friction(a_friction) {}

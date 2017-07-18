@@ -4,6 +4,8 @@
 #include <Input.h>
 #include "GameObj.h"
 #include "Utility.h"
+#include "Graph/GraphRenderer2D.h"
+#include "Graph/Graph2D.h"
 
 _2017_07_17_AIPractise_stoyApp::_2017_07_17_AIPractise_stoyApp() {
 
@@ -19,6 +21,31 @@ bool _2017_07_17_AIPractise_stoyApp::startup() {
 	m_font = new aie::Font("./font/consolas.ttf", 32);
 
 	m_player = new GameObj(glm::vec2(getWindowWidth() / 2, getWindowHeight() / 2));
+
+#pragma region Graph
+	m_graph = new Graph2D;
+
+	// Add a grid of nodes to the graph
+	for (auto y = 0; y < GRAPH_HEIGHT; ++y) {
+		for (auto x = 0; x < GRAPH_WIDTH; ++x) {
+			Graph2D::Node* newNode = new Graph2D::Node(glm::vec2((getWindowWidth() / 2) + GRAPH_OFFSET_X + (x * GRAPH_SPACING), (getWindowHeight() / 2) + GRAPH_OFFSET_Y + (y * GRAPH_SPACING)));
+
+			m_graph->AddNode(newNode);
+		}
+	}
+
+	// Add directed edges and make graph cyclic
+	for (auto iter = m_graph->GetNodes()->begin(); iter != m_graph->GetNodes()->end(); ++iter) {
+		auto nextIter = iter + 1;
+		
+		// Make sure the next node isn't garbage before we access it
+		if (nextIter != m_graph->GetNodes()->end()) {
+			m_graph->AddEdge(*iter, *(nextIter), true);
+		}
+	}
+
+#pragma endregion
+	m_gr2d = new GraphRenderer2D(m_graph);
 
 	return true;
 }
@@ -85,6 +112,8 @@ void _2017_07_17_AIPractise_stoyApp::draw() {
 
 	// draw your stuff here!
 	m_player->Render(m_2dRenderer);
+
+	m_gr2d->Draw(m_2dRenderer);
 	
 	// output some text, uses the last used colour
 	m_2dRenderer->drawText(m_font, "Press ESC to quit", 0, 0);
