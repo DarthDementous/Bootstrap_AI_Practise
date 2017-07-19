@@ -4,11 +4,11 @@
 #include <Renderer2D.h>
 
 
-
 #pragma region Forward Declarations
 class GameObj;
 class GraphRenderer2D;
 class Graph2D;
+
 #pragma endregion
 
 class _2017_07_17_AIPractise_stoyApp : public aie::Application {

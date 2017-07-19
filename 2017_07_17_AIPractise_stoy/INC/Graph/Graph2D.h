@@ -13,9 +13,9 @@ public:
 	*	@brief Get all the nodes within a given range.
 	*	@param a_pos is the position to search outwards from.
 	*	@param a_radius is the extent of the search.
-	*	@return void.
+	*	@return vector of nearby nodes.
 	*/
-	std::vector<Node*>* GetNearbyNodes(glm::vec2& a_pos, float a_radius);
+	std::vector<Node*> GetNearbyNodes(glm::vec2& a_pos, float a_radius);
 protected:
 private:
 };

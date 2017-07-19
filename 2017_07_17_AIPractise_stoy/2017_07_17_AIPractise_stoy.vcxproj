@@ -11,7 +11,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{DEA49362-B428-4215-8D64-4EA0B4FF0858}</ProjectGuid>
+    <ProjectGuid>{127B41DF-9887-41AE-B6F8-9C7801F7012F}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>_2017_07_17_AIPractise_stoy</RootNamespace>
     <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>

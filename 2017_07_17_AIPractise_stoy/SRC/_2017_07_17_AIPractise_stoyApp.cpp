@@ -28,21 +28,35 @@ bool _2017_07_17_AIPractise_stoyApp::startup() {
 	// Add a grid of nodes to the graph
 	for (auto y = 0; y < GRAPH_HEIGHT; ++y) {
 		for (auto x = 0; x < GRAPH_WIDTH; ++x) {
-			Graph2D::Node* newNode = new Graph2D::Node(glm::vec2((getWindowWidth() / 2) + GRAPH_OFFSET_X + (x * GRAPH_SPACING), (getWindowHeight() / 2) + GRAPH_OFFSET_Y + (y * GRAPH_SPACING)));
-
+			// Ensure the spacing is negative for the y because in Bootstrap it starts from 0.
+			glm::vec2 pos((GRAPH_START_X + GRAPH_OFFSET_X) + (x * GRAPH_SPACING), (GRAPH_START_Y + GRAPH_OFFSET_Y) + -(y * GRAPH_SPACING));
+			
+			Graph2D::Node* newNode = new Graph2D::Node(pos);
 			m_graph->AddNode(newNode);
 		}
 	}
 
-	// Add directed edges and make graph cyclic
-	for (auto iter = m_graph->GetNodes()->begin(); iter != m_graph->GetNodes()->end(); ++iter) {
-		auto nextIter = iter + 1;
-		
-		// Make sure the next node isn't garbage before we access it
-		if (nextIter != m_graph->GetNodes()->end()) {
-			m_graph->AddEdge(*iter, *(nextIter), true);
+	// Add bidirected edges
+	Graph2D::Node* startNode = SEARCH_NODE;
+
+	for (auto node : m_graph->GetNearbyNodes(startNode->GetData(), SEARCH_RADIUS)) {
+		// Don't connect the node to itself
+		if (startNode != node) {
+			m_graph->AddEdge(startNode, node, true);
 		}
 	}
+
+	// One directed edge
+	m_graph->AddEdge(startNode, m_graph->GetNodes()->back(), false);
+	
+	//for (auto iter = m_graph->GetNodes()->begin(); iter != m_graph->GetNodes()->end(); ++iter) {
+	//	auto nextIter = iter + 1;
+	//	
+	//	// Make sure the next node isn't garbage before we access it
+	//	if (nextIter != m_graph->GetNodes()->end()) {
+	//		m_graph->AddEdge(*iter, *(nextIter), true);
+	//	}
+	//}
 
 #pragma endregion
 	m_gr2d = new GraphRenderer2D(m_graph);
@@ -114,6 +128,12 @@ void _2017_07_17_AIPractise_stoyApp::draw() {
 	m_player->Render(m_2dRenderer);
 
 	m_gr2d->Draw(m_2dRenderer);
+
+#ifdef _DEBUG
+	m_2dRenderer->setRenderColour(1, 0, 0, 0.5);
+	m_2dRenderer->drawCircle(SEARCH_NODE->GetData().x, SEARCH_NODE->GetData().y, SEARCH_RADIUS);
+	m_2dRenderer->setRenderColour(0, 0, 0, 0);
+#endif
 	
 	// output some text, uses the last used colour
 	m_2dRenderer->drawText(m_font, "Press ESC to quit", 0, 0);
