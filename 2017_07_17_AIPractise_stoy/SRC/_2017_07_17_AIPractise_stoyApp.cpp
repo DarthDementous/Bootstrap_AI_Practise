@@ -8,7 +8,7 @@
 #include "Graph/Graph2D.h"
 #include "Behaviours/KeyboardController.h"
 #include <ResourceManager.hpp>
-#include "Resource\ResourcePack.h"
+#include <ResourcePack.h>
 
 _2017_07_17_AIPractise_stoyApp::_2017_07_17_AIPractise_stoyApp() {
 
