@@ -2,10 +2,11 @@
 #include <Texture.h>
 #include <Font.h>
 #include <Input.h>
-#include "GameObj.h"
+#include "Entities/GameObj.h"
 #include "Utility.h"
 #include "Graph/GraphRenderer2D.h"
 #include "Graph/Graph2D.h"
+#include "Behaviours/KeyboardController.h"
 
 _2017_07_17_AIPractise_stoyApp::_2017_07_17_AIPractise_stoyApp() {
 
@@ -20,7 +21,10 @@ bool _2017_07_17_AIPractise_stoyApp::startup() {
 	m_2dRenderer = new aie::Renderer2D();
 	m_font = new aie::Font("./font/consolas.ttf", 32);
 
+#pragma region Player
 	m_player = new GameObj(glm::vec2(getWindowWidth() / 2, getWindowHeight() / 2));
+	m_player->SetBehaviour(new KeyboardController);
+#pragma endregion
 
 #pragma region Graph
 	m_graph = new Graph2D;
@@ -59,7 +63,10 @@ bool _2017_07_17_AIPractise_stoyApp::startup() {
 	//}
 
 #pragma endregion
+	
 	m_gr2d = new GraphRenderer2D(m_graph);
+
+
 
 	return true;
 }
@@ -80,23 +87,6 @@ void _2017_07_17_AIPractise_stoyApp::update(float deltaTime) {
 		quit();
 
 #pragma region Player
-	// Input
-	if (input->isKeyDown(aie::INPUT_KEY_D)) {
-		m_player->ApplyForce(glm::vec2(1000, 0));
-	}
-
-	if (input->isKeyDown(aie::INPUT_KEY_A)) {
-		m_player->ApplyForce(glm::vec2(-1000, 0));
-	}
-
-	if (input->isKeyDown(aie::INPUT_KEY_W)) {
-		m_player->ApplyForce(glm::vec2(0, 1000));
-	}
-
-	if (input->isKeyDown(aie::INPUT_KEY_S)) {
-		m_player->ApplyForce(glm::vec2(0, -1000));
-	}
-
 	// Boundary checks
 	const glm::vec2 pos = m_player->GetPosition();
 

@@ -2,6 +2,7 @@
 #include <Renderer2D.h>
 #include "Graph/Graph2D.h"
 #include "Utility.h"
+#include <Font.h>
 
 void GraphRenderer2D::Draw(aie::Renderer2D* a_r2d)
 {
