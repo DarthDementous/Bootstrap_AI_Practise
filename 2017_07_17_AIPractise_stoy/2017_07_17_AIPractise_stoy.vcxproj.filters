@@ -33,6 +33,9 @@
     <ClCompile Include="SRC\Behaviours\KeyboardController.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="LIB\Resource\ResourcePack.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="INC\_2017_07_17_AIPractise_stoyApp.h">
@@ -57,6 +60,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="INC\Behaviours\KeyboardController.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="LIB\Resource\ResourcePack.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

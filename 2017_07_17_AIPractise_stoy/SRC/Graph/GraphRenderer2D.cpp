@@ -3,9 +3,12 @@
 #include "Graph/Graph2D.h"
 #include "Utility.h"
 #include <Font.h>
+#include "Resource/ResourcePack.h"
 
 void GraphRenderer2D::Draw(aie::Renderer2D* a_r2d)
 {
+	a_r2d->drawText(ResourcePack::FontMap()["DBG"].get(), "This is a successful test, holy shit.", 100, 100);
+
 	for (auto node : *(m_graph->GetNodes())) {
 		glm::vec2 pos = node->GetData();
 

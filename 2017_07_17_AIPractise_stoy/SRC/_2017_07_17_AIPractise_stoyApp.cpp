@@ -7,6 +7,8 @@
 #include "Graph/GraphRenderer2D.h"
 #include "Graph/Graph2D.h"
 #include "Behaviours/KeyboardController.h"
+#include <ResourceManager.hpp>
+#include "Resource\ResourcePack.h"
 
 _2017_07_17_AIPractise_stoyApp::_2017_07_17_AIPractise_stoyApp() {
 
@@ -19,7 +21,10 @@ _2017_07_17_AIPractise_stoyApp::~_2017_07_17_AIPractise_stoyApp() {
 bool _2017_07_17_AIPractise_stoyApp::startup() {
 	
 	m_2dRenderer = new aie::Renderer2D();
-	m_font = new aie::Font("./font/consolas.ttf", 32);
+	//m_font = new aie::Font("./font/consolas.ttf", 32);
+	ResourcePack::FontMap()["DEFAULT"] = ResourceManager::loadResource<aie::Font>("./font/consolas.ttf", 32);
+	ResourcePack::FontMap()["DBG"] = ResourceManager::loadResource<aie::Font>("./font/consolas.ttf", 12);
+
 
 #pragma region Player
 	m_player = new GameObj(glm::vec2(getWindowWidth() / 2, getWindowHeight() / 2));
@@ -122,11 +127,11 @@ void _2017_07_17_AIPractise_stoyApp::draw() {
 #ifdef _DEBUG
 	m_2dRenderer->setRenderColour(1, 0, 0, 0.5);
 	m_2dRenderer->drawCircle(SEARCH_NODE->GetData().x, SEARCH_NODE->GetData().y, SEARCH_RADIUS);
-	m_2dRenderer->setRenderColour(0, 0, 0, 0);
+	m_2dRenderer->setRenderColour(0xFFFFFFFF);
 #endif
 	
 	// output some text, uses the last used colour
-	m_2dRenderer->drawText(m_font, "Press ESC to quit", 0, 0);
+	m_2dRenderer->drawText(ResourcePack::FontMap()["DEFAULT"].get(), "Press ESC to quit", 0, 0);
 
 	// done drawing sprites
 	m_2dRenderer->end();

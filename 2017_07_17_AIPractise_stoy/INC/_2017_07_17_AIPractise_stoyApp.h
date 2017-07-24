@@ -26,7 +26,7 @@ public:
 protected:
 
 	aie::Renderer2D*	m_2dRenderer;
-	aie::Font*			m_font;
+	aie::Font*			m_font = nullptr;
 
 	GameObj*			m_player	= nullptr;
 
