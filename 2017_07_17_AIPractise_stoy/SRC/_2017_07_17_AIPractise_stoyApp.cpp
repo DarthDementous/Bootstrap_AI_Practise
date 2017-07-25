@@ -2,7 +2,7 @@
 #include <Texture.h>
 #include <Font.h>
 #include <Input.h>
-#include "Entities/GameObj.h"
+#include "Entities/Player.h"
 #include "Utility.h"
 #include "Graph/GraphRenderer2D.h"
 #include "Graph/Graph2D.h"
@@ -27,14 +27,14 @@ bool _2017_07_17_AIPractise_stoyApp::startup() {
 
 
 #pragma region Player
-	m_player = new GameObj(glm::vec2(getWindowWidth() / 2, getWindowHeight() / 2));
+	m_player = new Player(glm::vec2(getWindowWidth() / 2, getWindowHeight() / 2));
 	m_player->SetBehaviour(new KeyboardController);
 #pragma endregion
 
 #pragma region Graph
 	m_graph = new Graph2D;
 
-	// Add a grid of nodes to the graph
+	// Add a grid of nodes to the graph (rows first from top left)
 	for (auto y = 0; y < GRAPH_HEIGHT; ++y) {
 		for (auto x = 0; x < GRAPH_WIDTH; ++x) {
 			// Ensure the spacing is negative for the y because in Bootstrap it starts from 0.
@@ -103,9 +103,6 @@ void _2017_07_17_AIPractise_stoyApp::update(float deltaTime) {
 
 	// Movement
 	m_player->Update(deltaTime);
-	
-
-
 #pragma endregion
 
 

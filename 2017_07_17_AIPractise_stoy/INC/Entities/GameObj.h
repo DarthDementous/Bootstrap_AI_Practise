@@ -16,8 +16,8 @@ namespace aie {
 */
 class GameObj {
 public:
-	GameObj(glm::vec2& a_pos = glm::vec2(0, 0), glm::vec2& a_vel = glm::vec2( 0, 0 ), float a_friction = PLAYER_FRICTION, IBehaviour* a_behaviour = nullptr) : 
-		m_pos(a_pos), m_vel(a_vel), m_friction(a_friction), m_behaviour(a_behaviour) {}
+	GameObj(glm::vec2& a_pos = glm::vec2(0, 0), glm::vec2& a_vel = glm::vec2(0, 0), float a_friction = PLAYER_FRICTION, IBehaviour* a_behaviour = nullptr);
+
 	virtual ~GameObj();
 
 	virtual void Update(float a_dt);

@@ -122,7 +122,9 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="SRC\Behaviours\KeyboardController.cpp" />
+    <ClCompile Include="SRC\Behaviours\Seek.cpp" />
     <ClCompile Include="SRC\Entities\GameObj.cpp" />
+    <ClCompile Include="SRC\Entities\Player.cpp" />
     <ClCompile Include="SRC\Graph\Graph2D.cpp" />
     <ClCompile Include="SRC\Graph\GraphRenderer2D.cpp" />
     <ClCompile Include="SRC\_2017_07_17_AIPractise_stoyApp.cpp" />
@@ -130,7 +132,9 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="INC\Behaviours\KeyboardController.h" />
+    <ClInclude Include="INC\Behaviours\Seek.h" />
     <ClInclude Include="INC\Entities\GameObj.h" />
+    <ClInclude Include="INC\Entities\Player.h" />
     <ClInclude Include="INC\Graph\IGraph.hpp" />
     <ClInclude Include="INC\Graph\Graph2D.h" />
     <ClInclude Include="INC\Graph\GraphRenderer2D.h" />
