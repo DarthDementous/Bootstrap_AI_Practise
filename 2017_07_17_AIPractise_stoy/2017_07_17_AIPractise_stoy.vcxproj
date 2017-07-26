@@ -121,16 +121,19 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="SRC\Behaviours\FollowPath.cpp" />
     <ClCompile Include="SRC\Behaviours\KeyboardController.cpp" />
     <ClCompile Include="SRC\Behaviours\Seek.cpp" />
     <ClCompile Include="SRC\Entities\GameObj.cpp" />
     <ClCompile Include="SRC\Entities\Player.cpp" />
     <ClCompile Include="SRC\Graph\Graph2D.cpp" />
     <ClCompile Include="SRC\Graph\GraphRenderer2D.cpp" />
+    <ClCompile Include="SRC\Path.cpp" />
     <ClCompile Include="SRC\_2017_07_17_AIPractise_stoyApp.cpp" />
     <ClCompile Include="SRC\main.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="INC\Behaviours\FollowPath.h" />
     <ClInclude Include="INC\Behaviours\KeyboardController.h" />
     <ClInclude Include="INC\Behaviours\Seek.h" />
     <ClInclude Include="INC\Entities\GameObj.h" />
@@ -139,6 +142,7 @@
     <ClInclude Include="INC\Graph\Graph2D.h" />
     <ClInclude Include="INC\Graph\GraphRenderer2D.h" />
     <ClInclude Include="INC\Behaviours\IBehaviour.hpp" />
+    <ClInclude Include="INC\Path.h" />
     <ClInclude Include="INC\Utility.h" />
     <ClInclude Include="INC\_2017_07_17_AIPractise_stoyApp.h" />
   </ItemGroup>

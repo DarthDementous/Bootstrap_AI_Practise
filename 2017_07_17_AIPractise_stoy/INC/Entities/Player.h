@@ -2,8 +2,10 @@
 
 #include "GameObj.h"
 
+class FollowPath;
 class Seek;
 class KeyboardController;
+class Path;
 
 /**
 *	@brief Entity designed to represent the user in the game space that inherits from the GameObj interface class.
@@ -15,9 +17,18 @@ public:
 
 	virtual void Update(float a_dt);
 	virtual void Render(aie::Renderer2D* a_r2d);
+
+	/**
+	*	@brief Activates the seek behaviour and seeks specified target.
+	*	@param a_target is the vector 2 position the entity will move towards.
+	*/
+	void SeekTarget(glm::vec2& a_target);
 protected:
 	//Hold onto variable for each wanted behaviour to avoid initialising once every update frame
 	Seek*					m_seekBehaviour		= nullptr;								
 	KeyboardController*		m_controlBehaviour	= nullptr;
+	FollowPath*				m_followBehaviour	= nullptr;
+
+	Path* m_path;
 private:
 };

@@ -9,6 +9,7 @@
 #include "Behaviours/KeyboardController.h"
 #include <ResourceManager.hpp>
 #include <ResourcePack.h>
+#include <math.h>
 
 _2017_07_17_AIPractise_stoyApp::_2017_07_17_AIPractise_stoyApp() {
 
@@ -96,10 +97,22 @@ void _2017_07_17_AIPractise_stoyApp::update(float deltaTime) {
 	const glm::vec2 pos = m_player->GetPosition();
 
 	// If outside bounds, reflect velocity and clear acceleration
-	if (pos.x < PLAYER_RADIUS * 2 || pos.x > getWindowWidth() - PLAYER_RADIUS * 2 || pos.y < PLAYER_RADIUS * 2 || pos.y > getWindowHeight() - PLAYER_RADIUS * 2) { 
-		m_player->SetVelocity(-m_player->GetVelocity());
-		m_player->SetAcceleration(glm::vec2(0, 0));
+	if (pos.x < PLAYER_RADIUS * 2 || pos.x > getWindowWidth() - PLAYER_RADIUS * 2) {
+		// Calculate a safe position
+
+		// Reflect the x axis 
+		m_player->SetVelocity(glm::vec2(-m_player->GetVelocity().x, m_player->GetVelocity().y));
+		//m_player->SetAcceleration(glm::vec2(0, 0));
 	}
+	else if (pos.y < PLAYER_RADIUS * 2 || pos.y >getWindowHeight() - PLAYER_RADIUS * 2) {
+		m_player->SetVelocity(glm::vec2(m_player->GetVelocity().x, -m_player->GetVelocity().y));
+	}
+
+	//if (pos.x < PLAYER_RADIUS * 2 || pos.x > getWindowWidth() - PLAYER_RADIUS * 2 || pos.y < PLAYER_RADIUS * 2 || pos.y > getWindowHeight() - PLAYER_RADIUS * 2) { 
+
+	//	//m_player->ApplyForce(-m_player->GetVelocity() * PLAYER_REBOUND_STRENGTH);
+	//	//m_player->SetAcceleration(glm::vec2(0, 0));
+	//}
 
 	// Movement
 	m_player->Update(deltaTime);
