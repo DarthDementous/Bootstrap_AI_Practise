@@ -58,34 +58,41 @@ void Player::Update(float a_dt)
 	int mouseX, mouseY;
 	input->getMouseXY(&mouseX, &mouseY);
 
-	// Seek
-	if (!input->isKeyDown(aie::INPUT_KEY_LEFT_CONTROL) && input->wasMouseButtonPressed(aie::INPUT_MOUSE_BUTTON_LEFT)) {
-		m_seekBehaviour->SetTarget(glm::vec2(mouseX, mouseY));
-		m_seekBehaviour->SetStrength(SEEK_STRENGTH);
-		m_seekBehaviour->SetInnerRadius(SEEK_RADIUS);
-		m_seekBehaviour->SetOuterRadius(0);
+	/// Left click
+	if (input->wasMouseButtonPressed(aie::INPUT_MOUSE_BUTTON_LEFT)) {
+		//// Follow path
+		if (input->isKeyDown(aie::INPUT_KEY_LEFT_CONTROL)) {
+			// No need to set behaviour to follow path if its already doing so
+			if (GetBehaviour() != m_followBehaviour) {
+				SetBehaviour(m_followBehaviour);
+			}
 
-		SetBehaviour(m_seekBehaviour);
+			// Add path segment
+			m_path->PushPoint(glm::vec2(mouseX, mouseY));
+
+			return;				// Avoid triggering multiple conditions
+		}
+
+		//// Seek (only activates if node isn't being added)
+		if (!input->isKeyDown(aie::INPUT_KEY_LEFT_SHIFT)) {
+			m_seekBehaviour->SetTarget(glm::vec2(mouseX, mouseY));
+			m_seekBehaviour->SetStrength(SEEK_STRENGTH);
+			m_seekBehaviour->SetInnerRadius(SEEK_RADIUS);
+			m_seekBehaviour->SetOuterRadius(0);
+
+			SetBehaviour(m_seekBehaviour);
+		}
 	}
-	
-	// Flee (modified version of seek)
-	else if (input->wasMouseButtonPressed(aie::INPUT_MOUSE_BUTTON_RIGHT)) {
+
+	/// Right click
+	if (input->wasMouseButtonPressed(aie::INPUT_MOUSE_BUTTON_RIGHT)) {
+		//// Flee (modified version of seek)
 		m_seekBehaviour->SetTarget(glm::vec2(mouseX, mouseY));
 		m_seekBehaviour->SetStrength(FLEE_STRENGTH);
 		m_seekBehaviour->SetInnerRadius(0);
 		m_seekBehaviour->SetOuterRadius(FLEE_RADIUS);
 
 		SetBehaviour(m_seekBehaviour);
-	}
-
-	// Follow path
-	else if (input->isKeyDown(aie::INPUT_KEY_LEFT_CONTROL) && input->wasMouseButtonPressed(aie::INPUT_MOUSE_BUTTON_LEFT)) {
-		if (GetBehaviour() != m_followBehaviour) {
-			SetBehaviour(m_followBehaviour);
-		}
-
-		// Add path segment
-		m_path->PushPoint(glm::vec2(mouseX, mouseY));
 	}
 #pragma endregion
 }

@@ -2,6 +2,8 @@
 
 #include <vector>
 #include "Utility.h"
+#include <glm/vec2.hpp>
+#include <assert.h>
 
 /**
 *	@brief Interface class that holds nodes with un-directed/directed edges.
@@ -90,18 +92,18 @@ public:
 	*	@return void.
 	*/
 	void AddEdge(Node* a_nodeA, Node* a_nodeB, bool a_bidirected, float a_weight = 0) {
-		// Find relevant nodes by de-referencing iterator
-		Node* foundNodeA = *(std::find(m_nodes->begin(), m_nodes->end(), a_nodeA));		
-		Node* foundNodeB = *(std::find(m_nodes->begin(), m_nodes->end(), a_nodeB));
+		//// Find relevant nodes by de-referencing iterator
+		//Node* foundNodeA = *(std::find(m_nodes->begin(), m_nodes->end(), a_nodeA));		
+		//Node* foundNodeB = *(std::find(m_nodes->begin(), m_nodes->end(), a_nodeB));
 
  		// Bidirected, add edge to both nodes
 		if (a_bidirected) {
-			foundNodeA->m_edges->push_back(new Edge(a_bidirected, a_nodeB, a_weight, a_nodeA));		// Specify where its coming from because it is two-way.
-			foundNodeB->m_edges->push_back(new Edge(a_bidirected, a_nodeB, a_weight, a_nodeA));
+			a_nodeA->m_edges->push_back(new Edge(a_bidirected, a_nodeB, a_weight, a_nodeA));		// Specify where its coming from because it is two-way.
+			a_nodeB->m_edges->push_back(new Edge(a_bidirected, a_nodeB, a_weight, a_nodeA));
 		}
 		// Directed, add edge to one node
 		else {
-			foundNodeA->m_edges->push_back(new Edge(a_bidirected, a_nodeB, a_weight));				// Don't specify where it's coming from since its not two-way
+			a_nodeA->m_edges->push_back(new Edge(a_bidirected, a_nodeB, a_weight));				// Don't specify where it's coming from since its not two-way
 		}
 
 	}

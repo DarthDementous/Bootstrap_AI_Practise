@@ -18,7 +18,6 @@ public:
 	const Graph2D* GetGraph() { return m_graph; }
 
 	void SetGraph(Graph2D* a_graph) { m_graph = a_graph; }
-
 	void Draw(aie::Renderer2D* a_r2d);
 protected:
 private:

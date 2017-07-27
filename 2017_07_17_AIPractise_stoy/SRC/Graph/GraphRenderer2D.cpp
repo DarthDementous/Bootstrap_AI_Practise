@@ -4,11 +4,13 @@
 #include "Utility.h"
 #include <Font.h>
 #include <ResourcePack.h>
+#include <Input.h>
 
 void GraphRenderer2D::Draw(aie::Renderer2D* a_r2d)
 {
 	a_r2d->drawText(ResourcePack::FontMap()["DBG"].get(), "This is a successful test, holy shit.", 100, 100);
 
+#pragma region Graph
 	for (auto node : *(m_graph->GetNodes())) {
 		glm::vec2 pos = node->GetData();
 
@@ -17,8 +19,7 @@ void GraphRenderer2D::Draw(aie::Renderer2D* a_r2d)
 
 		// Edges on the node
 		for (auto edge : *(node->GetEdges())) {
-			glm::vec2 pos1 = node->GetData();
-			glm::vec2 pos2 = edge->m_to->GetData();
+			glm::vec2 destPos = edge->m_to->GetData();
 
 			// Edge line
 			if (edge->IsBidirected()) {
@@ -27,10 +28,27 @@ void GraphRenderer2D::Draw(aie::Renderer2D* a_r2d)
 			else {
 				a_r2d->setRenderColour(0, 1, 0);
 			}
-			a_r2d->drawLine(pos1.x, pos1.y, pos2.x, pos2.y);
-			
+			a_r2d->drawLine(pos.x, pos.y, destPos.x, destPos.y);
+
 			a_r2d->setRenderColour(0xffffffff);
 		}
 
+	}
+#pragma endregion
+
+	aie::Input* input = aie::Input::getInstance();
+	int mouseX, mouseY;
+	input->getMouseXY(&mouseX, &mouseY);
+
+	// Draw lines from nodes (that are in range) to the cursor
+	for (auto nearNode : m_graph->GetNearbyNodes(glm::vec2(mouseX, mouseY), SEARCH_RADIUS / 2)) {
+		a_r2d->drawLine(nearNode->GetData().x, nearNode->GetData().y, (float)mouseX, (float)mouseY);
+
+		// Draw search radius
+		#ifdef _DEBUG
+		a_r2d->setRenderColour(1.f, 0.f, 0.f, 0.1f);
+		a_r2d->drawCircle((float)mouseX, (float)mouseY, SEARCH_RADIUS / 2);
+		a_r2d->setRenderColour(0xFFFFFFFF);
+		#endif
 	}
 }

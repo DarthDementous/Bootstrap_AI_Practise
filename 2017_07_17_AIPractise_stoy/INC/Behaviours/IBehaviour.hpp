@@ -1,7 +1,5 @@
 #pragma once
 
-
-
 #pragma region Forward Declarations
 class GameObj;
 namespace aie {

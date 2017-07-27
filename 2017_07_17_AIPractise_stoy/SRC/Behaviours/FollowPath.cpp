@@ -21,7 +21,7 @@ void FollowPath::Update(GameObj * a_obj, float a_dt)
 		glm::vec2 normal  = glm::normalize(wishDir);
 
 		// Within certain distance of targeted point, target next node.
-		if (glm::length(wishDir) < PATH_DIST_CHANGE + PLAYER_RADIUS) {
+		if (glm::length(wishDir) < PATH_CHANGE_DIST + PLAYER_RADIUS) {
 			++m_currPathIndex;
 		}
 
@@ -38,7 +38,7 @@ void FollowPath::Render(GameObj * a_obj, aie::Renderer2D * a_r2d)
 	for (auto iter = m_path->GetPathPoints().begin(); iter != m_path->GetPathPoints().end(); ++iter, ++nodeCount) {
 		// Point
 		a_r2d->setRenderColour(1.f, 1.f, 1.f, 0.25);
-		a_r2d->drawCircle(iter->x, iter->y, PATH_DIST_CHANGE);
+		a_r2d->drawCircle(iter->x, iter->y, PATH_CHANGE_DIST);
 		a_r2d->setRenderColour(0xFFFFFFFF);
 
 		// Only draw a line if there is more than one node displayed
@@ -46,6 +46,7 @@ void FollowPath::Render(GameObj * a_obj, aie::Renderer2D * a_r2d)
 			glm::vec2 prevPt = *(iter - 1);
 
 			// Make line gold to indicate the current edge being traversed
+			m_currPathIndex = m_currPathIndex % m_path->GetPathPoints().size();		// Wrap around to avoid crashing while out of range
 			if (*iter == m_path->At(m_currPathIndex)) {
 				a_r2d->setRenderColour(0xf4d142FF);
 			}

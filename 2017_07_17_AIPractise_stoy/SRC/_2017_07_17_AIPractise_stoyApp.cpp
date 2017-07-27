@@ -10,6 +10,7 @@
 #include <ResourceManager.hpp>
 #include <ResourcePack.h>
 #include <math.h>
+#include <glm/gtx/norm.hpp>
 
 _2017_07_17_AIPractise_stoyApp::_2017_07_17_AIPractise_stoyApp() {
 
@@ -41,38 +42,28 @@ bool _2017_07_17_AIPractise_stoyApp::startup() {
 			// Ensure the spacing is negative for the y because in Bootstrap it starts from 0.
 			glm::vec2 pos((GRAPH_START_X + GRAPH_OFFSET_X) + (x * GRAPH_SPACING), (GRAPH_START_Y + GRAPH_OFFSET_Y) + -(y * GRAPH_SPACING));
 			
-			Graph2D::Node* newNode = new Graph2D::Node(pos);
-			m_graph->AddNode(newNode);
+			m_graph->AddNode(new Graph2D::Node(pos));
 		}
 	}
 
 	// Add bidirected edges
-	Graph2D::Node* startNode = SEARCH_NODE;
+	for (auto node : *m_graph->GetNodes()) {
+		// Connect current node to all nearby nodes specified by a radius
+		auto nearbyNodes = m_graph->GetNearbyNodes(node->GetData(), SEARCH_RADIUS);
 
-	for (auto node : m_graph->GetNearbyNodes(startNode->GetData(), SEARCH_RADIUS)) {
-		// Don't connect the node to itself
-		if (startNode != node) {
-			m_graph->AddEdge(startNode, node, true);
+		for (auto nearNode : nearbyNodes) {
+			// Don't connect node to itself
+			if (node == nearNode) {
+				continue;
+			}
+			// Add edge to home node with a weight of the distance from the home node
+			m_graph->AddEdge(node, nearNode, true, glm::length(nearNode->GetData() - node->GetData()));
 		}
 	}
-
-	// One directed edge
-	m_graph->AddEdge(startNode, m_graph->GetNodes()->back(), false);
-	
-	//for (auto iter = m_graph->GetNodes()->begin(); iter != m_graph->GetNodes()->end(); ++iter) {
-	//	auto nextIter = iter + 1;
-	//	
-	//	// Make sure the next node isn't garbage before we access it
-	//	if (nextIter != m_graph->GetNodes()->end()) {
-	//		m_graph->AddEdge(*iter, *(nextIter), true);
-	//	}
-	//}
 
 #pragma endregion
 	
 	m_gr2d = new GraphRenderer2D(m_graph);
-
-
 
 	return true;
 }
@@ -91,6 +82,10 @@ void _2017_07_17_AIPractise_stoyApp::update(float deltaTime) {
 	// exit the application
 	if (input->isKeyDown(aie::INPUT_KEY_ESCAPE))
 		quit();
+
+#pragma region Graph (before player due to combined input conflict)
+	m_graph->Update();
+#pragma endregion
 
 #pragma region Player
 	/// Boundary checks
@@ -111,8 +106,6 @@ void _2017_07_17_AIPractise_stoyApp::update(float deltaTime) {
 	// Movement
 	m_player->Update(deltaTime);
 #pragma endregion
-
-
 }
 
 void _2017_07_17_AIPractise_stoyApp::draw() {
@@ -127,15 +120,21 @@ void _2017_07_17_AIPractise_stoyApp::draw() {
 	m_player->Render(m_2dRenderer);
 
 	m_gr2d->Draw(m_2dRenderer);
-
-#ifdef _DEBUG
-	m_2dRenderer->setRenderColour(1, 0, 0, 0.5);
-	m_2dRenderer->drawCircle(SEARCH_NODE->GetData().x, SEARCH_NODE->GetData().y, SEARCH_RADIUS);
-	m_2dRenderer->setRenderColour(0xFFFFFFFF);
-#endif
 	
 	// output some text, uses the last used colour
 	m_2dRenderer->drawText(ResourcePack::FontMap()["DEFAULT"].get(), "Press ESC to quit", 0, 0);
+
+	// Testing inconsistency with getPressedKeys
+#ifdef _DEBUG
+	//aie::Input* input = aie::Input::getInstance();
+	//char tmp[256];
+
+	//sprintf_s(tmp, "Currently held keys: %i", (int)input->getPressedKeys().size());
+	//
+	//std::cout << tmp << std::endl;
+	//m_2dRenderer->drawText(ResourcePack::FontMap()["DEFAULT"].get(), tmp, getWindowWidth() / 2, 20);
+	
+#endif
 
 	// done drawing sprites
 	m_2dRenderer->end();
