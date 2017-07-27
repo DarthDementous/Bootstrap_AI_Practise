@@ -11,19 +11,19 @@ void KeyboardController::Update(GameObj * a_obj, float a_dt)
 	
 	// Input
 	if (input->isKeyDown(m_upKey)) {
-		a_obj->ApplyForce(glm::vec2(0, 1000));
+		a_obj->ApplyForce(glm::vec2(0, PLAYER_FORCE));
 	}
 
 	if (input->isKeyDown(m_downKey)) {
-		a_obj->ApplyForce(glm::vec2(0, -1000));
+		a_obj->ApplyForce(glm::vec2(0, -PLAYER_FORCE));
 	}
 
 	if (input->isKeyDown(m_leftKey)) {
-		a_obj->ApplyForce(glm::vec2(-1000, 0));
+		a_obj->ApplyForce(glm::vec2(-PLAYER_FORCE, 0));
 	}
 
 	if (input->isKeyDown(m_rightKey)) {
-		a_obj->ApplyForce(glm::vec2(1000, 0));
+		a_obj->ApplyForce(glm::vec2(PLAYER_FORCE, 0));
 	}
 
 }

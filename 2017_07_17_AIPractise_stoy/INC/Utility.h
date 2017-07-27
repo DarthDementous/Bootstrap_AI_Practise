@@ -1,6 +1,7 @@
 #pragma once
 
 // Default values
+#define PLAYER_FORCE 1000.f
 #define PLAYER_RADIUS	8.f
 #define PLAYER_FRICTION	1.f
 #define PLAYER_REBOUND_STRENGTH 100.f

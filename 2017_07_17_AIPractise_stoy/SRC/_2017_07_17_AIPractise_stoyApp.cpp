@@ -93,26 +93,20 @@ void _2017_07_17_AIPractise_stoyApp::update(float deltaTime) {
 		quit();
 
 #pragma region Player
-	// Boundary checks
+	/// Boundary checks
 	const glm::vec2 pos = m_player->GetPosition();
 
-	// If outside bounds, reflect velocity and clear acceleration
-	if (pos.x < PLAYER_RADIUS * 2 || pos.x > getWindowWidth() - PLAYER_RADIUS * 2) {
-		// Calculate a safe position
-
+	// Left plane
+	if (pos.x < PLAYER_RADIUS || pos.x > getWindowWidth() - PLAYER_RADIUS) {
 		// Reflect the x axis 
 		m_player->SetVelocity(glm::vec2(-m_player->GetVelocity().x, m_player->GetVelocity().y));
-		//m_player->SetAcceleration(glm::vec2(0, 0));
 	}
-	else if (pos.y < PLAYER_RADIUS * 2 || pos.y >getWindowHeight() - PLAYER_RADIUS * 2) {
+
+	// Bottom and top window planes
+	else if (pos.y < PLAYER_RADIUS || pos.y >getWindowHeight() - PLAYER_RADIUS) {
+		// Reflect the y axis
 		m_player->SetVelocity(glm::vec2(m_player->GetVelocity().x, -m_player->GetVelocity().y));
 	}
-
-	//if (pos.x < PLAYER_RADIUS * 2 || pos.x > getWindowWidth() - PLAYER_RADIUS * 2 || pos.y < PLAYER_RADIUS * 2 || pos.y > getWindowHeight() - PLAYER_RADIUS * 2) { 
-
-	//	//m_player->ApplyForce(-m_player->GetVelocity() * PLAYER_REBOUND_STRENGTH);
-	//	//m_player->SetAcceleration(glm::vec2(0, 0));
-	//}
 
 	// Movement
 	m_player->Update(deltaTime);

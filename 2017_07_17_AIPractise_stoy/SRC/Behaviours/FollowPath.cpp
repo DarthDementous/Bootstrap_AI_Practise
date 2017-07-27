@@ -31,6 +31,7 @@ void FollowPath::Update(GameObj * a_obj, float a_dt)
 
 void FollowPath::Render(GameObj * a_obj, aie::Renderer2D * a_r2d)
 {
+#ifdef _DEBUG
 	// Keep track of index because looping via iterator method
 	size_t nodeCount = 0;
 
@@ -43,7 +44,15 @@ void FollowPath::Render(GameObj * a_obj, aie::Renderer2D * a_r2d)
 		// Only draw a line if there is more than one node displayed
 		if (nodeCount > 0) {
 			glm::vec2 prevPt = *(iter - 1);
+
+			// Make line gold to indicate the current edge being traversed
+			if (*iter == m_path->At(m_currPathIndex)) {
+				a_r2d->setRenderColour(0xf4d142FF);
+			}
 			a_r2d->drawLine(prevPt.x, prevPt.y, iter->x, iter->y);
+
+			a_r2d->setRenderColour(0xFFFFFFFF);
 		}
 	}
+#endif
 }

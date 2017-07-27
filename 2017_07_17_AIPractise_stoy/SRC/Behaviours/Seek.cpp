@@ -45,6 +45,7 @@ void Seek::Update(GameObj * a_obj, float a_dt)
 
 void Seek::Render(GameObj * a_obj, aie::Renderer2D * a_r2d)
 {
+#ifdef _DEBUG
 	// Cursor
 	a_r2d->drawBox(m_targetPos.x, m_targetPos.y, 4, 4);
 	// Radii
@@ -54,4 +55,5 @@ void Seek::Render(GameObj * a_obj, aie::Renderer2D * a_r2d)
 	a_r2d->drawCircle(m_targetPos.x, m_targetPos.y, m_outerRadius);
 
 	a_r2d->setRenderColour(0xFFFFFFFF);
+#endif
 }
