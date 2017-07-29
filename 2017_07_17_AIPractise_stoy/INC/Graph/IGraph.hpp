@@ -43,9 +43,10 @@ public:
 		Edge(bool a_bidirected, Node* a_to, float a_weight, Node* a_from = nullptr) : m_bidirected(a_bidirected), m_to(a_to), m_weight(a_weight), m_from(a_from) {}
 
 		bool IsBidirected() { return m_bidirected; }
+		float GetWeight() { return m_weight; }
 
-		Node* m_to;					 /*Node at the end of the connection.*/
-		Node* m_from;				 /*Node at the beginning of the connection. (Only available if edge is not directed).*/
+		Node* m_to = nullptr;					 /*Node at the end of the connection.*/
+		Node* m_from = nullptr;					 /*Node at the beginning of the connection. (Only available if edge is not directed).*/
 
 		float m_weight;				 /*Cost to traverse this edge.*/
 	private:
@@ -92,18 +93,21 @@ public:
 	*	@return void.
 	*/
 	void AddEdge(Node* a_nodeA, Node* a_nodeB, bool a_bidirected, float a_weight = 0) {
-		//// Find relevant nodes by de-referencing iterator
-		//Node* foundNodeA = *(std::find(m_nodes->begin(), m_nodes->end(), a_nodeA));		
-		//Node* foundNodeB = *(std::find(m_nodes->begin(), m_nodes->end(), a_nodeB));
+		// Make sure nodes already exist before attempting to add an edge.
+		auto foundNodeA = std::find(m_nodes->begin(), m_nodes->end(), a_nodeA);		
+		auto foundNodeB = std::find(m_nodes->begin(), m_nodes->end(), a_nodeB);
 
- 		// Bidirected, add edge to both nodes
-		if (a_bidirected) {
-			a_nodeA->m_edges->push_back(new Edge(a_bidirected, a_nodeB, a_weight, a_nodeA));		// Specify where its coming from because it is two-way.
-			a_nodeB->m_edges->push_back(new Edge(a_bidirected, a_nodeB, a_weight, a_nodeA));
-		}
-		// Directed, add edge to one node
-		else {
-			a_nodeA->m_edges->push_back(new Edge(a_bidirected, a_nodeB, a_weight));				// Don't specify where it's coming from since its not two-way
+		if (foundNodeA != m_nodes->end() && foundNodeB != m_nodes->end()) {
+			// Bidirected, add edge to both nodes
+			if (a_bidirected) {
+				// Specify where node came from
+				(*foundNodeA)->m_edges->push_back(new Edge(a_bidirected, *foundNodeB, a_weight, *foundNodeA));
+				(*foundNodeB)->m_edges->push_back(new Edge(a_bidirected, *foundNodeB, a_weight, *foundNodeA));
+			}
+			// Directed, add edge to one node
+			else {
+				(*foundNodeA)->m_edges->push_back(new Edge(a_bidirected, *foundNodeB, a_weight));
+			}
 		}
 
 	}

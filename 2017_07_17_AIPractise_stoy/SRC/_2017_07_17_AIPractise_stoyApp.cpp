@@ -11,6 +11,7 @@
 #include <ResourcePack.h>
 #include <math.h>
 #include <glm/gtx/norm.hpp>
+#include "PathFinder.h"
 
 _2017_07_17_AIPractise_stoyApp::_2017_07_17_AIPractise_stoyApp() {
 
@@ -28,26 +29,18 @@ bool _2017_07_17_AIPractise_stoyApp::startup() {
 	ResourcePack::FontMap()["DBG"] = ResourceManager::loadResource<aie::Font>("./font/consolas.ttf", 12);
 
 
-#pragma region Player
-	m_player = new Player(glm::vec2(getWindowWidth() / 2, getWindowHeight() / 2));
-	m_player->SetBehaviour(new KeyboardController);
-#pragma endregion
-
 #pragma region Graph
 	m_graph = new Graph2D;
 
-	// Add a grid of nodes to the graph (rows first from top left)
+	// Add a grid of nodes to the graph (rows first from top left down)
 	for (size_t y = 0; y < GRAPH_HEIGHT; ++y) {
 		for (size_t x = 0; x < GRAPH_WIDTH; ++x) {
 			// Ensure the spacing is negative for the y because in Bootstrap it starts from 0.
-			glm::vec2 pos((GRAPH_START_X + GRAPH_OFFSET_X) + (x * GRAPH_SPACING), (GRAPH_START_Y + GRAPH_OFFSET_Y) + -(y * GRAPH_SPACING));
-			
-			if (pos.y == 4294967040) {
-				bool stop;
-				stop = true;
-			}
+			/* NOTE: Since we're multiplying with unsigned ints make sure its with something of higher precision (like a float)
+			since otherwise the result of the expression will always be an unsigned int, leading to wrap around when made negative*/
+			glm::vec2 pos((GRAPH_START_X + GRAPH_OFFSET_X) + (x * GRAPH_SPACING), (GRAPH_START_Y + GRAPH_OFFSET_Y) + (y * -GRAPH_SPACING));
 
-			m_graph->AddNode(new Graph2D::Node(pos));
+			//m_graph->AddNode(new Graph2D::Node(pos));
 		}
 	}
 
@@ -67,16 +60,30 @@ bool _2017_07_17_AIPractise_stoyApp::startup() {
 	}
 
 #pragma endregion
-	
+
 	m_gr2d = new GraphRenderer2D(m_graph);
+
+	m_pf = new PathFinder(m_graph);
+
+#pragma region Player (must come after path finder)
+	m_player = new Player(glm::vec2(getWindowWidth() / 2, getWindowHeight() / 2));
+	m_player->SetBehaviour(new KeyboardController);
+	m_player->SetPathFinder(m_pf);
+#pragma endregion
+
+
 
 	return true;
 }
 
 void _2017_07_17_AIPractise_stoyApp::shutdown() {
 	delete m_player;
+	delete m_gr2d;
+	delete m_pf;
+	delete m_graph;
 	delete m_font;
 	delete m_2dRenderer;
+
 }
 
 void _2017_07_17_AIPractise_stoyApp::update(float deltaTime) {

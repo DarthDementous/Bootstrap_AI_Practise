@@ -5,9 +5,10 @@
 
 
 #pragma region Forward Declarations
-class GameObj;
+class Player;
 class GraphRenderer2D;
 class Graph2D;
+class PathFinder;
 
 #pragma endregion
 
@@ -28,8 +29,10 @@ protected:
 	aie::Renderer2D*	m_2dRenderer;
 	aie::Font*			m_font = nullptr;
 
-	GameObj*			m_player	= nullptr;
+	Player*				m_player	= nullptr;
 
 	Graph2D*			m_graph		= nullptr;
 	GraphRenderer2D*	m_gr2d		= nullptr;				/*2D Graph Renderer*/
+
+	PathFinder*			m_pf		= nullptr;
 };

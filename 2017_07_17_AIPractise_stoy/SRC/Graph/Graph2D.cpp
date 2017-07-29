@@ -20,6 +20,10 @@ void Graph2D::Update()
 
 			// Connect node to nearby ones via edges weighted by distance
 			for (auto nearNode : GetNearbyNodes(glm::vec2(mouseX, mouseY), SEARCH_RADIUS / 2)) {
+				// Don't let node connect to itself
+				if (nearNode == newNode) {
+					continue;
+				}
 				AddEdge(nearNode, newNode, true, glm::length(nearNode->GetData() - newNode->GetData()));
 			}
 		}
@@ -83,10 +87,9 @@ void Graph2D::SaveToFile(const char* a_filename)
 						graphFile << "|";
 					}
 				}
-				
-				// End line
-				graphFile << "\n";
 			}
+			// End line
+			graphFile << "\n";
 		}
 
 	}
@@ -112,7 +115,11 @@ void Graph2D::LoadFromFile(const char * a_filename)
 			// Create vectors by sectioning the line appropriately
 			auto splitLine = Util::StringToVector(line, '<');
 			auto homeNodeText = Util::StringToVector(splitLine[0], ',');
-			auto edgeSect = Util::StringToVector(splitLine[1], '|');
+			// Make sure there is an edge section before splitting it
+			std::vector<std::string> edgeSect;
+			if (splitLine.size() == 2) {
+				edgeSect = Util::StringToVector(splitLine[1], '|');
+			}
 
 			// Convert string to vector 2 and add home node
 			Node* homeNode = new Node(glm::vec2(std::stof(homeNodeText[0]), std::stof(homeNodeText[1])));
@@ -122,6 +129,7 @@ void Graph2D::LoadFromFile(const char * a_filename)
 			for (auto edgeText : edgeSect) {
 				auto edgeNodeText = Util::StringToVector(edgeText, ',');
 				Node* edgeNode = new Node(glm::vec2(std::stof(edgeNodeText[0]), std::stof(edgeNodeText[1])));
+				AddNode(edgeNode);
 
 				AddEdge(homeNode, edgeNode, true, glm::length(edgeNode->GetData() - homeNode->GetData()));
 			}

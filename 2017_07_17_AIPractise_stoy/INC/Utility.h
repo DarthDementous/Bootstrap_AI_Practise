@@ -17,13 +17,14 @@
 #define SEARCH_RADIUS 200.f
 #define SEARCH_NODE m_graph->GetNodes()->at(0)
 
-#define GRAPH_START_X 100
-#define GRAPH_START_Y getWindowHeight() - 100
-#define GRAPH_WIDTH 10
-#define GRAPH_HEIGHT 10
-#define GRAPH_OFFSET_X -50
-#define GRAPH_OFFSET_Y 50
-#define GRAPH_SPACING 100
+// NOTE: If number is not negative the expression will be made unsigned int by default leading to wrap around - make sure these are floats!
+#define GRAPH_START_X 100.f
+#define GRAPH_START_Y getWindowHeight() - 100.f
+#define GRAPH_WIDTH 10u
+#define GRAPH_HEIGHT 6u
+#define GRAPH_OFFSET_X -50.f
+#define GRAPH_OFFSET_Y 50.f
+#define GRAPH_SPACING 100.f
 
 #define SEEK_STRENGTH 100.f
 #define FLEE_STRENGTH -100.f

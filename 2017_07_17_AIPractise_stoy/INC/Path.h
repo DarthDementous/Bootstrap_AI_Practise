@@ -25,7 +25,7 @@ public:
 	*	@brief Clear all points on current path.
 	*	@return void.
 	*/
-	void Clear();
+	void Clear() { m_pathPoints.clear(); }
 
 	/**
 	*	@brief Get point at given index.
