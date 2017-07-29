@@ -37,11 +37,16 @@ bool _2017_07_17_AIPractise_stoyApp::startup() {
 	m_graph = new Graph2D;
 
 	// Add a grid of nodes to the graph (rows first from top left)
-	for (auto y = 0; y < GRAPH_HEIGHT; ++y) {
-		for (auto x = 0; x < GRAPH_WIDTH; ++x) {
+	for (size_t y = 0; y < GRAPH_HEIGHT; ++y) {
+		for (size_t x = 0; x < GRAPH_WIDTH; ++x) {
 			// Ensure the spacing is negative for the y because in Bootstrap it starts from 0.
 			glm::vec2 pos((GRAPH_START_X + GRAPH_OFFSET_X) + (x * GRAPH_SPACING), (GRAPH_START_Y + GRAPH_OFFSET_Y) + -(y * GRAPH_SPACING));
 			
+			if (pos.y == 4294967040) {
+				bool stop;
+				stop = true;
+			}
+
 			m_graph->AddNode(new Graph2D::Node(pos));
 		}
 	}

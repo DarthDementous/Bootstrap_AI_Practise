@@ -60,20 +60,26 @@ void Graph2D::SaveToFile(const char* a_filename)
 			sprintf_s(nodeData, "%4.2f,%4.2f", node->GetData().x, node->GetData().y);
 			graphFile << nodeData;
 
-			if (!node->GetEdges()->empty()) {
+			auto edges = node->GetEdges();
+			if (!edges->empty()) {
 				// Begin edge section
 				graphFile << "<";
 
-				auto edges = node->GetEdges();
 				for (size_t i = 0; i < edges->size(); ++i) {
 					// Add edge data
-					char nodeData[256];
+					char connectedNodeData[256];
 					auto connectedNode = edges->at(i)->m_to;
-					sprintf_s(nodeData, "%4.2f,%4.2f", connectedNode->GetData().x, connectedNode->GetData().y);
-					graphFile << nodeData;
+					sprintf_s(connectedNodeData, "%4.2f,%4.2f", connectedNode->GetData().x, connectedNode->GetData().y);
+					
+					graphFile << connectedNodeData;
+
+					if (connectedNode->GetData().y == 4294967040) {
+						bool stop;
+						stop = true;
+					}
 
 					// Add seperator if not last
-					if (i != edges->size() - 1) {
+					if (i != node->GetEdges()->size() - 1) {
 						graphFile << "|";
 					}
 				}
