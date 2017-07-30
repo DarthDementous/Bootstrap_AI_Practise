@@ -102,7 +102,7 @@ public:
 			if (a_bidirected) {
 				// Specify where node came from
 				(*foundNodeA)->m_edges->push_back(new Edge(a_bidirected, *foundNodeB, a_weight, *foundNodeA));
-				(*foundNodeB)->m_edges->push_back(new Edge(a_bidirected, *foundNodeB, a_weight, *foundNodeA));
+				(*foundNodeB)->m_edges->push_back(new Edge(a_bidirected, *foundNodeA, a_weight, *foundNodeB));
 			}
 			// Directed, add edge to one node
 			else {

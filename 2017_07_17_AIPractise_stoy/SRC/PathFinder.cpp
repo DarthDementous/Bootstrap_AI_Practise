@@ -13,6 +13,8 @@ void PathFinder::BeginPathFinding(Graph2D::Node * a_startNode, Graph2D::Node * a
 	// Prepare for calculating new path
 	m_pathFound = false;
 	m_goalReached = a_goalTestFunc;
+	m_open.clear();
+	m_closed.clear();
 
 	// Begin path at start node
 	PathNode* pathNode = new PathNode(a_startNode, nullptr);
@@ -99,7 +101,7 @@ void PathFinder::ConstructPath(PathNode * a_goalNode)
 	m_currentPath->Clear();
 
 	// Add points to path and move to next parent until nullptr (at the starting node)
-	PathNode* currentParent = a_goalNode->GetParent();
+	PathNode* currentParent = a_goalNode;
 	while (currentParent) {
 		m_currentPath->PushPoint(currentParent->GetNode()->GetData());
 
@@ -112,11 +114,12 @@ void PathFinder::ConstructPath(PathNode * a_goalNode)
 void PathFinder::Render(aie::Renderer2D * a_r2d)
 {
 #ifdef _DEBUG
-	a_r2d->setRenderColour(0xf4bc42);
+	a_r2d->setRenderColour(0x00f49bFF);
 	for (auto path_node : m_open) {
 		a_r2d->drawCircle(path_node->GetNode()->GetData().x, path_node->GetNode()->GetData().y, NODE_RADIUS / 2);
 	}
-	a_r2d->setRenderColour(0xb942f4);
+	// Mint
+	a_r2d->setRenderColour(0x7c29bcFF);
 	for (auto path_node : m_closed) {
 		a_r2d->drawCircle(path_node->GetNode()->GetData().x, path_node->GetNode()->GetData().y, NODE_RADIUS / 2);
 	}

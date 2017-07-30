@@ -35,9 +35,10 @@ void FollowPath::Render(GameObj * a_obj, aie::Renderer2D * a_r2d)
 	// Keep track of index because looping via iterator method
 	size_t nodeCount = 0;
 
+	/// Ensure that the path is rendered on top of everything (things that aren't default 0.f depth) in order to accurately see the path.
 	for (auto iter = m_path->GetPathPoints().begin(); iter != m_path->GetPathPoints().end(); ++iter, ++nodeCount) {
 		// Point
-		a_r2d->setRenderColour(1.f, 1.f, 1.f, 0.25);
+		a_r2d->setRenderColour(1.f, 1.f, 1.f, 0.25f);
 		a_r2d->drawCircle(iter->x, iter->y, PATH_CHANGE_DIST);
 		a_r2d->setRenderColour(0xFFFFFFFF);
 
@@ -50,7 +51,7 @@ void FollowPath::Render(GameObj * a_obj, aie::Renderer2D * a_r2d)
 			if (*iter == m_path->At(m_currPathIndex)) {
 				a_r2d->setRenderColour(0xf4d142FF);
 			}
-			a_r2d->drawLine(prevPt.x, prevPt.y, iter->x, iter->y);
+			a_r2d->drawLine(prevPt.x, prevPt.y, iter->x, iter->y, 2.f);
 
 			a_r2d->setRenderColour(0xFFFFFFFF);
 		}

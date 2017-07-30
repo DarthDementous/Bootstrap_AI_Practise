@@ -40,7 +40,7 @@ bool _2017_07_17_AIPractise_stoyApp::startup() {
 			since otherwise the result of the expression will always be an unsigned int, leading to wrap around when made negative*/
 			glm::vec2 pos((GRAPH_START_X + GRAPH_OFFSET_X) + (x * GRAPH_SPACING), (GRAPH_START_Y + GRAPH_OFFSET_Y) + (y * -GRAPH_SPACING));
 
-			//m_graph->AddNode(new Graph2D::Node(pos));
+			m_graph->AddNode(new Graph2D::Node(pos));
 		}
 	}
 
@@ -132,21 +132,11 @@ void _2017_07_17_AIPractise_stoyApp::draw() {
 	m_player->Render(m_2dRenderer);
 
 	m_gr2d->Draw(m_2dRenderer);
+
+	m_pf->Render(m_2dRenderer);
 	
 	// output some text, uses the last used colour
 	m_2dRenderer->drawText(ResourcePack::FontMap()["DEFAULT"].get(), "Press ESC to quit", 0, 0);
-
-	// Testing inconsistency with getPressedKeys
-#ifdef _DEBUG
-	//aie::Input* input = aie::Input::getInstance();
-	//char tmp[256];
-
-	//sprintf_s(tmp, "Currently held keys: %i", (int)input->getPressedKeys().size());
-	//
-	//std::cout << tmp << std::endl;
-	//m_2dRenderer->drawText(ResourcePack::FontMap()["DEFAULT"].get(), tmp, getWindowWidth() / 2, 20);
-	
-#endif
 
 	// done drawing sprites
 	m_2dRenderer->end();

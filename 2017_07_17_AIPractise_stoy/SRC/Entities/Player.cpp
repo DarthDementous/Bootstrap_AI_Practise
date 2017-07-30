@@ -143,14 +143,17 @@ void Player::Update(float a_dt)
 		m_goalNode = nullptr;
 		// Reset path
 		m_path->Clear();
+
+		// Relinquish control back to player
+		SetBehaviour(m_controlBehaviour);
 	}
 
-#ifdef _DEBUG
-	// Keep searching until goal is reached or all nodes have been searched
-	if (!m_pathFinder->IsSearchFinished() && input->wasKeyPressed(aie::INPUT_KEY_SPACE)) {
-		m_pathFinder->ContinuePathSearch();
-	}
-#endif
+//#ifdef _DEBUG
+//	// Keep searching until goal is reached or all nodes have been searched
+//	if (!m_pathFinder->IsSearchFinished() && input->wasKeyPressed(aie::INPUT_KEY_SPACE)) {
+//		m_pathFinder->ContinuePathSearch();
+//	}
+//#endif
 #pragma endregion
 }
 
@@ -162,13 +165,13 @@ void Player::Render(aie::Renderer2D * a_r2d)
 #ifdef _DEBUG
 	if (m_startNode) {
 		a_r2d->setRenderColour(0.f, 1.f, 0.f);
-		a_r2d->drawCircle(m_startNode->GetData().x, m_startNode->GetData().y, NODE_RADIUS / 2);
+		a_r2d->drawCircle(m_startNode->GetData().x, m_startNode->GetData().y, NODE_RADIUS);
 		a_r2d->setRenderColour(0xFFFFFFFF);
 	}
 
 	if (m_goalNode) {
 		a_r2d->setRenderColour(1.f, 0.f, 0.f);
-		a_r2d->drawCircle(m_goalNode->GetData().x, m_goalNode->GetData().y, NODE_RADIUS / 2);
+		a_r2d->drawCircle(m_goalNode->GetData().x, m_goalNode->GetData().y, NODE_RADIUS);
 		a_r2d->setRenderColour(0xFFFFFFFF);
 
 	}

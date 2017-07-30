@@ -73,14 +73,14 @@ void Graph2D::SaveToFile(const char* a_filename)
 					// Add edge data
 					char connectedNodeData[256];
 					auto connectedNode = edges->at(i)->m_to;
+
+					if (node == connectedNode) {
+						bool stop = true;
+					}
+
 					sprintf_s(connectedNodeData, "%4.2f,%4.2f", connectedNode->GetData().x, connectedNode->GetData().y);
 					
 					graphFile << connectedNodeData;
-
-					if (connectedNode->GetData().y == 4294967040) {
-						bool stop;
-						stop = true;
-					}
 
 					// Add seperator if not last
 					if (i != node->GetEdges()->size() - 1) {

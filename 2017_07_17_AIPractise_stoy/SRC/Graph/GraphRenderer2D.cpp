@@ -11,11 +11,12 @@ void GraphRenderer2D::Draw(aie::Renderer2D* a_r2d)
 	a_r2d->drawText(ResourcePack::FontMap()["DBG"].get(), "This is a successful test, holy shit.", 100, 100);
 
 #pragma region Graph
+	a_r2d->setRenderColour(0x6b6c6dFF);
 	for (auto node : *(m_graph->GetNodes())) {
 		glm::vec2 pos = node->GetData();
 
 		// Nodes
-		a_r2d->drawCircle(pos.x, pos.y, node->GetRadius(), 1);
+		a_r2d->drawCircle(pos.x, pos.y, node->GetRadius(), 1.f);
 
 		// Edges on the node
 		for (auto edge : *(node->GetEdges())) {
@@ -23,17 +24,16 @@ void GraphRenderer2D::Draw(aie::Renderer2D* a_r2d)
 
 			// Edge line
 			if (edge->IsBidirected()) {
-				a_r2d->setRenderColour(0, 1, 1);
+				//a_r2d->setRenderColour(0, 1, 1);
 			}
 			else {
 				a_r2d->setRenderColour(0, 1, 0);
 			}
-			a_r2d->drawLine(pos.x, pos.y, destPos.x, destPos.y);
-
-			a_r2d->setRenderColour(0xffffffff);
+			a_r2d->drawLine(pos.x, pos.y, destPos.x, destPos.y, 1.f, 2.f);
 		}
 
 	}
+	a_r2d->setRenderColour(0xffffffff);
 #pragma endregion
 
 	aie::Input* input = aie::Input::getInstance();
