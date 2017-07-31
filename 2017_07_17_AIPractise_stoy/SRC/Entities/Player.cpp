@@ -10,6 +10,7 @@
 #include <ResourcePack.h>
 #include <glm/vec2.hpp>
 #include <iostream>
+#include "Behaviours/Wander.h"
 
 Player::Player(glm::vec2 & a_pos, glm::vec2 & a_vel, float a_friction, IBehaviour * a_behaviour) :
 	GameObj(a_pos, a_vel, a_friction, a_behaviour) // Call base constructor because the parameters pertain to the base class, not the inherited one.
@@ -36,6 +37,9 @@ Player::Player(glm::vec2 & a_pos, glm::vec2 & a_vel, float a_friction, IBehaviou
 	m_followBehaviour = new FollowPath;
 	m_followBehaviour->SetPath(m_path);
 	m_followBehaviour->IsOwned(true);
+
+	// Wander
+	m_wanderBehaviour = new Wander();
 #pragma endregion
 
 
@@ -45,6 +49,7 @@ Player::~Player()
 {
 	delete m_path;
 
+	delete m_wanderBehaviour;
 	delete m_seekBehaviour;
 	delete m_controlBehaviour;
 	delete m_followBehaviour;
@@ -149,6 +154,14 @@ void Player::Update(float a_dt)
 
 		// Relinquish control back to player
 		SetBehaviour(m_controlBehaviour);
+	}
+
+	/// Wander
+	if (input->wasKeyPressed(aie::INPUT_KEY_X)) {
+		// Set to wander if not already
+		if (m_behaviour != m_wanderBehaviour) {
+			SetBehaviour(m_wanderBehaviour);
+		}
 	}
 
 //#ifdef _DEBUG

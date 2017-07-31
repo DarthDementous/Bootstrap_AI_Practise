@@ -46,7 +46,7 @@
     <LinkIncremental>true</LinkIncremental>
     <OutDir>$(ProjectDir)ProjectName\</OutDir>
     <IntDir>$(ProjectDir)tmp\$(Configuration)\</IntDir>
-    <IncludePath>$(SolutionDir)dependencies\rpack;$(SolutionDir)dependencies/rm;$(SolutionDir)bootstrap;$(SolutionDir)dependencies/imgui;$(SolutionDir)dependencies/glm;$(VC_IncludePath);$(WindowsSDK_IncludePath);$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)dependencies/mathutil;$(SolutionDir)dependencies\rpack;$(SolutionDir)dependencies/rm;$(SolutionDir)bootstrap;$(SolutionDir)dependencies/imgui;$(SolutionDir)dependencies/glm;$(VC_IncludePath);$(WindowsSDK_IncludePath);$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)temp\bootstrap\$(Configuration);$(VC_LibraryPath_x86);$(WindowsSDK_LibraryPath_x86);$(NETFXKitsDir)Lib\um\x86;$(SolutionDir)dependencies\rpack;$(LibraryPath)</LibraryPath>
     <TargetName>projectname_$(Configuration)</TargetName>
   </PropertyGroup>
@@ -54,7 +54,7 @@
     <LinkIncremental>false</LinkIncremental>
     <OutDir>$(ProjectDir)ProjectName\</OutDir>
     <IntDir>$(ProjectDir)tmp\$(Configuration)\</IntDir>
-    <IncludePath>$(SolutionDir)dependencies\rpack;$(SolutionDir)dependencies/rm;$(SolutionDir)bootstrap;$(SolutionDir)dependencies/imgui;$(SolutionDir)dependencies/glm;$(VC_IncludePath);$(WindowsSDK_IncludePath);$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)dependencies/mathutil;$(SolutionDir)dependencies\rpack;$(SolutionDir)dependencies/rm;$(SolutionDir)bootstrap;$(SolutionDir)dependencies/imgui;$(SolutionDir)dependencies/glm;$(VC_IncludePath);$(WindowsSDK_IncludePath);$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)temp\bootstrap\$(Configuration);$(VC_LibraryPath_x86);$(WindowsSDK_LibraryPath_x86);$(NETFXKitsDir)Lib\um\x86;$(SolutionDir)dependencies\rpack;$(LibraryPath)</LibraryPath>
     <TargetName>projectname_$(Configuration)</TargetName>
   </PropertyGroup>
@@ -124,6 +124,7 @@
     <ClCompile Include="SRC\Behaviours\FollowPath.cpp" />
     <ClCompile Include="SRC\Behaviours\KeyboardController.cpp" />
     <ClCompile Include="SRC\Behaviours\Seek.cpp" />
+    <ClCompile Include="SRC\Behaviours\Wander.cpp" />
     <ClCompile Include="SRC\Entities\GameObj.cpp" />
     <ClCompile Include="SRC\Entities\Player.cpp" />
     <ClCompile Include="SRC\Graph\Graph2D.cpp" />
@@ -137,6 +138,7 @@
     <ClInclude Include="INC\Behaviours\FollowPath.h" />
     <ClInclude Include="INC\Behaviours\KeyboardController.h" />
     <ClInclude Include="INC\Behaviours\Seek.h" />
+    <ClInclude Include="INC\Behaviours\Wander.h" />
     <ClInclude Include="INC\Entities\GameObj.h" />
     <ClInclude Include="INC\Entities\Player.h" />
     <ClInclude Include="INC\Graph\IGraph.hpp" />

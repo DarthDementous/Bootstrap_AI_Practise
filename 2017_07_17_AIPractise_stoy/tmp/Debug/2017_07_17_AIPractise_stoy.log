@@ -1,11 +1,12 @@
 ﻿C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\V140\Microsoft.CppBuild.targets(392,5): warning MSB8028: The intermediate directory (C:\Users\ATWindows7\Documents\Repositories\Bootstrap_AI_Practise\2017_07_17_AIPractise_stoy\tmp\Debug\) contains files shared from another project (2017_07_17_AIPractise_stoy.vcxproj).  This can lead to incorrect clean and rebuild behavior.
-  PathFinder.cpp
   Player.cpp
+  Wander.cpp
+c:\users\atwindows7\documents\repositories\bootstrap_ai_practise\2017_07_17_aipractise_stoy\src\behaviours\wander.cpp(14): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
   Generating Code...
   Compiling...
   _2017_07_17_AIPractise_stoyApp.cpp
-  Generating Code...
-  Skipping... (no relevant changes detected)
   FollowPath.cpp
+  Generating Code...
+LINK : warning LNK4098: defaultlib 'MSVCRT' conflicts with use of other libs; use /NODEFAULTLIB:library
   2017_07_17_AIPractise_stoy.vcxproj -> C:\Users\ATWindows7\Documents\Repositories\Bootstrap_AI_Practise\2017_07_17_AIPractise_stoy\ProjectName\projectname_Debug.exe
   0 File(s) copied
