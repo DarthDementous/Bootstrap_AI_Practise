@@ -33,7 +33,7 @@ protected:
 	KeyboardController*		m_controlBehaviour	= nullptr;
 	FollowPath*				m_followBehaviour	= nullptr;
 
-	Path*		m_path		 = nullptr;
+	Path*		m_path		 = nullptr;		/*Player is responsible for deleting this.*/
 	PathFinder* m_pathFinder = nullptr;
 
 	Graph2D::Node* m_startNode	= nullptr;

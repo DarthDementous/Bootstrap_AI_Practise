@@ -103,6 +103,8 @@ void Player::Update(float a_dt)
 
 					// Path is calculated
 					if (m_pathFinder->IsSearchFinished()) {
+						// Take responsibility of previously owned path and clear memory before setting new one
+						delete m_path;
 						m_path = m_pathFinder->GetCurrentPath();
 						m_followBehaviour->SetPath(m_path);
 

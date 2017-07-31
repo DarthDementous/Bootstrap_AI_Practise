@@ -36,13 +36,11 @@ private:
 	public:
 		float gScore = 0;						 /*Total cost (weight) to get to this node.*/
 	private:
-		Graph2D::Node* m_node		= nullptr;
+		Graph2D::Node* m_node = nullptr;
 		PathNode* m_connectedParent = nullptr;	 /*Stores which node its connected to in the path.*/
 	};
 public:
-	PathFinder(Graph2D* a_graph) : m_graph(a_graph), m_pathFound(false) {
-		m_currentPath = new Path;
-	}
+	PathFinder(Graph2D* a_graph) : m_graph(a_graph) {}
 	~PathFinder();
 
 	void Render(aie::Renderer2D* a_r2d);
@@ -87,7 +85,7 @@ private:
 private:
 	Graph2D* m_graph	   = nullptr;		/*Container of nodes to path find in.*/
 
-	Path*	 m_currentPath = nullptr;		/*Current calculated path.*/
+	Path*	 m_currentPath = nullptr;		/*Current calculated path. NOTE: Path finder does not hold responsibility for deletion since it passes on the path.*/
 
 	bool	 m_pathFound;					/*Whether or not the best path has been found.*/
 

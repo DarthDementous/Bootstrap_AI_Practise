@@ -3,10 +3,8 @@
 #include <Renderer2D.h>
 
 PathFinder::~PathFinder()
-{
-	delete m_currentPath;
-	
-	/// Delete memory for path nodes (open and closed list should never have the same pointers)
+{	
+	// Delete memory for path nodes (open and closed list should never have the same pointers)
 	for (auto openNode : m_open) {
 		delete openNode;
 	}
@@ -20,9 +18,11 @@ PathFinder::~PathFinder()
 
 void PathFinder::BeginPathFinding(Graph2D::Node * a_startNode, Graph2D::Node * a_goalNode, std::function<bool(Graph2D::Node*)> a_goalTestFunc)
 {
+	m_goalReached = a_goalTestFunc;
+
 	// Prepare for calculating new path
 	m_pathFound = false;
-	m_goalReached = a_goalTestFunc;
+	m_currentPath = new Path;
 	m_open.clear();
 	m_closed.clear();
 

@@ -57,9 +57,8 @@ void Graph2D::SaveToFile(const char* a_filename)
 		EDGES:
 		0 1 true 0
 		*/
-
 		/// Nodes
-		graphFile << "NODES:";
+		graphFile << "NODES:" << "\n";
 
 		for (auto node : *m_nodes) {
 			// Add current node as a string: "x y" 
@@ -69,44 +68,20 @@ void Graph2D::SaveToFile(const char* a_filename)
 		}
 
 		/// Edges
-		graphFile << "EDGES:";
-		
+		graphFile << "EDGES:" << "\n";
+
 		for (auto node : *m_nodes) {
 			for (auto edge : *node->GetEdges()) {
+				// 0(fromID) 1(toID) true 200.f
 				char edgeData[256];
-				sprintf_s(nodeData, )
+				const char* bidirected = edge->IsBidirected() ? "true" : "false";	// Convert bool to string to add it as text
+				sprintf_s(edgeData, "%i %i %s %4.2f", node->GetID(), edge->m_to->GetID(), bidirected, edge->GetWeight());
+
+				graphFile << edgeData << "\n";
 			}
 		}
-			auto edges = node->GetEdges();
-			if (!edges->empty()) {
-				// Begin edge section
-				graphFile << "<";
-
-				for (size_t i = 0; i < edges->size(); ++i) {
-					// Add edge data
-					char connectedNodeData[256];
-					auto connectedNode = edges->at(i)->m_to;
-
-					if (node == connectedNode) {
-						bool stop = true;
-					}
-
-					sprintf_s(connectedNodeData, "%4.2f,%4.2f", connectedNode->GetData().x, connectedNode->GetData().y);
-					
-					graphFile << connectedNodeData;
-
-					// Add seperator if not last
-					if (i != node->GetEdges()->size() - 1) {
-						graphFile << "|";
-					}
-				}
-			}
-			// End line
-			graphFile << "\n";
-		}
-
 	}
-
+			
 	graphFile.flush();
 	graphFile.close();
 
