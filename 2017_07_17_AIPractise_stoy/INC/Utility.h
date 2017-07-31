@@ -14,7 +14,8 @@
 
 #define ARROW_RADIUS NODE_RADIUS / 4
 
-#define SEARCH_RADIUS 200.f
+// No higher than 150.f or else it'll skip to the second node if its in a straight line due to it drawing a more efficient connection to that node.
+#define SEARCH_RADIUS 150.f
 #define SEARCH_NODE m_graph->GetNodes()->at(0)
 
 // NOTE: If number is not negative the expression will be made unsigned int by default leading to wrap around - make sure these are floats!

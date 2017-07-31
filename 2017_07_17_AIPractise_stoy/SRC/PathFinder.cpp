@@ -4,7 +4,17 @@
 
 PathFinder::~PathFinder()
 {
+	delete m_currentPath;
+	
+	/// Delete memory for path nodes (open and closed list should never have the same pointers)
+	for (auto openNode : m_open) {
+		delete openNode;
+	}
 	m_open.clear();
+
+	for (auto closeNode : m_closed) {
+		delete closeNode;
+	}
 	m_closed.clear();
 }
 
@@ -53,9 +63,9 @@ void PathFinder::ContinuePathSearch()
 			float gScoreCurrent = bestPathNode->gScore + cost;
 
 			PathNode* nodeInList = NodeInList(m_open, child);
-			// Node is not waiting to be processed
+			// Child is not waiting to be processed in open list
 			if (!nodeInList) {
-				// Check if node is in closed list
+				// Check if child is in closed list
 				nodeInList = NodeInList(m_closed, child);
 			}
 			// Child has not been assigned a corresponding path node

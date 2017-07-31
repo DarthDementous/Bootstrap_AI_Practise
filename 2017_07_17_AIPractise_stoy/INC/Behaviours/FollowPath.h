@@ -12,7 +12,7 @@ public:
 	virtual void Update(GameObj* a_obj, float a_dt);
 	virtual void Render(GameObj* a_obj, aie::Renderer2D* a_r2d);
 
-	void SetPath(Path* a_path) { m_path = a_path; }
+	void SetPath(Path* a_path);
 	
 	const Path* GetPath() { return m_path; }
 protected:

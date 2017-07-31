@@ -58,3 +58,10 @@ void FollowPath::Render(GameObj * a_obj, aie::Renderer2D * a_r2d)
 	}
 #endif
 }
+
+void FollowPath::SetPath(Path * a_path)
+{
+	// Change path and reset current path index
+	m_path = a_path;
+	m_currPathIndex = 0;
+}

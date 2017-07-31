@@ -34,7 +34,6 @@ public:
 	*	@return vector of nearby nodes.
 	*/
 	std::vector<Node*> GetNearbyNodes(glm::vec2& a_pos, float a_radius); // NOTE: Don't return a reference because vector is made locally 
-
 protected:
 private:
 };

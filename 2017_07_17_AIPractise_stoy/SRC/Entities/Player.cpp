@@ -9,6 +9,7 @@
 #include <Renderer2D.h>
 #include <ResourcePack.h>
 #include <glm/vec2.hpp>
+#include <iostream>
 
 Player::Player(glm::vec2 & a_pos, glm::vec2 & a_vel, float a_friction, IBehaviour * a_behaviour) :
 	GameObj(a_pos, a_vel, a_friction, a_behaviour) // Call base constructor because the parameters pertain to the base class, not the inherited one.

@@ -51,19 +51,32 @@ void Graph2D::SaveToFile(const char* a_filename)
 	graphFile.open(a_filename, std::ios::out);
 
 	if (graphFile.is_open()) {
-		// Save node to each line
+		/*
+		NODES:
+		x y
+		EDGES:
+		0 1 true 0
+		*/
+
+		/// Nodes
+		graphFile << "NODES:";
+
 		for (auto node : *m_nodes) {
-			/*
-			62, 100 = representation of node
-			< = begin edge section
-			| = seperate connected node
-			*/
-
-			// Add current node (has to be done and in the same place because temporary buffers required, MUST NOT be deleted until exiting this function.
+			// Add current node as a string: "x y" 
 			char nodeData[256];
-			sprintf_s(nodeData, "%4.2f,%4.2f", node->GetData().x, node->GetData().y);
-			graphFile << nodeData;
+			sprintf_s(nodeData, "%4.2f %4.2f", node->GetData().x, node->GetData().y);
+			graphFile << nodeData << "\n";		// Move to next line
+		}
 
+		/// Edges
+		graphFile << "EDGES:";
+		
+		for (auto node : *m_nodes) {
+			for (auto edge : *node->GetEdges()) {
+				char edgeData[256];
+				sprintf_s(nodeData, )
+			}
+		}
 			auto edges = node->GetEdges();
 			if (!edges->empty()) {
 				// Begin edge section
@@ -106,33 +119,54 @@ void Graph2D::LoadFromFile(const char * a_filename)
 	assert(graphFile && "Graph file not found.");
 
 	// Prepare graph for new nodes
-	m_nodes->clear();
+	Clear();
 
 	if (graphFile.is_open()) {
-		// Read file line by line as strings
+		// Read each line of file as strings
+		std::vector <std::string> lines;
 		std::string line;
+
+		// Process lines according to their section
+		bool inNodes = false;
+		bool inEdges = false;
+
 		while (std::getline(graphFile, line)) {
-			// Create vectors by sectioning the line appropriately
-			auto splitLine = Util::StringToVector(line, '<');
-			auto homeNodeText = Util::StringToVector(splitLine[0], ',');
-			// Make sure there is an edge section before splitting it
-			std::vector<std::string> edgeSect;
-			if (splitLine.size() == 2) {
-				edgeSect = Util::StringToVector(splitLine[1], '|');
+
+			/// At node header
+			if (line == "NODES:") {
+				// Continue to node section
+				inNodes = true;
+				continue;
+			}
+			/// At edge header
+			else if (line == "EDGES:") {
+				// Continue to edge section (always after nodes)
+				inNodes = false;
+				inEdges = true;
+				continue;
 			}
 
-			// Convert string to vector 2 and add home node
-			Node* homeNode = new Node(glm::vec2(std::stof(homeNodeText[0]), std::stof(homeNodeText[1])));
-			AddNode(homeNode);
+			// Split line by spaces
+			auto splitLine = Util::StringToVector(line, ' ');
 
-			// Loop through edge section and add possible edges
-			for (auto edgeText : edgeSect) {
-				auto edgeNodeText = Util::StringToVector(edgeText, ',');
-				Node* edgeNode = new Node(glm::vec2(std::stof(edgeNodeText[0]), std::stof(edgeNodeText[1])));
-				AddNode(edgeNode);
-
-				AddEdge(homeNode, edgeNode, true, glm::length(edgeNode->GetData() - homeNode->GetData()));
+			/// Node
+			if (inNodes) {
+				// Line meets requirements to be processed as a node
+				if (splitLine.size() >= 2) {
+					// 402.00[0] 20.00[1] ... 
+					AddNode(new Node(glm::vec2(std::stof(splitLine[0]), std::stof(splitLine[1]))));	// Convert strings to floats			
+				}
 			}
+			/// Edge
+			if (inEdges) {
+				// Line meets requirements to be processed as an edge
+				if (splitLine.size() >= 4) {
+					// fromID[0] toID[1] bidirectedBool[2] weight[3] ...
+					bool bidirected = splitLine[2] == "true" ? true : false;
+					AddEdge(GetNodeByID(std::stoi(splitLine[0])), GetNodeByID(std::stoi(splitLine[1])), bidirected, std::stof(splitLine[3])); // String conversions: int, bool, float
+				}
+			}
+
 		}
 	}
 

@@ -29,7 +29,7 @@ public:
 		T& GetData() { return m_data; }
 		const float GetRadius() { return m_radius; }
 		const size_t GetID() { return m_id; }
-		const std::vector<Edge*>* GetEdges() { return m_edges; }
+		std::vector<Edge*>* GetEdges() { return m_edges; }
 
 		size_t m_id;
 		std::vector<Edge*>* m_edges = nullptr;
@@ -61,7 +61,16 @@ public:
 	
 
 	virtual ~IGraph() {
-		// Erase all nodes in vector and their edges
+		// Erase all nodes in vector and the edges it holds onto
+		for (auto node : *m_nodes) {
+			for (auto edge : *node->GetEdges()) {
+				delete edge;
+			}
+			// Free up memory held by vector
+			node->GetEdges()->clear();
+
+			delete node;
+		}
 		m_nodes->clear();
 
 		// Free up memory held by vector
@@ -77,9 +86,7 @@ public:
 	*/
 	void AddNode(Node* a_node) {
 		// Apply id to node in order of it being added for easier identification.
-		static size_t count = 0;
-		
-		a_node->m_id = count++;
+		a_node->m_id = nodeCount++;
 		m_nodes->push_back(a_node);
 
 	}
@@ -93,7 +100,7 @@ public:
 	*	@return void.
 	*/
 	void AddEdge(Node* a_nodeA, Node* a_nodeB, bool a_bidirected, float a_weight = 0) {
-		// Make sure nodes already exist before attempting to add an edge.
+		//Make sure nodes already exist before attempting to add an edge.
 		auto foundNodeA = std::find(m_nodes->begin(), m_nodes->end(), a_nodeA);		
 		auto foundNodeB = std::find(m_nodes->begin(), m_nodes->end(), a_nodeB);
 
@@ -101,18 +108,49 @@ public:
 			// Bidirected, add edge to both nodes
 			if (a_bidirected) {
 				// Specify where node came from
-				(*foundNodeA)->m_edges->push_back(new Edge(a_bidirected, *foundNodeB, a_weight, *foundNodeA));
-				(*foundNodeB)->m_edges->push_back(new Edge(a_bidirected, *foundNodeA, a_weight, *foundNodeB));
+				(*foundNodeA)->m_edges->push_back(new Edge(a_bidirected, (*foundNodeB), a_weight, (*foundNodeA)));
+				(*foundNodeB)->m_edges->push_back(new Edge(a_bidirected, (*foundNodeA), a_weight, (*foundNodeB)));
 			}
 			// Directed, add edge to one node
 			else {
-				(*foundNodeA)->m_edges->push_back(new Edge(a_bidirected, *foundNodeB, a_weight));
+				(*foundNodeA)->m_edges->push_back(new Edge(a_bidirected, (*foundNodeB), a_weight));
+			}
+		}
+	}
+
+	/**
+	*	@brief Return node that matches given ID
+	*	@param a_id is the id to search with.
+	*	@return Node with the matching id.
+	*/
+	Node* GetNodeByID(size_t a_id) {
+		for (auto node : *m_nodes) {
+			if (node->GetID() == a_id) {
+				return node;
 			}
 		}
 
+		assert(false && "No node matches given ID.");
+
+		return nullptr;
+	}
+
+	/**
+	*	@brief Clear all nodes and reset node counter.
+	*/
+	void Clear() {
+		// Clear in a vector of pointers will not delete the memory at the pointers
+		for (auto node : *m_nodes) {
+			delete node;
+		}
+		m_nodes->clear();
+
+		nodeCount = 0;
 	}
 
 protected:
 	std::vector<Node*>* m_nodes = nullptr;		/*List of vertices on the graph.*/
+
+	size_t nodeCount = 0;						/*Number of nodes currently in graph (used for generating ID)*/
 private:
 };
