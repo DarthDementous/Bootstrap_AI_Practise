@@ -27,6 +27,8 @@ public:
 	*/
 	void SeekTarget(glm::vec2& a_target);
 
+	Seek* GetSeek() { return m_seekBehaviour; }
+
 	void SetPathFinder(PathFinder* a_pf) { m_pathFinder = a_pf; }
 protected:
 	//Hold onto variable for each wanted behaviour to avoid initialising once every update frame

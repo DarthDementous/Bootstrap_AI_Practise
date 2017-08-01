@@ -11,6 +11,7 @@
 #include <glm/vec2.hpp>
 #include <iostream>
 #include "Behaviours/Wander.h"
+#include <glm/gtx/norm.hpp>
 
 Player::Player(glm::vec2 & a_pos, glm::vec2 & a_vel, float a_friction, IBehaviour * a_behaviour) :
 	GameObj(a_pos, a_vel, a_friction, a_behaviour) // Call base constructor because the parameters pertain to the base class, not the inherited one.
@@ -39,7 +40,7 @@ Player::Player(glm::vec2 & a_pos, glm::vec2 & a_vel, float a_friction, IBehaviou
 	m_followBehaviour->IsOwned(true);
 
 	// Wander
-	m_wanderBehaviour = new Wander(m_seekBehaviour);
+	m_wanderBehaviour = new Wander;
 	m_wanderBehaviour->IsOwned(true);
 
 	// Apply random negligible force so physics calculations can use it

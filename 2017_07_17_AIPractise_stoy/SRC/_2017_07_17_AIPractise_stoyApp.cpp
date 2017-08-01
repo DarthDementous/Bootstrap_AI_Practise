@@ -103,16 +103,16 @@ void _2017_07_17_AIPractise_stoyApp::update(float deltaTime) {
 	/// Boundary checks
 	const glm::vec2 pos = m_player->GetPosition();
 
-	// Left plane
+	// Left and right planes
 	if (pos.x < PLAYER_RADIUS || pos.x > getWindowWidth() - PLAYER_RADIUS) {
 		// Reflect the x axis 
-		m_player->SetVelocity(glm::vec2(-m_player->GetVelocity().x, m_player->GetVelocity().y));
+		m_player->SetVelocity(glm::vec2(-m_player->GetVelocity().x * GLOBAL_RESTITUTION, m_player->GetVelocity().y));
 	}
 
 	// Bottom and top window planes
 	else if (pos.y < PLAYER_RADIUS || pos.y >getWindowHeight() - PLAYER_RADIUS) {
 		// Reflect the y axis
-		m_player->SetVelocity(glm::vec2(m_player->GetVelocity().x, -m_player->GetVelocity().y));
+		m_player->SetVelocity(glm::vec2(m_player->GetVelocity().x, -m_player->GetVelocity().y * GLOBAL_RESTITUTION));
 	}
 
 	// Movement

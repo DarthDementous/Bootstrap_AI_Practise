@@ -11,6 +11,7 @@
 #define RAND_PI_MIN -628
 #define RAND_PI_MAX 628
 
+#define GLOBAL_RESTITUTION 1.f
 
 #define WANDER_TIMER .3f
 
