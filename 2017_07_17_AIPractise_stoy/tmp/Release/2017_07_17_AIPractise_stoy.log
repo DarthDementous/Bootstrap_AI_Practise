@@ -1,0 +1,9 @@
+﻿  Wander.cpp
+SRC\Behaviours\Wander.cpp(61): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+  Generating code
+  0 of 3377 functions ( 0.0%) were compiled, the rest were copied from previous compilation.
+    0 functions were new in current compilation
+    52 functions had inline decision re-evaluated but remain unchanged
+  Finished generating code
+  2017_07_17_AIPractise_stoy.vcxproj -> C:\Users\s171671\Documents\Repositories\Bootstrap_AI_Practise\2017_07_17_AIPractise_stoy\ProjectName\projectname_Release.exe
+  0 File(s) copied

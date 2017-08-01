@@ -39,7 +39,11 @@ Player::Player(glm::vec2 & a_pos, glm::vec2 & a_vel, float a_friction, IBehaviou
 	m_followBehaviour->IsOwned(true);
 
 	// Wander
-	m_wanderBehaviour = new Wander();
+	m_wanderBehaviour = new Wander(m_seekBehaviour);
+	m_wanderBehaviour->IsOwned(true);
+
+	// Apply random negligible force so physics calculations can use it
+	ApplyForce(glm::vec2(rand() % 10 - 6, rand() % 10 - 6));
 #pragma endregion
 
 
@@ -161,6 +165,7 @@ void Player::Update(float a_dt)
 		// Set to wander if not already
 		if (m_behaviour != m_wanderBehaviour) {
 			SetBehaviour(m_wanderBehaviour);
+			m_wanderBehaviour->Startup(this);
 		}
 	}
 

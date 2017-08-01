@@ -1,7 +1,6 @@
 #include "_2017_07_17_AIPractise_stoyApp.h"
 
 int main() {
-	
 	// allocation
 	auto app = new _2017_07_17_AIPractise_stoyApp();
 

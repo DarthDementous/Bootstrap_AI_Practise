@@ -39,7 +39,7 @@ void GameObj::Render(aie::Renderer2D* a_r2d) {
 
 	// Draw line to destination
 	a_r2d->setRenderColour(0xFF7F00FF);
-	a_r2d->drawLine(m_pos.x, m_pos.y, targetHeading.x, targetHeading.y);
+	//a_r2d->drawLine(m_pos.x, m_pos.y, targetHeading.x, targetHeading.y);
 	a_r2d->setRenderColour(0xFFFFFFFF);
 }
 

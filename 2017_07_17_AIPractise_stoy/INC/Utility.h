@@ -5,13 +5,22 @@
 #include <string>
 
 // Default values
-#define PLAYER_FORCE 1000.f
+#define RAND_VEC_MIN -10
+#define RAND_VEC_MAX 10
+
+#define RAND_PI_MIN -628
+#define RAND_PI_MAX 628
+
+
+#define WANDER_TIMER .3f
+
+#define PLAYER_FORCE 500.f
 #define PLAYER_RADIUS	8.f
 #define PLAYER_FRICTION	1.f
 #define PLAYER_REBOUND_STRENGTH 100.f
-#define PLAYER_JITTER 20.f
-#define PLAYER_WANDER_RADIUS 20.f
-#define PLAYER_WANDER_DIST 100.f
+#define PLAYER_JITTER 5.f
+#define PLAYER_WANDER_RADIUS 100.f
+#define PLAYER_WANDER_DIST 150.f
 
 #define NODE_RADIUS 8.f
 
