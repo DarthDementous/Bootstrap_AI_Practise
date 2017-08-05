@@ -95,5 +95,8 @@
     <ClInclude Include="INC\Behaviours\Wander.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="INC\Behaviours\Arrival.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

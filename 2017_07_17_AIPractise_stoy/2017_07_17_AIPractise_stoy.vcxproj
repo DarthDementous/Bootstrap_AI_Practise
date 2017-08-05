@@ -135,6 +135,7 @@
     <ClCompile Include="SRC\main.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="INC\Behaviours\Arrival.h" />
     <ClInclude Include="INC\Behaviours\FollowPath.h" />
     <ClInclude Include="INC\Behaviours\KeyboardController.h" />
     <ClInclude Include="INC\Behaviours\Seek.h" />
