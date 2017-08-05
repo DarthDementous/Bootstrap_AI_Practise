@@ -9,6 +9,7 @@ class KeyboardController;
 class Path;
 class PathFinder;
 class Wander;
+class Arrival;
 
 /**
 *	@brief Entity designed to represent the user in the game space that inherits from the GameObj interface class.
@@ -36,6 +37,7 @@ protected:
 	KeyboardController*		m_controlBehaviour	= nullptr;
 	FollowPath*				m_followBehaviour	= nullptr;
 	Wander*					m_wanderBehaviour	= nullptr;
+	Arrival*				m_arrivalBehaviour	= nullptr;
 
 	Path*		m_path		 = nullptr;		/*Player is responsible for deleting this.*/
 	PathFinder* m_pathFinder = nullptr;

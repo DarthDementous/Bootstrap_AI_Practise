@@ -4,6 +4,8 @@
 #include <sstream>
 #include <string>
 
+#define ARRIVAL_MIN 0.001f
+
 // Default values
 #define RAND_VEC_MIN -10
 #define RAND_VEC_MAX 10

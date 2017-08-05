@@ -51,6 +51,9 @@
     <ClCompile Include="SRC\Behaviours\Wander.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="SRC\Behaviours\Arrival.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="INC\_2017_07_17_AIPractise_stoyApp.h">

@@ -28,6 +28,16 @@ bool _2017_07_17_AIPractise_stoyApp::startup() {
 	ResourcePack::FontMap()["DEFAULT"] = ResourceManager::loadResource<aie::Font>("./font/consolas.ttf", 32);
 	ResourcePack::FontMap()["DBG"] = ResourceManager::loadResource<aie::Font>("./font/consolas.ttf", 12);
 
+	ResourcePack::TextureMap()["TEST"] = ResourceManager::loadResource<aie::Texture>("./textures/JPG_test.jpg");
+
+	std::vector<unsigned char> pixelVec;
+	aie::Texture* a_tex = ResourcePack::TextureMap()["TEST"].get();
+
+	for (int i = 0; i < (a_tex->getWidth() * a_tex->getHeight()); ++i) {
+		pixelVec.push_back(a_tex->getPixels()[i]);
+	}
+	
+
 
 #pragma region Graph
 	m_graph = new Graph2D;

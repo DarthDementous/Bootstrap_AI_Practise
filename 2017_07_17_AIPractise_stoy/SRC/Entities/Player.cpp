@@ -11,6 +11,7 @@
 #include <glm/vec2.hpp>
 #include <iostream>
 #include "Behaviours/Wander.h"
+#include "Behaviours\Arrival.h"
 #include <glm/gtx/norm.hpp>
 
 Player::Player(glm::vec2 & a_pos, glm::vec2 & a_vel, float a_friction, IBehaviour * a_behaviour) :
@@ -43,6 +44,10 @@ Player::Player(glm::vec2 & a_pos, glm::vec2 & a_vel, float a_friction, IBehaviou
 	m_wanderBehaviour = new Wander;
 	m_wanderBehaviour->IsOwned(true);
 
+	// Arrival
+	m_arrivalBehaviour = new Arrival(SEEK_STRENGTH, FLEE_RADIUS / 2.f);
+	m_arrivalBehaviour->IsOwned(true);
+
 	// Apply random negligible force so physics calculations can use it
 	ApplyForce(glm::vec2(rand() % 10 - 6, rand() % 10 - 6));
 #pragma endregion
@@ -54,6 +59,7 @@ Player::~Player()
 {
 	delete m_path;
 
+	delete m_arrivalBehaviour;
 	delete m_wanderBehaviour;
 	delete m_seekBehaviour;
 	delete m_controlBehaviour;
@@ -167,6 +173,16 @@ void Player::Update(float a_dt)
 		if (m_behaviour != m_wanderBehaviour) {
 			SetBehaviour(m_wanderBehaviour);
 			m_wanderBehaviour->Startup(this);
+		}
+	}
+
+	/// Arrival
+	if (input->wasKeyPressed(aie::INPUT_KEY_V)) {
+		m_arrivalBehaviour->SetTarget(glm::vec2(mouseX, mouseY));
+
+		// Set to arrival if not already
+		if (m_behaviour != m_arrivalBehaviour) {
+			SetBehaviour(m_arrivalBehaviour);
 		}
 	}
 

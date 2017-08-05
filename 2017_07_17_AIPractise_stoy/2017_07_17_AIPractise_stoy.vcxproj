@@ -121,6 +121,7 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="SRC\Behaviours\Arrival.cpp" />
     <ClCompile Include="SRC\Behaviours\FollowPath.cpp" />
     <ClCompile Include="SRC\Behaviours\KeyboardController.cpp" />
     <ClCompile Include="SRC\Behaviours\Seek.cpp" />
