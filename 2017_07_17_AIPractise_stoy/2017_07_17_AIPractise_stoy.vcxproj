@@ -122,6 +122,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="SRC\Behaviours\Arrival.cpp" />
+    <ClCompile Include="SRC\Behaviours\CollisionAvoidance.cpp" />
     <ClCompile Include="SRC\Behaviours\FollowPath.cpp" />
     <ClCompile Include="SRC\Behaviours\KeyboardController.cpp" />
     <ClCompile Include="SRC\Behaviours\Seek.cpp" />
@@ -137,6 +138,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="INC\Behaviours\Arrival.h" />
+    <ClInclude Include="INC\Behaviours\CollisionAvoidance.h" />
     <ClInclude Include="INC\Behaviours\FollowPath.h" />
     <ClInclude Include="INC\Behaviours\KeyboardController.h" />
     <ClInclude Include="INC\Behaviours\Seek.h" />

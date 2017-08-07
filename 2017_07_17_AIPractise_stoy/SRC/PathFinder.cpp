@@ -16,33 +16,45 @@ PathFinder::~PathFinder()
 	m_closed.clear();
 }
 
-void PathFinder::BeginPathFinding(Graph2D::Node * a_startNode, Graph2D::Node * a_goalNode, std::function<bool(Graph2D::Node*)> a_goalTestFunc)
+void PathFinder::BeginPathFinding(Graph2D::Node* a_startNode, std::function<bool(Graph2D::Node*)> a_goalTestFunc,		// Dijkstras
+	Graph2D::Node* a_goalNode, std::function<int()> a_heuristicFunc)
 {
-	m_goalReached = a_goalTestFunc;
+	m_goalReachedFunc	= a_goalTestFunc;
+	m_heuristicFunc		= a_heuristicFunc;
 
-	// Prepare for calculating new path
-	m_pathFound = false;
+#pragma region Path initialization
+	// Replace old path
+	delete m_currentPath;
 	m_currentPath = new Path;
+
+	// Clear lists
 	m_open.clear();
 	m_closed.clear();
 
-	// Begin path at start node
+	// Begin by pushing start node onto open list
 	PathNode* pathNode = new PathNode(a_startNode, nullptr);
 	m_open.push_back(pathNode);
+#pragma endregion
 }
 
 void PathFinder::ContinuePathSearch()
 {
-	// No nodes left to process
-	if (m_open.empty()) {
-		m_pathFound = true;
-	}
-
-	if (!m_pathFound) {
-		// Move current best node from sorted open list into closed list 
+	// Still nodes left to process
+	while (!m_open.empty()) {
+		// Get current best path node (least gScore) from sorted open list and move into closed list 
 		PathNode* bestPathNode = m_open.back();
 		m_open.pop_back();
 		m_closed.push_back(bestPathNode);
+
+		// Check if best path node meets our requirements (NOTE: std::functions have implict conversions to bool to check if they've been assigned a lambda)
+		/// Dijkstras
+		if (m_goalReachedFunc) {
+
+		}
+	}
+
+	if (!m_pathFound) {
+
 
 		// Requirements met for successful path
 		if (m_goalReached(bestPathNode->GetNode())) {

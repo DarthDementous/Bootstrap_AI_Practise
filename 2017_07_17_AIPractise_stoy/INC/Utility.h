@@ -7,6 +7,11 @@
 #define ARRIVAL_MIN 0.001f
 
 // Default values
+#define DEFAULT_COLLISION_RAYS 3
+
+#define FOV_RANGE 45.f
+#define LOS_LENGTH 100.f
+
 #define RAND_VEC_MIN -10
 #define RAND_VEC_MAX 10
 

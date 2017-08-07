@@ -40,11 +40,13 @@ public:
 	const glm::vec2& GetPosition() { return m_pos; }
 	const glm::vec2& GetVelocity() { return m_vel; }
 	const float GetFriction() { return m_friction; }
+	const float GetRotation() { return m_rot; }
 	const IBehaviour* GetBehaviour() { return m_behaviour; }
 
 	void SetPosition(const glm::vec2& a_pos) { m_pos = a_pos; }
 	void SetVelocity(const glm::vec2& a_vel) { m_vel = a_vel; }
 	void SetFriction(const float a_friction) { m_friction = a_friction; }
+	void SetRotation(const float a_rot) { m_rot = a_rot; }
 	void SetAcceleration(const glm::vec2& a_accel) { m_accel = a_accel; }
 	void SetBehaviour(IBehaviour* a_behaviour);
 protected:
@@ -53,6 +55,8 @@ protected:
 	glm::vec2 m_accel;				/*Rate at which the object moves each frame.*/
 
 	float	  m_friction;			/*Rate at which to minimize velocity.*/
+
+	float m_rot;					/*Rotation.*/
 
 	IBehaviour* m_behaviour;		/*Current active behaviour.*/
 private:

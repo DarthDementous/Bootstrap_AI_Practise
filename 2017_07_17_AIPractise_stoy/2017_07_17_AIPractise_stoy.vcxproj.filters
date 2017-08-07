@@ -54,6 +54,9 @@
     <ClCompile Include="SRC\Behaviours\Arrival.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="SRC\Behaviours\CollisionAvoidance.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="INC\_2017_07_17_AIPractise_stoyApp.h">
@@ -99,6 +102,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="INC\Behaviours\Arrival.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="INC\Behaviours\CollisionAvoidance.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

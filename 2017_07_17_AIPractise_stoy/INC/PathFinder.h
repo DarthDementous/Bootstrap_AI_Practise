@@ -46,15 +46,18 @@ public:
 	void Render(aie::Renderer2D* a_r2d);
 
 	/**
-	*	@brief Begin the process of determing the most efficient path from one given node to another. (Dijkstras)
+	*	@brief Begin the process of calculating a path. 
 	*	@param a_startNode is the node to begin searching out from.
-	*	@param a_goalNode is the node that the path must end up at.
-	*	@param a_goalTestFunc is the function to run to determine the requirements of successfully ending the search.
+	*	@param a_goalTestFunc is the function to run to determine the requirements of successfully ending the search. (Dijkstras)
+	*	@param a_goalNode is the node that the path must end up at. (A*)
+	*	@param a_heuristicFunc is the function to calculate the H score modifier to help identify best path node. If not specified, returns 0 by default.
+
 	*/
-	void BeginPathFinding(Graph2D::Node* a_startNode, Graph2D::Node* a_goalNode, std::function<bool(Graph2D::Node*)> a_goalTestFunc);
+	void BeginPathFinding(Graph2D::Node* a_startNode, std::function<bool(Graph2D::Node*)> a_goalTestFunc = {},		// Dijkstras
+		Graph2D::Node* a_goalNode = nullptr, std::function<int()> a_heuristicFunc = []() { return 0; });			// A*
 
 	/**
-	*	@brief Reset current path and try to find a more efficient one.
+	*	@brief Process current best path node's children.
 	*	@return void.
 	*/
 	void ContinuePathSearch();
@@ -87,9 +90,10 @@ private:
 
 	Path*	 m_currentPath = nullptr;		/*Current calculated path. NOTE: Path finder does not hold responsibility for deletion since it passes on the path.*/
 
-	bool	 m_pathFound;					/*Whether or not the best path has been found.*/
+	bool	 m_pathFound = false;			/*Whether or not the best path has been found.*/
 
-	std::function<bool(Graph2D::Node*)> m_goalReached;	/*Function determining the requirements for successfully making a path.*/
+	std::function<bool(Graph2D::Node*)> m_goalReachedFunc;		/*Function determining the requirements for successfully making a path.*/
+	std::function<int()>				m_heuristicFunc;	/*Function determining score modifier for path node G score.*/
 
 	std::list<PathNode*> m_open;			/*Nodes that still need to be processed.*/
 	std::list<PathNode*> m_closed;			/*Nodes that have been processed.*/

@@ -28,9 +28,7 @@ void GameObj::Update(float a_dt) {
 }
 void GameObj::Render(aie::Renderer2D* a_r2d) {
 	// Behaviour
-#ifdef _DEBUG
 	m_behaviour->Render(this, a_r2d);
-#endif
 
 	// Calculate point of destination
 	glm::vec2 targetHeading = m_pos + m_vel;

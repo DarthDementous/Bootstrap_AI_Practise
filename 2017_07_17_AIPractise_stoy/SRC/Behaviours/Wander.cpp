@@ -82,6 +82,14 @@ void Wander::CalculateWander(GameObj* a_obj)
 	m_wanderDir = glm::normalize(m_randDir + m_jitterVec) * m_radius;
 	
 	//4. Apply projection vector to wander direction
-	m_projectedVec = glm::normalize(a_obj->GetVelocity()) * m_dist;		// Modify/project wander direction with the object's normal and scale it by distance
+	if (a_obj->GetVelocity() != glm::vec2(0.f, 0.f)) {
+		// Modify/project wander direction with the object's normal and scale it by distance
+		m_projectedVec = glm::normalize(a_obj->GetVelocity()) * m_dist;		
+	}
+	else {
+		// Velocity is 0, make projection vector zreo to avoid nan errors when adding to vector
+		m_projectedVec = glm::vec2(0.f, 0.f);
+	}
+
 	m_wanderDir += m_projectedVec;
 }

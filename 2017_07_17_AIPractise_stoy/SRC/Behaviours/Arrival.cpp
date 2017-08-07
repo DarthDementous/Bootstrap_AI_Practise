@@ -17,10 +17,9 @@ void Arrival::Update(GameObj * a_obj, float a_dt)
 		// Calcule current strength by scaling with factor of distance from target (1 (entered radius) - 0 (reached target))
 		float scaleFactor = distanceToTarget / m_radius;
 	
-		// Zero out velocity and scale factor if at destination to avoid friction carrying object over goal, and floating point precision errors.
+		// Zero out scale factor if at destination to avoid friction carrying object over goal, and floating point precision errors.
 		if (scaleFactor < ARRIVAL_MIN) {
 			scaleFactor = 0.f;
-			a_obj->SetVelocity(glm::vec2(0.f, 0.f));
 		}
 
 		arrivalStrength *= scaleFactor;
@@ -29,7 +28,8 @@ void Arrival::Update(GameObj * a_obj, float a_dt)
 	// Calculate direction by creating vector between points and normalizing
 	glm::vec2 wishDir = glm::normalize(m_targetPos - a_obj->GetPosition());
 
-	a_obj->ApplyForce(wishDir * arrivalStrength);									// Use strength to scale vector before applying force to entity
+	// Replace velocity so there are no other forces acting on it during arrival process, and thus doesn't overshoot.
+	a_obj->SetVelocity(wishDir * arrivalStrength);									// Use strength to scale vector before applying force to entity
 }
 
 void Arrival::Render(GameObj * a_obj, aie::Renderer2D * a_r2d)
