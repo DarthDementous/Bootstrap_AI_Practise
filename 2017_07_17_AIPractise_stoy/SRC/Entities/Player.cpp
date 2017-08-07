@@ -13,6 +13,7 @@
 #include "Behaviours/Wander.h"
 #include "Behaviours\Arrival.h"
 #include <glm/gtx/norm.hpp>
+#include <MathLib_Utility.h>
 
 Player::Player(glm::vec2 & a_pos, glm::vec2 & a_vel, float a_friction, IBehaviour * a_behaviour) :
 	GameObj(a_pos, a_vel, a_friction, a_behaviour) // Call base constructor because the parameters pertain to the base class, not the inherited one.
@@ -109,25 +110,21 @@ void Player::Update(float a_dt)
 					m_goalNode = nearNodes[0];
 
 					// Begin the calculations for finding the best path
-					m_pathFinder->BeginPathFinding(m_startNode, m_goalNode, [this](Graph2D::Node* a_node) {
-						return a_node == m_goalNode;
-					});
+					// Dijkstras m_pathFinder->BeginPathFinding(m_startNode, [this](Graph2D::Node* a_node) { return a_node == m_goalNode; });
+					m_pathFinder->BeginPathFinding(m_startNode, {}, m_goalNode, HEURISTIC_FUNC);
 
-					while (!m_pathFinder->IsSearchFinished()) {
-						m_pathFinder->ContinuePathSearch();
-					}
+					// Search for path until goal met or out of nodes
+					while (m_pathFinder->ContinuePathSearch() == eSearchResult::SEARCHING) {}
 
-					// Path is calculated
-					if (m_pathFinder->IsSearchFinished()) {
-						// Take responsibility of previously owned path and clear memory before setting new one
-						delete m_path;
-						m_path = m_pathFinder->GetCurrentPath();
-						m_followBehaviour->SetPath(m_path);
+					// Replace path with newly calculated one
+					delete m_path;								// Responsible for previously calculated path
+					m_path = m_pathFinder->GetCurrentPath();
 
-						// Set to follow behaviour if not already
-						if (m_behaviour != m_followBehaviour) {
-							SetBehaviour(m_followBehaviour);
-						}
+					// Set player to follow it
+					m_followBehaviour->SetPath(m_path);
+
+					if (m_behaviour != m_followBehaviour) {
+						SetBehaviour(m_followBehaviour);
 					}
 				}
 			}

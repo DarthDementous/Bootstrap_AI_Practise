@@ -53,20 +53,20 @@ public:
 	*	@param a_heuristicFunc is the function to calculate the H score modifier to help identify best path node. If not specified, returns 0 by default.
 
 	*/
-	void BeginPathFinding(Graph2D::Node* a_startNode, std::function<bool(Graph2D::Node*)> a_goalTestFunc = {},		// Dijkstras
-		Graph2D::Node* a_goalNode = nullptr, std::function<int()> a_heuristicFunc = []() { return 0; });			// A*
+	void BeginPathFinding(Graph2D::Node* a_startNode, std::function<bool(Graph2D::Node*)> a_goalTestFunc = {},	 // Dijkstras
+	Graph2D::Node* a_goalNode = nullptr, std::function<int(Graph2D::Node*)> a_heuristicFunc = [](Graph2D::Node* a_node) { return 0; });	// A*
 
 	/**
 	*	@brief Process current best path node's children.
-	*	@return void.
+	*	@return enum value. 0 = path was found, 1 = still searching for path, 2 = search done, but path not found.
 	*/
-	void ContinuePathSearch();
+	unsigned int ContinuePathSearch();
 
 	/**
 	*	@brief Has an efficient path from the start node to the goal node been found yet?
 	*	@return true = path to destination has been calculated, false = path to destination has not been calculated.
 	*/
-	bool IsSearchFinished() { return m_pathFound; }
+	//bool IsSearchFinished() { return m_pathFound; }
 
 	/**
 	*	@brief Check whether 2d graph node is within list.
@@ -90,10 +90,12 @@ private:
 
 	Path*	 m_currentPath = nullptr;		/*Current calculated path. NOTE: Path finder does not hold responsibility for deletion since it passes on the path.*/
 
-	bool	 m_pathFound = false;			/*Whether or not the best path has been found.*/
+	bool	 m_goalReached = false;			/*Whether goal has been reached through most efficient path.*/
 
-	std::function<bool(Graph2D::Node*)> m_goalReachedFunc;		/*Function determining the requirements for successfully making a path.*/
-	std::function<int()>				m_heuristicFunc;	/*Function determining score modifier for path node G score.*/
+	Graph2D::Node* m_goalNode;	
+
+	std::function<bool(Graph2D::Node*)> m_goalReachedFunc;	/*Function determining the requirements for successfully making a path.*/
+	std::function<int(Graph2D::Node*)>	m_heuristicFunc;	/*Function determining score modifier for path node G score.*/
 
 	std::list<PathNode*> m_open;			/*Nodes that still need to be processed.*/
 	std::list<PathNode*> m_closed;			/*Nodes that have been processed.*/

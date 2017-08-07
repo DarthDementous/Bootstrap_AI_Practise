@@ -4,9 +4,13 @@
 #include <sstream>
 #include <string>
 
-#define ARRIVAL_MIN 0.001f
+enum eSearchResult { FOUND, SEARCHING, NOT_FOUND};
 
 // Default values
+#define HEURISTIC_FUNC [this](Graph2D::Node* a_node){ return Math_Util::Magnitude(m_goalNode->GetData() - a_node->GetData()); }
+
+#define ARRIVAL_MIN 0.001f
+
 #define DEFAULT_COLLISION_RAYS 3
 
 #define FOV_RANGE 45.f

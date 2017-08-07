@@ -1,6 +1,7 @@
 #include "PathFinder.h"
 #include "Path.h"
 #include <Renderer2D.h>
+#include <MathLib_Utility.h>
 
 PathFinder::~PathFinder()
 {	
@@ -16,15 +17,16 @@ PathFinder::~PathFinder()
 	m_closed.clear();
 }
 
-void PathFinder::BeginPathFinding(Graph2D::Node* a_startNode, std::function<bool(Graph2D::Node*)> a_goalTestFunc,		// Dijkstras
-	Graph2D::Node* a_goalNode, std::function<int()> a_heuristicFunc)
+void PathFinder::BeginPathFinding(Graph2D::Node* a_startNode, std::function<bool(Graph2D::Node*)> a_goalTestFunc,	// Dijkstras
+	Graph2D::Node* a_goalNode, std::function<int(Graph2D::Node*)> a_heuristicFunc)									// A*
 {
+	m_goalNode = a_goalNode;
+
 	m_goalReachedFunc	= a_goalTestFunc;
 	m_heuristicFunc		= a_heuristicFunc;
 
 #pragma region Path initialization
-	// Replace old path
-	delete m_currentPath;
+	// Initialize path object
 	m_currentPath = new Path;
 
 	// Clear lists
@@ -37,7 +39,7 @@ void PathFinder::BeginPathFinding(Graph2D::Node* a_startNode, std::function<bool
 #pragma endregion
 }
 
-void PathFinder::ContinuePathSearch()
+unsigned int PathFinder::ContinuePathSearch()
 {
 	// Still nodes left to process
 	while (!m_open.empty()) {
@@ -49,59 +51,58 @@ void PathFinder::ContinuePathSearch()
 		// Check if best path node meets our requirements (NOTE: std::functions have implict conversions to bool to check if they've been assigned a lambda)
 		/// Dijkstras
 		if (m_goalReachedFunc) {
+			if (m_goalReachedFunc(bestPathNode->GetNode())) { 
+				ConstructPath(bestPathNode);
 
-		}
-	}
-
-	if (!m_pathFound) {
-
-
-		// Requirements met for successful path
-		if (m_goalReached(bestPathNode->GetNode())) {
-			// Create path by backtracking from goal node
-			ConstructPath(bestPathNode);
-			
-			m_pathFound = true;
-			return;
-		}
-
-		auto edges = bestPathNode->GetNode()->GetEdges();
-
-		// Loop through all of the current best node's children and process them
-		for (size_t i = 0; i < edges->size(); ++i) {
-			Graph2D::Node* child = edges->at(i)->m_to;
-
-			float cost = edges->at(i)->GetWeight();
-			float gScoreCurrent = bestPathNode->gScore + cost;
-
-			PathNode* nodeInList = NodeInList(m_open, child);
-			// Child is not waiting to be processed in open list
-			if (!nodeInList) {
-				// Check if child is in closed list
-				nodeInList = NodeInList(m_closed, child);
+				return eSearchResult::FOUND; 
 			}
-			// Child has not been assigned a corresponding path node
-			if (!nodeInList) {
-				// Create path node with child, calculate its G score and push it to the open list
+		}
+
+		///A*
+		if (bestPathNode->GetNode() == m_goalNode) {
+			ConstructPath(bestPathNode);
+
+			return eSearchResult::FOUND;
+		}
+
+		// Loop through current node's edges and assign/update G score as path nodes
+		auto edges = *bestPathNode->GetNode()->GetEdges();
+
+		for (auto edge : edges) {
+			Graph2D::Node* child = edge->m_to;
+
+			// Calculate total cost for reaching this node (cost of reaching current node + cost of reaching current node's child + h score)
+			float gScoreCurrent = bestPathNode->gScore + edge->GetWeight() + m_heuristicFunc(child);
+
+			/// Determine G score for child path node
+			PathNode* foundPathNode = NodeInList(m_closed, child);
+
+			// Node has not been assigned a path node (not in open or closed list)
+			if (!NodeInList(m_open, child) && !foundPathNode) {
 				PathNode* pathNode = new PathNode(child, bestPathNode);
 				pathNode->gScore = gScoreCurrent;
 
+				// Add child to open list to be sorted by g score
 				m_open.push_back(pathNode);
 			}
-			// Node has already been processed into closed list but could be put in a more efficient position
-			else {
-				/* Total cost to get to that node is greater than getting there from current best node, 
-				save new path by making best node the parent and updating to new and better G score*/
-				if (nodeInList->gScore > gScoreCurrent) {
-					nodeInList->SetParent(bestPathNode);
-					nodeInList->gScore = gScoreCurrent;
+
+			// Node is already a path node (in closed list)
+			else if (foundPathNode) {
+				// Cost via current path node is less than child's g score
+				if (gScoreCurrent < foundPathNode->gScore) {
+					// Set current path node as parent and update g score accordingly
+					foundPathNode->SetParent(bestPathNode);
+					foundPathNode->gScore = gScoreCurrent;
 				}
 			}
 		}
-		// Sort open list so less costly path nodes to reach are at the END of the list.
-		m_open.sort([this](PathNode* a_nodeA, PathNode* a_nodeB) { return a_nodeA->gScore > a_nodeB->gScore; });
 
+		// Sort open list to determine next best path node (Nodes with better g score are at the END of the list)
+		m_open.sort([this](PathNode* a_nodeA, PathNode* a_nodeB) { return a_nodeA->gScore > a_nodeB->gScore; });
 	}
+
+	// All nodes looked at, path not found.
+	return eSearchResult::NOT_FOUND;
 }
 
 PathFinder::PathNode* PathFinder::NodeInList(std::list<PathNode*> a_list, Graph2D::Node * a_node)
