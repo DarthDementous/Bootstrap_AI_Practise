@@ -2,6 +2,7 @@
 #include "Utility.h"
 #include <Renderer2D.h>
 #include "Behaviours/IBehaviour.hpp"
+#include "Obstacles/IObstacle.h"
 
 GameObj::GameObj(glm::vec2 & a_pos, glm::vec2 & a_vel, float a_friction, IBehaviour * a_behaviour) : m_pos(a_pos), m_vel(a_vel), m_friction(a_friction), m_behaviour(a_behaviour) {
 	// Set ownership if there is a behaviour assigned
@@ -26,6 +27,7 @@ void GameObj::Update(float a_dt) {
 	MovementPhysics(a_dt);
 #pragma endregion
 }
+
 void GameObj::Render(aie::Renderer2D* a_r2d) {
 	// Behaviour
 	m_behaviour->Render(this, a_r2d);
@@ -62,4 +64,13 @@ void GameObj::SetBehaviour(IBehaviour * a_behaviour)
 	}
 
 	m_behaviour = a_behaviour;
+}
+
+void GameObj::SetObstacles(std::vector<IObstacle*> a_obs)
+{
+	for (auto obstacle : m_obstacles) {
+		delete obstacle;				/*Clear dynamically allocated memory.*/
+	}
+
+	m_obstacles = a_obs;
 }

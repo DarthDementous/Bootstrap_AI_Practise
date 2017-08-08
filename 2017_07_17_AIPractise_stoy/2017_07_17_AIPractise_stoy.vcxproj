@@ -131,8 +131,11 @@
     <ClCompile Include="SRC\Entities\Player.cpp" />
     <ClCompile Include="SRC\Graph\Graph2D.cpp" />
     <ClCompile Include="SRC\Graph\GraphRenderer2D.cpp" />
+    <ClCompile Include="SRC\Obstacles\Circle.cpp" />
+    <ClCompile Include="SRC\Obstacles\IObstacle.cpp" />
     <ClCompile Include="SRC\Path.cpp" />
     <ClCompile Include="SRC\PathFinder.cpp" />
+    <ClCompile Include="SRC\Utility.cpp" />
     <ClCompile Include="SRC\_2017_07_17_AIPractise_stoyApp.cpp" />
     <ClCompile Include="SRC\main.cpp" />
   </ItemGroup>
@@ -149,6 +152,8 @@
     <ClInclude Include="INC\Graph\Graph2D.h" />
     <ClInclude Include="INC\Graph\GraphRenderer2D.h" />
     <ClInclude Include="INC\Behaviours\IBehaviour.hpp" />
+    <ClInclude Include="INC\Obstacles\Circle.h" />
+    <ClInclude Include="INC\Obstacles\IObstacle.h" />
     <ClInclude Include="INC\Path.h" />
     <ClInclude Include="INC\PathFinder.h" />
     <ClInclude Include="INC\Utility.h" />

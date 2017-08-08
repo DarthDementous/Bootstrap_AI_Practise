@@ -10,6 +10,7 @@ class Path;
 class PathFinder;
 class Wander;
 class Arrival;
+class CollisionAvoidance;
 
 /**
 *	@brief Entity designed to represent the user in the game space that inherits from the GameObj interface class.
@@ -33,11 +34,12 @@ public:
 	void SetPathFinder(PathFinder* a_pf) { m_pathFinder = a_pf; }
 protected:
 	//Hold onto variable for each wanted behaviour to avoid initialising once every update frame
-	Seek*					m_seekBehaviour		= nullptr;								
-	KeyboardController*		m_controlBehaviour	= nullptr;
-	FollowPath*				m_followBehaviour	= nullptr;
-	Wander*					m_wanderBehaviour	= nullptr;
-	Arrival*				m_arrivalBehaviour	= nullptr;
+	Seek*					m_seekBehaviour			= nullptr;								
+	KeyboardController*		m_controlBehaviour		= nullptr;
+	FollowPath*				m_followBehaviour		= nullptr;
+	Wander*					m_wanderBehaviour		= nullptr;
+	Arrival*				m_arrivalBehaviour		= nullptr;
+	CollisionAvoidance*		m_collisionBehaviour	= nullptr;
 
 	Path*		m_path		 = nullptr;		/*Player is responsible for deleting this.*/
 	PathFinder* m_pathFinder = nullptr;

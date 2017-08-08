@@ -12,6 +12,7 @@
 #include <math.h>
 #include <glm/gtx/norm.hpp>
 #include "PathFinder.h"
+#include "Obstacles/Circle.h"
 
 _2017_07_17_AIPractise_stoyApp::_2017_07_17_AIPractise_stoyApp() {
 
@@ -37,8 +38,6 @@ bool _2017_07_17_AIPractise_stoyApp::startup() {
 		pixelVec.push_back(a_tex->getPixels()[i]);
 	}
 	
-
-
 #pragma region Graph
 	m_graph = new Graph2D;
 
@@ -79,6 +78,10 @@ bool _2017_07_17_AIPractise_stoyApp::startup() {
 	m_player = new Player(glm::vec2(getWindowWidth() / 2, getWindowHeight() / 2));
 	m_player->SetBehaviour(new KeyboardController);
 	m_player->SetPathFinder(m_pf);
+
+	m_obstacles.push_back(new Circle(glm::vec2(1000.f, 300.f), 20.f));
+
+	m_player->SetObstacles(m_obstacles);
 #pragma endregion
 
 
@@ -145,6 +148,10 @@ void _2017_07_17_AIPractise_stoyApp::draw() {
 
 	m_pf->Render(m_2dRenderer);
 	
+	for (auto obj : m_obstacles) {
+		obj->Render(m_2dRenderer);
+	}
+
 	// output some text, uses the last used colour
 	m_2dRenderer->drawText(ResourcePack::FontMap()["DEFAULT"].get(), "Press ESC to quit", 0, 0);
 

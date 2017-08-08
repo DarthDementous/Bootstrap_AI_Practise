@@ -12,6 +12,7 @@
 #include <iostream>
 #include "Behaviours/Wander.h"
 #include "Behaviours\Arrival.h"
+#include "Behaviours/CollisionAvoidance.h"
 #include <glm/gtx/norm.hpp>
 #include <MathLib_Utility.h>
 
@@ -49,6 +50,10 @@ Player::Player(glm::vec2 & a_pos, glm::vec2 & a_vel, float a_friction, IBehaviou
 	m_arrivalBehaviour = new Arrival(SEEK_STRENGTH, FLEE_RADIUS / 2.f);
 	m_arrivalBehaviour->IsOwned(true);
 
+	// Collision
+	m_collisionBehaviour = new CollisionAvoidance;
+	m_collisionBehaviour->IsOwned(true);
+
 	// Apply random negligible force so physics calculations can use it
 	ApplyForce(glm::vec2(rand() % 10 - 6, rand() % 10 - 6));
 #pragma endregion
@@ -65,6 +70,7 @@ Player::~Player()
 	delete m_seekBehaviour;
 	delete m_controlBehaviour;
 	delete m_followBehaviour;
+	delete m_collisionBehaviour;
 }
 
 void Player::Update(float a_dt)
@@ -110,8 +116,8 @@ void Player::Update(float a_dt)
 					m_goalNode = nearNodes[0];
 
 					// Begin the calculations for finding the best path
-					// Dijkstras m_pathFinder->BeginPathFinding(m_startNode, [this](Graph2D::Node* a_node) { return a_node == m_goalNode; });
-					m_pathFinder->BeginPathFinding(m_startNode, {}, m_goalNode, HEURISTIC_FUNC);
+					//m_pathFinder->BeginPathFinding(m_startNode, [this](Graph2D::Node* a_node) { return a_node == m_goalNode; });	// Dijkstras
+					m_pathFinder->BeginPathFinding(m_startNode, {}, m_goalNode, HEURISTIC_FUNC);									// A*
 
 					// Search for path until goal met or out of nodes
 					while (m_pathFinder->ContinuePathSearch() == eSearchResult::SEARCHING) {}
@@ -180,6 +186,13 @@ void Player::Update(float a_dt)
 		// Set to arrival if not already
 		if (m_behaviour != m_arrivalBehaviour) {
 			SetBehaviour(m_arrivalBehaviour);
+		}
+	}
+
+	/// Collision Avoidance
+	if (input->wasKeyPressed(aie::INPUT_KEY_B)) {
+		if (m_behaviour != m_collisionBehaviour) {
+			SetBehaviour(m_collisionBehaviour);
 		}
 	}
 

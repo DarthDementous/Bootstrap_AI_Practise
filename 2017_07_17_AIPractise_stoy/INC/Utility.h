@@ -3,10 +3,19 @@
 #include <vector>
 #include <sstream>
 #include <string>
+#include <MathLib_Utility.h>
+#include <glm/vec2.hpp>
+#include <glm/gtx/normalize_dot.hpp>
+#include <algorithm>
+
+class Circle;
 
 enum eSearchResult { FOUND, SEARCHING, NOT_FOUND};
+enum eCollisionType { INTERSECTS, ADJUST, CONTAINS, NONE };
 
 // Default values
+#define CIRCLE_RAD 30.f
+
 #define HEURISTIC_FUNC [this](Graph2D::Node* a_node){ return Math_Util::Magnitude(m_goalNode->GetData() - a_node->GetData()); }
 
 #define ARRIVAL_MIN 0.001f
@@ -84,5 +93,60 @@ public:
 
 		return split;
 	}
+
+	/**
+	*	@brief Determine state of collision with point vs a circle
+	*	@param a_pt is the point used in the collision.
+	*	@param a_circle is the circle used in the collision.
+	*	@return enum of type of collision: 0 = INTERSECTS, 1 = ADJUST, 2 = CONTAINS, 3 = NONE
+	*/
+	static unsigned int PointVsCircle(glm::vec2& a_pt, Circle* a_circle);
+
+	struct Ray {
+		Ray(glm::vec2 a_origin, glm::vec2& a_dir, float a_length = 0) : origin(a_origin), dir(a_dir), length(a_length) {}
+
+		/**
+		*	@brief Cast out ray using variables.
+		*	@return Constructed ray vector.
+		*/
+		glm::vec2 CalculateVector() {
+			return glm::vec2(dir * length);
+		}
+
+		float length;				/*Max distance vector can be cast out to.*/
+		glm::vec2 origin;			/*The point the origin is cast out from.*/
+		glm::vec2 dir;				/*Direction of ray.*/
+		bool HasCollided = false;	/*Whether ray has collided or not.*/
+	};
+
+	/**
+	*	@brief Keep value within specified min and max range.
+	*	@param a_clampVal is the value to clamp.
+	*	@param a_min is the minimum range
+	*	@param a_max is the maximum range
+	*	@return clamped value.
+	*/
+	static float Clamp(float a_clampVal, float a_min, float a_max) {
+		float result = std::max(a_min, std::min(a_clampVal, a_max));
+		
+		return result;
+	}
+
+	/**
+	*	@brief Determine possible collision with ray and find point of collision on ray.
+	*	@param a_ray is the ray used in the calculations.
+	*	@param a_pt is the point used in the calculations.
+	*	@return point of collision on the ray. If no collision, vector will be zeroed.
+	*/
+	static glm::vec2 FindCollisionPointOnRay(Ray& a_ray, glm::vec2 a_pt) {
+		glm::vec2 collisionVector = a_pt - a_ray.origin;							/*Vector between ray origin and point of collision*/
+
+		// Clamp dot product between collision vector and ray direction
+		float projLength = Clamp(glm::dot(collisionVector, a_ray.dir), 0.f, a_ray.length);
+
+		return a_ray.origin + a_ray.dir * projLength;
+	}
+
+
 };
 
