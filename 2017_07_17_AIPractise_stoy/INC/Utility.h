@@ -58,7 +58,7 @@ enum eCollisionType { INTERSECTS, ADJUST, CONTAINS, NONE };
 #define GRAPH_HEIGHT 6u
 #define GRAPH_OFFSET_X -50.f
 #define GRAPH_OFFSET_Y 50.f
-#define GRAPH_SPACING 100.f
+#define GRAPH_SPACING 50.f
 
 #define SEEK_STRENGTH 100.f
 #define FLEE_STRENGTH -100.f

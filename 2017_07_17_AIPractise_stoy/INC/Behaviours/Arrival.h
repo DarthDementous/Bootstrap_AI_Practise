@@ -10,15 +10,18 @@
 */
 class Arrival : public IBehaviour {
 public:
-	Arrival(float a_strength = SEEK_STRENGTH, float a_radius = FLEE_RADIUS, std::function<void()> a_onReachPointFunc = {}) :
-		m_strength(a_strength), m_radius(a_radius), m_onReachPointFunc(a_onReachPointFunc) {}
-	
+	Arrival(GameObj* a_obj = nullptr, float a_strength = SEEK_STRENGTH, float a_radius = FLEE_RADIUS, std::function<void()> a_onReachPointFunc = {}) :
+		IBehaviour(a_obj), m_strength(a_strength), m_radius(a_radius), m_onReachPointFunc(a_onReachPointFunc) {}
+
 	~Arrival();
 
-	void SetTarget(glm::vec2 a_pos) { m_targetPos = a_pos; }
+	virtual void Initialise() {}
+	virtual void Startup() {}
+	virtual void Update(float deltaTime);
+	virtual void Draw();
+	virtual void Shutdown() {}
 
-	virtual void Update(GameObj* a_obj, float a_dt);
-	virtual void Render(GameObj* a_obj, aie::Renderer2D* a_r2d);
+	void SetTarget(glm::vec2 a_pos) { m_targetPos = a_pos; }
 protected:
 	glm::vec2 m_targetPos;		
 	glm::vec2 m_lastPos;		/*Position of object last frame.*/

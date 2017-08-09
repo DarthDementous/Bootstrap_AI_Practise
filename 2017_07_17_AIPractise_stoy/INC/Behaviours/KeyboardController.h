@@ -8,8 +8,8 @@
 */
 class KeyboardController : public IBehaviour {
 public:
-	KeyboardController(int a_upKey = 0, int a_downKey = 0, int a_leftKey = 0, int a_rightKey = 0) :
-		m_upKey(a_upKey), m_downKey(a_downKey), m_leftKey(a_leftKey), m_rightKey(a_rightKey) {
+	KeyboardController(GameObj* a_obj = nullptr, int a_upKey = 0, int a_downKey = 0, int a_leftKey = 0, int a_rightKey = 0) :
+		IBehaviour(a_obj), m_upKey(a_upKey), m_downKey(a_downKey), m_leftKey(a_leftKey), m_rightKey(a_rightKey) {
 		
 		// If not custom-bound, set to default WASD config
 		if (m_upKey == 0) { m_upKey = aie::INPUT_KEY_W; }
@@ -20,7 +20,11 @@ public:
 	}
 	virtual ~KeyboardController();
 
-	virtual void Update(GameObj* a_obj, float a_dt);
+	virtual void Initialise() {}
+	virtual void Startup() {}
+	virtual void Update(float deltaTime);
+	virtual void Draw();
+	virtual void Shutdown() {}
 
 	int GetUpKey() { return m_upKey; }
 	int GetDownKey() { return m_downKey; }

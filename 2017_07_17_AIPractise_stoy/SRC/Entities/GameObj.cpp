@@ -4,7 +4,7 @@
 #include "Behaviours/IBehaviour.hpp"
 #include "Obstacles/IObstacle.h"
 
-GameObj::GameObj(glm::vec2 & a_pos, glm::vec2 & a_vel, float a_friction, IBehaviour * a_behaviour) : m_pos(a_pos), m_vel(a_vel), m_friction(a_friction), m_behaviour(a_behaviour) {
+GameObj::GameObj(glm::vec2 & a_pos, glm::vec2 & a_vel, float a_friction) : m_pos(a_pos), m_vel(a_vel), m_friction(a_friction) {
 	// Set ownership if there is a behaviour assigned
 	if (m_behaviour) {
 		m_behaviour->IsOwned(true);
@@ -12,26 +12,13 @@ GameObj::GameObj(glm::vec2 & a_pos, glm::vec2 & a_vel, float a_friction, IBehavi
 }
 
 GameObj::~GameObj() {
-	// SetBehaviour handles proper deletion.
-	SetBehaviour(nullptr);
 }
 
 void GameObj::Update(float a_dt) {
-#pragma region Behaviour
-	if (m_behaviour) {
-		m_behaviour->Update(this, a_dt);
-	}
-#pragma endregion
-
-#pragma region Movement
 	MovementPhysics(a_dt);
-#pragma endregion
 }
 
 void GameObj::Render(aie::Renderer2D* a_r2d) {
-	// Behaviour
-	m_behaviour->Render(this, a_r2d);
-
 	// Calculate point of destination
 	glm::vec2 targetHeading = m_pos + m_vel;
 
@@ -54,23 +41,4 @@ void GameObj::MovementPhysics(float a_dt)
 
 	// Update position
 	m_pos += m_vel * a_dt;
-}
-
-void GameObj::SetBehaviour(IBehaviour * a_behaviour)
-{
-	// Delete previous behaviour if it does not belong to a game object. (check for nullptr comes first so it can terminate the if statement and not crash)
-	if (m_behaviour && !(m_behaviour->IsOwned())) {
-		delete m_behaviour;
-	}
-
-	m_behaviour = a_behaviour;
-}
-
-void GameObj::SetObstacles(std::vector<IObstacle*> a_obs)
-{
-	for (auto obstacle : m_obstacles) {
-		delete obstacle;				/*Clear dynamically allocated memory.*/
-	}
-
-	m_obstacles = a_obs;
 }

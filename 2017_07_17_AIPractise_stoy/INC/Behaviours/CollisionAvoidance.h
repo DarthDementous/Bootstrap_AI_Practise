@@ -11,11 +11,15 @@
 */
 class CollisionAvoidance : public IBehaviour {
 public:
-	CollisionAvoidance(float a_fovAngle = Math_Util::degToRad(FOV_RANGE), float a_losLength = LOS_LENGTH) : m_fovAngle(a_fovAngle), m_losLength(a_losLength) {}
+	CollisionAvoidance(GameObj* a_obj = nullptr, float a_fovAngle = Math_Util::degToRad(FOV_RANGE), float a_losLength = LOS_LENGTH) : 
+		IBehaviour(a_obj), m_fovAngle(a_fovAngle), m_losLength(a_losLength) {}
 	~CollisionAvoidance();
 
-	virtual void Update(GameObj* a_obj, float a_dt);
-	virtual void Render(GameObj* a_obj, aie::Renderer2D* a_r2d);
+	virtual void Initialise() {}
+	virtual void Startup() {}
+	virtual void Update(float deltaTime);
+	virtual void Draw();
+	virtual void Shutdown() {}
 
 	void ClearRays();
 protected:

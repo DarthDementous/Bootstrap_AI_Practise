@@ -18,7 +18,7 @@ class IObstacle;
 */
 class GameObj {
 public:
-	GameObj(glm::vec2& a_pos = glm::vec2(0, 0), glm::vec2& a_vel = glm::vec2(0, 0), float a_friction = PLAYER_FRICTION, IBehaviour* a_behaviour = nullptr);
+	GameObj(glm::vec2& a_pos = glm::vec2(0, 0), glm::vec2& a_vel = glm::vec2(0, 0), float a_friction = PLAYER_FRICTION);
 
 	virtual ~GameObj();
 

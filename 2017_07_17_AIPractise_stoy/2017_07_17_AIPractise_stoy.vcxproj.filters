@@ -66,6 +66,9 @@
     <ClCompile Include="SRC\Utility.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="SRC\Entities\IAgent.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="INC\_2017_07_17_AIPractise_stoyApp.h">
@@ -120,6 +123,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="INC\Obstacles\Circle.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="INC\Entities\IAgent.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -10,11 +10,15 @@
 */
 class Seek : public IBehaviour {
 public:
-	Seek(float a_innerRadius = 0.f, float a_outerRadius = 0.f) : m_innerRadius(a_innerRadius), m_outerRadius(a_outerRadius) {}
+	Seek(GameObj* a_obj = nullptr, float a_innerRadius = 0.f, float a_outerRadius = 0.f) : 
+		IBehaviour(a_obj), m_innerRadius(a_innerRadius), m_outerRadius(a_outerRadius) {}
 	virtual ~Seek();
 
-	virtual void Update(GameObj* a_obj, float a_dt);
-	virtual void Render(GameObj* a_obj, aie::Renderer2D* a_r2d);
+	virtual void Initialise() {}
+	virtual void Startup() {}
+	virtual void Update(float deltaTime);
+	virtual void Draw();
+	virtual void Shutdown() {}
 
 	/**
 	*	@brief Get position of the behaviour's target.

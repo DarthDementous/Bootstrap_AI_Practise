@@ -155,13 +155,6 @@ void _2017_07_17_AIPractise_stoyApp::draw() {
 	// output some text, uses the last used colour
 	m_2dRenderer->drawText(ResourcePack::FontMap()["DEFAULT"].get(), "Press ESC to quit", 0, 0);
 
-//#ifdef _DEBUG
-//	m_2dRenderer->setRenderColour(1.f, 0.f, 0.f, 0.1f);
-//	for (auto node : *m_graph->GetNodes()) {
-//		m_2dRenderer->drawCircle(node->GetData().x, node->GetData().y, SEARCH_RADIUS);
-//	}
-//	m_2dRenderer->setRenderColour(0xFFFFFFFF);
-//#endif
 	// done drawing sprites
 	m_2dRenderer->end();
 }
