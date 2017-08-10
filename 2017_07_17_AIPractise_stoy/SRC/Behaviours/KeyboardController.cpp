@@ -1,5 +1,5 @@
 #include "Behaviours\KeyboardController.h"
-#include "Entities/GameObj.h"
+#include "Entities/IAgent.h"
 
 KeyboardController::~KeyboardController()
 {

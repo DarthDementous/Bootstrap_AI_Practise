@@ -1,6 +1,6 @@
 #include "Behaviours/CollisionAvoidance.h"
 #include <Renderer2D.h>
-#include <Entities/GameObj.h>
+#include <Entities/IAgent.h>
 #include <Obstacles/Circle.h>
 #include <glm/gtx/norm.hpp>
 
@@ -71,9 +71,9 @@ void CollisionAvoidance::Update(float deltaTime)
 #endif
 }
 
-void CollisionAvoidance::Draw()
+void CollisionAvoidance::Draw(aie::Renderer2D* a_r2d)
 {
-	m_r2d->setRenderColour(1.f, 0.f, 0.f);
+	a_r2d->setRenderColour(1.f, 0.f, 0.f);
 
 	/*glm::vec2 anglePt = m_obj->GetPosition() + glm::vec2(cosf(m_velAngle), sinf(m_velAngle)) * 50.f;
 
@@ -82,14 +82,14 @@ void CollisionAvoidance::Draw()
 	for (auto ray : m_rays) {
 		glm::vec2 rayPt = m_obj->GetPosition() + ray->CalculateVector();
 
-		m_r2d->drawLine(m_obj->GetPosition().x, m_obj->GetPosition().y, rayPt.x, rayPt.y, 1.f, 1.f);
+		a_r2d->drawLine(m_obj->GetPosition().x, m_obj->GetPosition().y, rayPt.x, rayPt.y, 1.f, 1.f);
 	}
 
-	m_r2d->setRenderColour(1.f, 0.f, 1.f);
+	a_r2d->setRenderColour(1.f, 0.f, 1.f);
 	glm::vec2 avoidPt = m_obj->GetPosition() + m_avoidVec;
-	m_r2d->drawLine(m_obj->GetPosition().x, m_obj->GetPosition().y, avoidPt.x, avoidPt.y, 2.f);
+	a_r2d->drawLine(m_obj->GetPosition().x, m_obj->GetPosition().y, avoidPt.x, avoidPt.y, 2.f);
 
-	m_r2d->setRenderColour(0xFFFFFFFF);
+	a_r2d->setRenderColour(0xFFFFFFFF);
 }
 
 void CollisionAvoidance::ClearRays()

@@ -3,7 +3,7 @@
 #include <math.h>
 #include <MathLib_Utility.h>
 #include <glm/gtx/norm.hpp>
-#include <Entities/GameObj.h>
+#include <Entities/IAgent.h>
 #include <Renderer2D.h>
 #include <math.h>
 #include <random>
@@ -31,33 +31,33 @@ void Wander::Update(float a_dt) {
 	}
 }
 
-void Wander::Draw() {
+void Wander::Draw(aie::Renderer2D* a_r2d) {
 #ifdef _DEBUG
 	// Initial wander target radius
-	m_r2d->setRenderColour(0.f, 1.f, 1.f, 0.5f);
-	m_r2d->drawCircle(m_obj->GetPosition().x, m_obj->GetPosition().y, m_radius);
+	a_r2d->setRenderColour(0.f, 1.f, 1.f, 0.5f);
+	a_r2d->drawCircle(m_obj->GetPosition().x, m_obj->GetPosition().y, m_radius);
 
 	// Projected wander target radius
-	m_r2d->setRenderColour(1.f, 1.f, 1.f, 0.5f);
+	a_r2d->setRenderColour(1.f, 1.f, 1.f, 0.5f);
 	glm::vec2 projectedPos = m_obj->GetPosition() + m_projectedVec;
-	m_r2d->drawCircle(projectedPos.x, projectedPos.y, m_radius);
+	a_r2d->drawCircle(projectedPos.x, projectedPos.y, m_radius);
 
 	// Initial random position on circumference
-	m_r2d->setRenderColour(1.f, 0.f, 0.f, 1.f);
+	a_r2d->setRenderColour(1.f, 0.f, 0.f, 1.f);
 	glm::vec2 circumPos = m_obj->GetPosition() + m_randDir;
-	m_r2d->drawCircle(circumPos.x, circumPos.y, 4.f);
+	a_r2d->drawCircle(circumPos.x, circumPos.y, 4.f);
 
 	// Jitter vector
-	m_r2d->setRenderColour(1.f, 0.f, 1.f, 1.f);
+	a_r2d->setRenderColour(1.f, 0.f, 1.f, 1.f);
 	glm::vec2 jitterPos = circumPos + m_jitterVec;
-	m_r2d->drawLine(circumPos.x, circumPos.y, jitterPos.x, jitterPos.y);
+	a_r2d->drawLine(circumPos.x, circumPos.y, jitterPos.x, jitterPos.y);
 
 	// Final wander direction
-	m_r2d->setRenderColour(0.f, 1.f, 0.f, 1.f);
+	a_r2d->setRenderColour(0.f, 1.f, 0.f, 1.f);
 	glm::vec2 wanderPos = m_obj->GetPosition() + m_wanderDir;
-	m_r2d->drawLine(m_obj->GetPosition().x, m_obj->GetPosition().y, wanderPos.x, wanderPos.y);
+	a_r2d->drawLine(m_obj->GetPosition().x, m_obj->GetPosition().y, wanderPos.x, wanderPos.y);
 
-	m_r2d->setRenderColour(0xFFFFFFFF);
+	a_r2d->setRenderColour(0xFFFFFFFF);
 #endif
 }
 

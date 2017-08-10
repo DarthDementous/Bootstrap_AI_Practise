@@ -76,8 +76,6 @@ bool _2017_07_17_AIPractise_stoyApp::startup() {
 
 #pragma region Player (must come after path finder)
 	m_player = new Player(glm::vec2(getWindowWidth() / 2, getWindowHeight() / 2));
-	m_player->SetBehaviour(new KeyboardController);
-	m_player->SetPathFinder(m_pf);
 
 	m_obstacles.push_back(new Circle(glm::vec2(1000.f, 300.f), 20.f));
 

@@ -1,6 +1,6 @@
 #include "Behaviours\Arrival.h"
 #include <glm/gtx/norm.hpp>
-#include "Entities\GameObj.h"
+#include "Entities\IAgent.h"
 #include <Renderer2D.h>
 
 Arrival::~Arrival()
@@ -32,15 +32,15 @@ void Arrival::Update(float deltaTime)
 	m_obj->SetVelocity(wishDir * arrivalStrength);									// Use strength to scale vector before applying force to entity
 }
 
-void Arrival::Draw()
+void Arrival::Draw(aie::Renderer2D* a_r2d)
 {
 	// Mouse cursor
-	m_r2d->drawBox(m_targetPos.x, m_targetPos.y, 4.f, 4.f);
+	a_r2d->drawBox(m_targetPos.x, m_targetPos.y, 4.f, 4.f);
 
 	// Slowing radius
-	m_r2d->setRenderColour(0.f, 0.f, 1.f, 0.25f);
-	m_r2d->drawCircle(m_targetPos.x, m_targetPos.y, m_radius);
+	a_r2d->setRenderColour(0.f, 0.f, 1.f, 0.25f);
+	a_r2d->drawCircle(m_targetPos.x, m_targetPos.y, m_radius);
 
-	m_r2d->setRenderColour(0xFFFFFFFF);
+	a_r2d->setRenderColour(0xFFFFFFFF);
 }
 

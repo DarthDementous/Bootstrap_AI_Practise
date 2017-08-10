@@ -1,6 +1,6 @@
 #include "Behaviours/Seek.h"
 #include <Renderer2D.h>
-#include "Entities/GameObj.h"
+#include "Entities/IAgent.h"
 #include <glm/gtx/norm.hpp>
 
 Seek::~Seek()
@@ -43,17 +43,17 @@ void Seek::Update(float a_dt)
 	m_lastPos = m_obj->GetPosition();
 }
 
-void Seek::Draw()
+void Seek::Draw(aie::Renderer2D* a_r2d)
 {
 #ifdef _DEBUG
 	// Cursor
-	m_r2d->drawBox(m_targetPos.x, m_targetPos.y, 4, 4);
+	a_r2d->drawBox(m_targetPos.x, m_targetPos.y, 4, 4);
 	// Radii
-	m_r2d->setRenderColour(1.0, 1.0, 1.0, 0.75);
-	m_r2d->drawCircle(m_targetPos.x, m_targetPos.y, m_innerRadius);
-	m_r2d->setRenderColour(1.0, 1.0, 1.0, 0.25);
-	m_r2d->drawCircle(m_targetPos.x, m_targetPos.y, m_outerRadius);
+	a_r2d->setRenderColour(1.0, 1.0, 1.0, 0.75);
+	a_r2d->drawCircle(m_targetPos.x, m_targetPos.y, m_innerRadius);
+	a_r2d->setRenderColour(1.0, 1.0, 1.0, 0.25);
+	a_r2d->drawCircle(m_targetPos.x, m_targetPos.y, m_outerRadius);
 
-	m_r2d->setRenderColour(0xFFFFFFFF);
+	a_r2d->setRenderColour(0xFFFFFFFF);
 #endif
 }

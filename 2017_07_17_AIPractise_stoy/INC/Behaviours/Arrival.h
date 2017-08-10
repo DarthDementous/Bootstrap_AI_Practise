@@ -10,15 +10,15 @@
 */
 class Arrival : public IBehaviour {
 public:
-	Arrival(GameObj* a_obj = nullptr, float a_strength = SEEK_STRENGTH, float a_radius = FLEE_RADIUS, std::function<void()> a_onReachPointFunc = {}) :
-		IBehaviour(a_obj), m_strength(a_strength), m_radius(a_radius), m_onReachPointFunc(a_onReachPointFunc) {}
+	Arrival(IAgent* a_obj = nullptr, float a_strength = SEEK_STRENGTH, float a_radius = FLEE_RADIUS, std::function<void()> a_onReachPointFunc = {}) :
+		IBehaviour(a_obj), m_strength(a_strength), m_radius(a_radius), m_onReachPointFunc(a_onReachPointFunc) {
+	}
 
 	~Arrival();
 
-	virtual void Initialise() {}
 	virtual void Startup() {}
 	virtual void Update(float deltaTime);
-	virtual void Draw();
+	virtual void Draw(aie::Renderer2D* a_r2d);
 	virtual void Shutdown() {}
 
 	void SetTarget(glm::vec2 a_pos) { m_targetPos = a_pos; }

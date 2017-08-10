@@ -10,14 +10,13 @@
 */
 class Seek : public IBehaviour {
 public:
-	Seek(GameObj* a_obj = nullptr, float a_innerRadius = 0.f, float a_outerRadius = 0.f) : 
+	Seek(IAgent* a_obj = nullptr, float a_innerRadius = 0.f, float a_outerRadius = 0.f) : 
 		IBehaviour(a_obj), m_innerRadius(a_innerRadius), m_outerRadius(a_outerRadius) {}
 	virtual ~Seek();
 
-	virtual void Initialise() {}
 	virtual void Startup() {}
 	virtual void Update(float deltaTime);
-	virtual void Draw();
+	virtual void Draw(aie::Renderer2D* a_r2d);
 	virtual void Shutdown() {}
 
 	/**

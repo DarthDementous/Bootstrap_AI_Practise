@@ -6,14 +6,14 @@ class Path;
 
 class FollowPath : public IBehaviour {
 public:
-	FollowPath(GameObj* a_obj = nullptr, size_t a_currPathIndex = 0, Path* a_path = nullptr) : 
+	FollowPath(IAgent* a_obj = nullptr, size_t a_currPathIndex = 0, Path* a_path = nullptr) : 
 		IBehaviour(a_obj), m_currPathIndex(a_currPathIndex), m_path(a_path) {}
 	virtual ~FollowPath();
 
 	virtual void Initialise() {}
 	virtual void Startup() {}
 	virtual void Update(float deltaTime);
-	virtual void Draw();
+	virtual void Draw(aie::Renderer2D* a_r2d);
 	virtual void Shutdown() {}
 
 	void SetPath(Path* a_path);

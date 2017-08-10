@@ -8,14 +8,13 @@ class Seek;
 
 class Wander : public IBehaviour {
 public:
-	Wander(GameObj* a_obj = nullptr, float a_radius = PLAYER_WANDER_RADIUS, float a_dist = PLAYER_WANDER_DIST, float a_jitter = PLAYER_JITTER) :
+	Wander(IAgent* a_obj = nullptr, float a_radius = PLAYER_WANDER_RADIUS, float a_dist = PLAYER_WANDER_DIST, float a_jitter = PLAYER_JITTER) :
 		IBehaviour(a_obj), m_radius(a_radius), m_dist(a_dist), m_jitter(a_jitter) {}
 	virtual ~Wander() {}
 
-	virtual void Initialise() {}
 	virtual void Startup();
 	virtual void Update(float deltaTime);
-	virtual void Draw();
+	virtual void Draw(aie::Renderer2D* a_r2d);
 	virtual void Shutdown() {}
 	
 	/**

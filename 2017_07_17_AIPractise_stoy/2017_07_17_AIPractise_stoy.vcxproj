@@ -127,7 +127,6 @@
     <ClCompile Include="SRC\Behaviours\KeyboardController.cpp" />
     <ClCompile Include="SRC\Behaviours\Seek.cpp" />
     <ClCompile Include="SRC\Behaviours\Wander.cpp" />
-    <ClCompile Include="SRC\Entities\GameObj.cpp" />
     <ClCompile Include="SRC\Entities\IAgent.cpp" />
     <ClCompile Include="SRC\Entities\Player.cpp" />
     <ClCompile Include="SRC\Graph\Graph2D.cpp" />
@@ -147,7 +146,7 @@
     <ClInclude Include="INC\Behaviours\KeyboardController.h" />
     <ClInclude Include="INC\Behaviours\Seek.h" />
     <ClInclude Include="INC\Behaviours\Wander.h" />
-    <ClInclude Include="INC\Entities\GameObj.h" />
+    <ClInclude Include="INC\Entities\GameObj.hpp" />
     <ClInclude Include="INC\Entities\IAgent.h" />
     <ClInclude Include="INC\Entities\Player.h" />
     <ClInclude Include="INC\Graph\IGraph.hpp" />
