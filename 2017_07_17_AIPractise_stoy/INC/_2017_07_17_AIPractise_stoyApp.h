@@ -10,6 +10,7 @@ class GraphRenderer2D;
 class Graph2D;
 class PathFinder;
 class IObstacle;
+class NPC;
 
 #pragma endregion
 
@@ -31,6 +32,8 @@ protected:
 	aie::Font*				m_font = nullptr;
 
 	Player*					m_player	= nullptr;
+
+	std::vector<NPC*>		m_npcs;
 
 	Graph2D*				m_graph		= nullptr;
 	GraphRenderer2D*		m_gr2d		= nullptr;				/*2D Graph Renderer*/

@@ -14,6 +14,8 @@ enum eSearchResult { FOUND, SEARCHING, NOT_FOUND};
 enum eCollisionType { INTERSECTS, ADJUST, CONTAINS, NONE };
 
 // Default values
+#define NPC_NUM 2u
+
 #define CIRCLE_RAD 30.f
 
 #define HEURISTIC_FUNC [this](Graph2D::Node* a_node){ return Math_Util::Magnitude(m_goalNode->GetData() - a_node->GetData()); }

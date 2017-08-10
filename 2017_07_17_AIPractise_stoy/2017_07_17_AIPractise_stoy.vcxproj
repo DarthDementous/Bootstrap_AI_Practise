@@ -128,6 +128,7 @@
     <ClCompile Include="SRC\Behaviours\Seek.cpp" />
     <ClCompile Include="SRC\Behaviours\Wander.cpp" />
     <ClCompile Include="SRC\Entities\IAgent.cpp" />
+    <ClCompile Include="SRC\Entities\NPC.cpp" />
     <ClCompile Include="SRC\Entities\Player.cpp" />
     <ClCompile Include="SRC\Graph\Graph2D.cpp" />
     <ClCompile Include="SRC\Graph\GraphRenderer2D.cpp" />
@@ -148,6 +149,7 @@
     <ClInclude Include="INC\Behaviours\Wander.h" />
     <ClInclude Include="INC\Entities\GameObj.hpp" />
     <ClInclude Include="INC\Entities\IAgent.h" />
+    <ClInclude Include="INC\Entities\NPC.h" />
     <ClInclude Include="INC\Entities\Player.h" />
     <ClInclude Include="INC\Graph\IGraph.hpp" />
     <ClInclude Include="INC\Graph\Graph2D.h" />

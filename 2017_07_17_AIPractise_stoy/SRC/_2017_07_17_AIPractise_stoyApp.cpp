@@ -13,6 +13,9 @@
 #include <glm/gtx/norm.hpp>
 #include "PathFinder.h"
 #include "Obstacles/Circle.h"
+#include "Entities/NPC.h"
+#include <Behaviours/Seek.h>
+#include <Behaviours/Wander.h>
 
 _2017_07_17_AIPractise_stoyApp::_2017_07_17_AIPractise_stoyApp() {
 
@@ -74,20 +77,46 @@ bool _2017_07_17_AIPractise_stoyApp::startup() {
 
 	m_pf = new PathFinder(m_graph);
 
-#pragma region Player (must come after path finder)
-	m_player = new Player(glm::vec2(getWindowWidth() / 2, getWindowHeight() / 2));
-
+#pragma region Obstacles
 	m_obstacles.push_back(new Circle(glm::vec2(1000.f, 300.f), 20.f));
+
+#pragma endregion
+
+#pragma region Player (must come after obstacles)
+	m_player = new Player(glm::vec2(getWindowWidth() / 2, getWindowHeight() / 2));
+	m_player->SetVelocity(glm::vec2(10.f, 10.f));
 
 	m_player->SetObstacles(m_obstacles);
 #pragma endregion
 
+#pragma region NPCS (must come after obstacles)
+	for (size_t i = 0; i < NPC_NUM; ++i) {
+		NPC* npc = new NPC(glm::vec2(i * 10, i * 10));
+		Seek* seek = new Seek(npc);
+		seek->SetInnerRadiusEnter([npc]() { npc->SetBehaviour("WANDER", true); });
+		Wander* wander = new Wander(npc, PLAYER_WANDER_RADIUS, PLAYER_WANDER_DIST, PLAYER_JITTER);
 
+		npc->AddBehaviour("SEEK", seek);
+		npc->AddBehaviour("WANDER", wander);
+
+		m_npcs.push_back(npc);
+	}
+#pragma endregion
 
 	return true;
 }
 
 void _2017_07_17_AIPractise_stoyApp::shutdown() {
+	for (auto obstacle : m_obstacles) {
+		delete obstacle;
+	}
+	m_obstacles.clear();
+
+	for (auto npc : m_npcs) {
+		delete npc;
+	}
+	m_npcs.clear();
+
 	delete m_player;
 	delete m_gr2d;
 	delete m_pf;
@@ -129,6 +158,12 @@ void _2017_07_17_AIPractise_stoyApp::update(float deltaTime) {
 	// Movement
 	m_player->Update(deltaTime);
 #pragma endregion
+
+#pragma region NPCS
+	for (auto npc : m_npcs) {
+		npc->Update(deltaTime);
+	}
+#pragma endregion
 }
 
 void _2017_07_17_AIPractise_stoyApp::draw() {
@@ -149,6 +184,12 @@ void _2017_07_17_AIPractise_stoyApp::draw() {
 	for (auto obj : m_obstacles) {
 		obj->Render(m_2dRenderer);
 	}
+
+#pragma region NPCS
+	for (auto npc : m_npcs) {
+		npc->Render(m_2dRenderer);
+	}
+#pragma endregion
 
 	// output some text, uses the last used colour
 	m_2dRenderer->drawText(ResourcePack::FontMap()["DEFAULT"].get(), "Press ESC to quit", 0, 0);

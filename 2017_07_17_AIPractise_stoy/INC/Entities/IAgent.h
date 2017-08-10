@@ -70,6 +70,6 @@ protected:
 
 	float		m_friction;									/*Scale of negative velocity applied to slow object down.*/
 
-	std::vector<IObstacle*> m_obstacles;					/*Vector of obstacles to avoid. NOTE: IAgent is responsible for the obstacles inside.*/
+	std::vector<IObstacle*> m_obstacles;					/*Vector of obstacles to avoid. NOTE: IAgent is NOT responsible for the obstacles inside.*/
 private:
 };

@@ -14,9 +14,7 @@ namespace aie {
 */
 class GameObj {
 public:
-	GameObj(const glm::vec2& a_pos = glm::vec2(0.f, 0.f)) : m_pos(a_pos) {
-		std::cout << m_pos.x << " " << m_pos.y << std::endl;
-	}
+	GameObj(const glm::vec2& a_pos = glm::vec2(0.f, 0.f)) : m_pos(a_pos) {}
 
 	virtual ~GameObj() {}
 

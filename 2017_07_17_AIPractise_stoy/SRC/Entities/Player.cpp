@@ -4,10 +4,12 @@
 #include <GameStateManager.h>
 #include <iostream>
 
-Player::Player(const glm::vec2 & a_pos, float a_friction) :
-	IAgent(a_pos, a_friction)	// Call base constructor because the parameters pertain to the base class, not the inherited one.
+Player::Player(const glm::vec2 & a_pos, float a_friction)
 {
-	std::cout << m_pos.x << " " << m_pos.y << std::endl;
+	// NOTE: Even though these are base class variables, do not pass them down to base constructor in : or else it won't assign properly.
+	m_pos = a_pos;
+	m_friction = a_friction;
+
 	// Initialise with keyboard behaviour
 	AddBehaviour("KEYBOARD", new KeyboardController(this));
 }
