@@ -31,9 +31,6 @@ void IAgent::Render(aie::Renderer2D * a_r2d)
 {
 	m_behaviourManager->Draw(a_r2d);
 
-	// Object
-	a_r2d->drawCircle(m_pos.x, m_pos.y, PLAYER_RADIUS);
-
 	// Velocity
 	a_r2d->setRenderColour(1.f, 1.f, 0.f);
 	glm::vec2 targetPt = m_pos + m_vel;

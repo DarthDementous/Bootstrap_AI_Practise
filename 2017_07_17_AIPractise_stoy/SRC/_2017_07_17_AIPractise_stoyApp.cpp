@@ -14,6 +14,8 @@
 #include "PathFinder.h"
 #include "Obstacles/Circle.h"
 #include "Entities/NPC.h"
+#include "Entities/NPC_Guard.h"
+#include "Blackboard.h"
 #include <Behaviours/Seek.h>
 #include <Behaviours/Wander.h>
 
@@ -83,41 +85,40 @@ bool _2017_07_17_AIPractise_stoyApp::startup() {
 #pragma endregion
 
 #pragma region Player (must come after obstacles)
-	m_player = new Player(glm::vec2(getWindowWidth() / 2, getWindowHeight() / 2));
+	m_player = new Player(glm::vec2(getWindowWidth() / 3, getWindowHeight() / 3));
 	m_player->SetVelocity(glm::vec2(10.f, 10.f));
 
 	m_player->SetObstacles(m_obstacles);
+
+	m_entities.push_back(m_player);
 #pragma endregion
 
 #pragma region NPCS (must come after obstacles)
 	for (size_t i = 0; i < NPC_NUM; ++i) {
-		NPC* npc = new NPC(glm::vec2(i * 10, i * 10));
-		Seek* seek = new Seek(npc);
-		seek->SetInnerRadiusEnter([npc]() { npc->SetBehaviour("WANDER", true); });
-		Wander* wander = new Wander(npc, PLAYER_WANDER_RADIUS, PLAYER_WANDER_DIST, PLAYER_JITTER);
+		NPC* npc = new NPC(glm::vec2(i + 100, i + 100));
 
-		npc->AddBehaviour("SEEK", seek);
-		npc->AddBehaviour("WANDER", wander);
-
-		m_npcs.push_back(npc);
+		m_entities.push_back(npc);
 	}
+
+	m_entities.push_back(new NPC_Guard(glm::vec2(getWindowWidth() / 2, getWindowHeight() / 2)));
 #pragma endregion
 
 	return true;
 }
 
 void _2017_07_17_AIPractise_stoyApp::shutdown() {
+	Blackboard::Clear();
+
 	for (auto obstacle : m_obstacles) {
 		delete obstacle;
 	}
 	m_obstacles.clear();
 
-	for (auto npc : m_npcs) {
-		delete npc;
+	for (auto entity : m_entities) {
+		delete entity;
 	}
-	m_npcs.clear();
+	m_entities.clear();
 
-	delete m_player;
 	delete m_gr2d;
 	delete m_pf;
 	delete m_graph;
@@ -131,6 +132,8 @@ void _2017_07_17_AIPractise_stoyApp::update(float deltaTime) {
 	// input example
 	aie::Input* input = aie::Input::getInstance();
 
+	Blackboard::Update(deltaTime);
+
 	// exit the application
 	if (input->isKeyDown(aie::INPUT_KEY_ESCAPE))
 		quit();
@@ -139,29 +142,30 @@ void _2017_07_17_AIPractise_stoyApp::update(float deltaTime) {
 	m_graph->Update();
 #pragma endregion
 
-#pragma region Player
+#pragma region Collision
 	/// Boundary checks
-	const glm::vec2 pos = m_player->GetPosition();
+	for (auto entity : m_entities) {
+		const glm::vec2 pos = entity->GetPosition();
 
-	// Left and right planes
-	if (pos.x < PLAYER_RADIUS || pos.x > getWindowWidth() - PLAYER_RADIUS) {
-		// Reflect the x axis 
-		m_player->SetVelocity(glm::vec2(-m_player->GetVelocity().x * GLOBAL_RESTITUTION, m_player->GetVelocity().y));
+		// Left and right planes
+		if (pos.x < PLAYER_RADIUS || pos.x > getWindowWidth() - PLAYER_RADIUS) {
+			// Reflect the x axis 
+			entity->SetVelocity(glm::vec2(-entity->GetVelocity().x * GLOBAL_RESTITUTION, entity->GetVelocity().y));
+		}
+
+		// Bottom and top window planes
+		else if (pos.y < PLAYER_RADIUS || pos.y >getWindowHeight() - PLAYER_RADIUS) {
+			// Reflect the y axis
+			entity->SetVelocity(glm::vec2(entity->GetVelocity().x, -entity->GetVelocity().y * GLOBAL_RESTITUTION));
+		}
 	}
+	
 
-	// Bottom and top window planes
-	else if (pos.y < PLAYER_RADIUS || pos.y >getWindowHeight() - PLAYER_RADIUS) {
-		// Reflect the y axis
-		m_player->SetVelocity(glm::vec2(m_player->GetVelocity().x, -m_player->GetVelocity().y * GLOBAL_RESTITUTION));
-	}
-
-	// Movement
-	m_player->Update(deltaTime);
 #pragma endregion
 
-#pragma region NPCS
-	for (auto npc : m_npcs) {
-		npc->Update(deltaTime);
+#pragma region Entities
+	for (auto entity : m_entities) {
+		entity->Update(deltaTime);
 	}
 #pragma endregion
 }
@@ -175,8 +179,6 @@ void _2017_07_17_AIPractise_stoyApp::draw() {
 	m_2dRenderer->begin();
 
 	// draw your stuff here!
-	m_player->Render(m_2dRenderer);
-
 	m_gr2d->Draw(m_2dRenderer);
 
 	m_pf->Render(m_2dRenderer);
@@ -185,9 +187,9 @@ void _2017_07_17_AIPractise_stoyApp::draw() {
 		obj->Render(m_2dRenderer);
 	}
 
-#pragma region NPCS
-	for (auto npc : m_npcs) {
-		npc->Render(m_2dRenderer);
+#pragma region Entities
+	for (auto entity : m_entities) {
+		entity->Render(m_2dRenderer);
 	}
 #pragma endregion
 

@@ -11,5 +11,6 @@ public:
 	virtual void Update(float a_dt);
 	virtual void Render(aie::Renderer2D* a_r2d);
 protected:
+	glm::vec2 m_playerPos;			/*Hold onto player position for scheming (updates via blackboard message)*/
 private:
 };

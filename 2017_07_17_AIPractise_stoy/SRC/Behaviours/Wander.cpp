@@ -1,5 +1,6 @@
 #include "Behaviours/Wander.h"
 #include "Behaviours/Seek.h"
+#include "Obstacles/Circle.h"
 #include <math.h>
 #include <MathLib_Utility.h>
 #include <glm/gtx/norm.hpp>
@@ -85,4 +86,12 @@ void Wander::CalculateWander()
 	}
 
 	m_wanderDir += m_projectedVec;
+}
+
+Circle* Wander::GetWanderCircle()
+{
+	// Calculate center point of projected wander circle
+	glm::vec2 pos = m_obj->GetPosition() + m_projectedVec;
+
+	return new Circle(pos, m_radius);
 }

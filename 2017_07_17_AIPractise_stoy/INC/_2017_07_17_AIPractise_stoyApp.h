@@ -10,7 +10,7 @@ class GraphRenderer2D;
 class Graph2D;
 class PathFinder;
 class IObstacle;
-class NPC;
+class IAgent;
 
 #pragma endregion
 
@@ -33,7 +33,7 @@ protected:
 
 	Player*					m_player	= nullptr;
 
-	std::vector<NPC*>		m_npcs;
+	std::vector<IAgent*>	m_entities;							/*Vector of all movable entities (for collision purposes)*/
 
 	Graph2D*				m_graph		= nullptr;
 	GraphRenderer2D*		m_gr2d		= nullptr;				/*2D Graph Renderer*/

@@ -14,6 +14,8 @@ enum eSearchResult { FOUND, SEARCHING, NOT_FOUND};
 enum eCollisionType { INTERSECTS, ADJUST, CONTAINS, NONE };
 
 // Default values
+#define MESSAGE_LIFETIME 3.0
+
 #define NPC_NUM 2u
 
 #define CIRCLE_RAD 30.f

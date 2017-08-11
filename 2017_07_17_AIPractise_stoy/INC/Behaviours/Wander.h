@@ -5,6 +5,7 @@
 #include "Utility.h"
 
 class Seek;
+class Circle;
 
 class Wander : public IBehaviour {
 public:
@@ -22,6 +23,12 @@ public:
 	*	@param a_obj is the entity to seek with.
 	*/
 	void CalculateWander();
+
+	/**
+	*	@brief Return projected wander circle for collision testing.
+	*	@return Pointer to circle object (must be cleaned up by recipient).
+	*/
+	Circle* GetWanderCircle();
 protected:
 	float m_radius;				/*Size of wander circle*/
 	float m_dist;				/*How far the wander circle is infront*/
