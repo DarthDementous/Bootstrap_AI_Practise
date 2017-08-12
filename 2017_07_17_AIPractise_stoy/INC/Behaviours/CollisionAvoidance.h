@@ -1,6 +1,6 @@
 #pragma once
 
-#include "IBehaviour.hpp"
+#include "IBehaviour.h"
 #include <vector>
 #include <glm/vec2.hpp>
 #include "Utility.h"

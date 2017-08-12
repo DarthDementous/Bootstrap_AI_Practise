@@ -14,12 +14,12 @@
 void Wander::Startup()
 {
 	// Calculate first wander vector
-	CalculateWander();
+	//CalculateWander();
 }
 
 void Wander::Update(float a_dt) {
 	// Move in current wander direction
-	m_obj->ApplyForce(m_wanderDir);
+	m_obj->ApplyForce(m_wanderDir * GetScaleFactor());
 
 	// Calculate new wander vector every interval
 	static float timer = WANDER_TIMER;

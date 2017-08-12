@@ -35,8 +35,19 @@ public:
 	*/
 	void IsOwned(bool a_isOwned) { m_isOwned = a_isOwned; }
 
+	/**
+	*	@brief Normalize current scale by comparing it with total scale of behaviours.
+	*	@return Normalized value (0-1.f) that can be used to scale steering force.
+	*/
+	float GetScaleFactor();
+	float GetScale() { return m_scale; }
+
+	void SetScale(float a_scale) { m_scale = a_scale; }
+
 protected:
 	IAgent* m_obj = nullptr;								/*Entity behaviour is assigned to.*/
+
+	float m_scale = 1.f;									/*Scale of the steering forces (full by default)*/
 
 	bool m_isOwned;
 private:

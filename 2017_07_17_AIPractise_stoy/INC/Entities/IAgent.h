@@ -10,6 +10,7 @@ namespace aie {
 class GameStateManager;
 class IObstacle;
 class IGameState;
+class IBehaviour;
 
 /**
 *	@brief Interface base class for entities that move with behaviours.
@@ -26,6 +27,7 @@ public:
 	const glm::vec2& GetVelocity() { return m_vel; }
 	float GetFriction() { return m_friction; }
 	std::vector<IObstacle*>& GetObstacles() { return m_obstacles; }
+	GameStateManager* GetStateManager() { return m_stateManager; }
 
 	void SetPosition(glm::vec2& a_pos) { m_pos = a_pos; }
 	void SetVelocity(glm::vec2& a_vel) { m_vel = a_vel; }
@@ -36,19 +38,6 @@ public:
 	*	@return void.
 	*/
 	void SetObstacles(std::vector<IObstacle*> a_obs);
-	/**
-	*	@brief Set behaviour from list of given behaviours.
-	*	@param a_name is the name of the behaviour to set. (must already be added)
-	*	@param a_replace determines whether it pops the current active state before setting (true) or adds to active behaviours (false).
-	*/
-	void SetBehaviour(const char* a_name, bool a_replace);
-
-	/**
-	*	@brief Add behaviour to list of possible behaviours.
-	*	@param a_name is the key to identify the behaviour with.
-	*	@param a_beh is the behaviour to push to the behaviour manager.
-	*/
-	void AddBehaviour(const char* a_name, IGameState* a_beh);
 
 	/**
 	*	@brief Increase acceleration by applying an additional movement vector.
@@ -62,7 +51,7 @@ public:
 	*/
 	void ApplyPhysics(float a_dt);
 protected:
-	GameStateManager* m_behaviourManager = nullptr;			/*Handles update/rendering/changing etc. of behaviours.*/
+	GameStateManager* m_stateManager = nullptr;				/*Handles update/rendering/changing etc. of states.*/
 
 	glm::vec2	m_pos;										/*Object's current position.*/
 	glm::vec2	m_vel;										/*Trajectory of object for each frame.*/

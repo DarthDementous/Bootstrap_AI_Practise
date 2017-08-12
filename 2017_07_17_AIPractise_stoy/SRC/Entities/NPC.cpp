@@ -1,7 +1,7 @@
 #include "Entities/NPC.h"
 #include "Entities/Player.h"
 #include <Input.h>
-#include "Behaviours/Wander.h"
+#include "States/Converge.h"
 #include "Behaviours/Seek.h"
 #include <GameStateManager.h>
 #include <Renderer2D.h>
@@ -12,14 +12,9 @@ NPC::NPC(glm::vec2 a_pos, float a_frict)
 	m_pos		= a_pos;
 	m_friction	= a_frict;
 
-	AddBehaviour("WANDER", new Wander(this));
-
-	Seek* seek = new Seek(this, SEEK_RADIUS);
-	seek->SetInnerRadiusEnter([this]() { this->SetBehaviour("WANDER", true); });
-	AddBehaviour("SEEK", seek);
-
-	// Initialize to use wander behaviour
-	SetBehaviour("WANDER", false);
+#pragma region State initialization
+	m_stateManager->PushState("CONVERGE", new Converge(this));
+#pragma endregion
 }
 
 NPC::~NPC()
@@ -30,6 +25,7 @@ void NPC::Update(float a_dt)
 {
 	IAgent::Update(a_dt);
 	
+	// Use information from blackboard to determine utility scores for states
 #pragma region Message Receival
 	std::vector<Blackboard::Message*> msgs;
 	Blackboard::GetMessages(msgs);
@@ -44,15 +40,40 @@ void NPC::Update(float a_dt)
 			}
 		}
 		else if (msg->type == eMessageType::PLAYER_FOUND) {
-			// Converge near player
-			Seek* seek = (Seek*)m_behaviourManager->GetState("SEEK");
-			seek->SetTarget(m_playerPos);
-			seek->SetStrength(SEEK_STRENGTH);
-
-			SetBehaviour("SEEK", true);			// Replace wander behaviour
+			// Converge on player
+			Converge* converge = (Converge*)m_stateManager->GetState("CONVERGE");
+			converge->GetSeek()->SetTarget(m_playerPos);
+			
+			converge->SetUtility(100.f);
 		}
 	}
 #pragma endregion
+
+#if 1
+#pragma region Decide Action with Best Utility
+	AIState* bestAction = (AIState*)m_stateManager->GetStates()[0];	// Start at first possible behaviour (guaranteed to be at least one)
+
+	// Find the state with the highest utility score
+	for (auto state : m_stateManager->GetStates()) {
+		AIState* ai_state = (AIState*)state;
+
+		// State has a higher utility score
+		if (ai_state->GetUtility() > bestAction->GetUtility()) {
+			// Update best action
+			bestAction = ai_state;
+		}
+	}
+
+	auto activeStates = m_stateManager->GetActiveStates();
+	auto foundState = std::find(activeStates.begin(), activeStates.end(), bestAction);
+
+	// Change state to best rated one ONLY if its not a currently active state to avoid it spamming the start-up function
+	if (foundState == activeStates.end()) {			
+		m_stateManager->SetState(bestAction);
+	}
+	
+#pragma endregion
+#endif
 }
 
 void NPC::Render(aie::Renderer2D * a_r2d)

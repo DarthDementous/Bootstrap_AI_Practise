@@ -36,7 +36,7 @@ void Seek::Update(float a_dt)
 	// Calculate direction by creating vector between points and normalizing
 	glm::vec2 wishDir = glm::normalize(m_targetPos - m_obj->GetPosition());
 
-	m_obj->ApplyForce(wishDir * m_strength);					// Use strength to scale vector before applying force to entity
+	m_obj->ApplyForce(wishDir * m_strength * GetScaleFactor());		// Scale force with strength and scale factor
 #pragma endregion
 	
 	// Update last frame position

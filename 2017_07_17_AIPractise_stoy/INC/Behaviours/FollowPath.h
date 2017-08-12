@@ -1,6 +1,6 @@
 #pragma once
 
-#include "IBehaviour.hpp"
+#include "IBehaviour.h"
 
 class Path;
 

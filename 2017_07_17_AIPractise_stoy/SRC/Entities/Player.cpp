@@ -1,5 +1,6 @@
 #include "Entities/Player.h"
 #include "Behaviours/KeyboardController.h"
+#include "Behaviours/CollisionAvoidance.h"
 #include <glm/vec2.hpp>
 #include <GameStateManager.h>
 #include <iostream>
@@ -13,8 +14,7 @@ Player::Player(const glm::vec2 & a_pos, float a_friction)
 	m_friction = a_friction;
 
 	// Initialise with keyboard behaviour
-	AddBehaviour("KEYBOARD", new KeyboardController(this));
-	SetBehaviour("KEYBOARD", false);
+
 }
 
 Player::~Player() {

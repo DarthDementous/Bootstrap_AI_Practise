@@ -121,9 +121,11 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="SRC\States\PatrolPath.cpp" />
     <ClCompile Include="SRC\Behaviours\Arrival.cpp" />
     <ClCompile Include="SRC\Behaviours\CollisionAvoidance.cpp" />
     <ClCompile Include="SRC\Behaviours\FollowPath.cpp" />
+    <ClCompile Include="SRC\Behaviours\IBehaviour.cpp" />
     <ClCompile Include="SRC\Behaviours\KeyboardController.cpp" />
     <ClCompile Include="SRC\Behaviours\Seek.cpp" />
     <ClCompile Include="SRC\Behaviours\Wander.cpp" />
@@ -136,13 +138,18 @@
     <ClCompile Include="SRC\Graph\GraphRenderer2D.cpp" />
     <ClCompile Include="SRC\Obstacles\Circle.cpp" />
     <ClCompile Include="SRC\Obstacles\IObstacle.cpp" />
+    <ClCompile Include="SRC\Obstacles\Rect.cpp" />
+    <ClCompile Include="SRC\Obstacles\Tri.cpp" />
     <ClCompile Include="SRC\Path.cpp" />
     <ClCompile Include="SRC\PathFinder.cpp" />
+    <ClCompile Include="SRC\States\AIState.cpp" />
+    <ClCompile Include="SRC\States\Converge.cpp" />
     <ClCompile Include="SRC\Utility.cpp" />
     <ClCompile Include="SRC\_2017_07_17_AIPractise_stoyApp.cpp" />
     <ClCompile Include="SRC\main.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="INC\Behaviours\Idle.hpp" />
     <ClInclude Include="INC\Blackboard.h" />
     <ClInclude Include="INC\Behaviours\Arrival.h" />
     <ClInclude Include="INC\Behaviours\CollisionAvoidance.h" />
@@ -158,11 +165,16 @@
     <ClInclude Include="INC\Graph\IGraph.hpp" />
     <ClInclude Include="INC\Graph\Graph2D.h" />
     <ClInclude Include="INC\Graph\GraphRenderer2D.h" />
-    <ClInclude Include="INC\Behaviours\IBehaviour.hpp" />
+    <ClInclude Include="INC\Behaviours\IBehaviour.h" />
     <ClInclude Include="INC\Obstacles\Circle.h" />
     <ClInclude Include="INC\Obstacles\IObstacle.h" />
+    <ClInclude Include="INC\Obstacles\Rect.h" />
+    <ClInclude Include="INC\Obstacles\Tri.h" />
     <ClInclude Include="INC\Path.h" />
     <ClInclude Include="INC\PathFinder.h" />
+    <ClInclude Include="INC\States\AIState.h" />
+    <ClInclude Include="INC\States\Converge.h" />
+    <ClInclude Include="INC\States\PatrolPath.h" />
     <ClInclude Include="INC\Utility.h" />
     <ClInclude Include="INC\_2017_07_17_AIPractise_stoyApp.h" />
   </ItemGroup>

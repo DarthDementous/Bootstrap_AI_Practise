@@ -11,49 +11,38 @@ IAgent::IAgent(const glm::vec2 & a_pos, float a_friction) : m_friction(a_frictio
 {
 	m_pos = a_pos;
 
-	m_behaviourManager = new GameStateManager;
+	m_stateManager = new GameStateManager;
 }
 
 IAgent::~IAgent()
 {
-	delete m_behaviourManager;
+	delete m_stateManager;
 }
 
 void IAgent::Update(float a_dt)
-{
-	m_behaviourManager->Update(a_dt);
-	
+{	
 	/// Physics
 	ApplyPhysics(a_dt);
+
+	// Update active states
+	m_stateManager->Update(a_dt);
 }
 
 void IAgent::Render(aie::Renderer2D * a_r2d)
-{
-	m_behaviourManager->Draw(a_r2d);
+{	
+	// Draw active states
+	m_stateManager->Draw(a_r2d);
 
 	// Velocity
+#ifdef _DEBUG
 	a_r2d->setRenderColour(1.f, 1.f, 0.f);
 	glm::vec2 targetPt = m_pos + m_vel;
 	a_r2d->drawLine(m_pos.x, m_pos.y, targetPt.x, targetPt.y);
+#endif
 
 	a_r2d->setRenderColour(0xFFFFFFFF);
 }
 
-void IAgent::AddBehaviour(const char * a_name, IGameState * a_beh)
-{
-	m_behaviourManager->PushState(a_name, a_beh);
-}
-
-void IAgent::SetBehaviour(const char * a_name, bool a_replace)
-{
-	if (a_replace) {
-		// Remove current active behaviour (crashes if no current behaviours)
-		m_behaviourManager->PopState();
-	}
-
-	// Add behaviour to active states
-	m_behaviourManager->SetState(a_name);
-}
 
 void IAgent::ApplyPhysics(float a_dt)
 {

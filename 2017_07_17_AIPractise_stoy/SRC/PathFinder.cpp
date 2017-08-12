@@ -59,7 +59,7 @@ unsigned int PathFinder::ContinuePathSearch()
 		}
 
 		///A*
-		if (bestPathNode->GetNode() == m_goalNode) {
+		else if (bestPathNode->GetNode() == m_goalNode) {
 			ConstructPath(bestPathNode);
 
 			return eSearchResult::FOUND;

@@ -13,6 +13,8 @@
 #include <glm/gtx/norm.hpp>
 #include "PathFinder.h"
 #include "Obstacles/Circle.h"
+#include "Obstacles/Rect.h"
+#include "Obstacles/Tri.h"
 #include "Entities/NPC.h"
 #include "Entities/NPC_Guard.h"
 #include "Blackboard.h"
@@ -80,7 +82,12 @@ bool _2017_07_17_AIPractise_stoyApp::startup() {
 	m_pf = new PathFinder(m_graph);
 
 #pragma region Obstacles
-	m_obstacles.push_back(new Circle(glm::vec2(1000.f, 300.f), 20.f));
+	for (size_t i = 0; i < OBSTACLE_NUM; ++i) {
+		m_obstacles.push_back(new Circle(glm::vec2(rand() % getWindowWidth(), rand() % getWindowHeight())));
+		m_obstacles.push_back(new Rect(glm::vec2(rand() % getWindowWidth(), rand() % getWindowHeight())));
+		m_obstacles.push_back(new Tri(glm::vec2(200.f, 200.f), glm::vec2(250.f, 250.f), glm::vec2(300.f, 200.f)));
+	}
+
 
 #pragma endregion
 
@@ -95,12 +102,14 @@ bool _2017_07_17_AIPractise_stoyApp::startup() {
 
 #pragma region NPCS (must come after obstacles)
 	for (size_t i = 0; i < NPC_NUM; ++i) {
-		NPC* npc = new NPC(glm::vec2(i + 100, i + 100));
+		glm::vec2 randPos = glm::vec2(rand() % getWindowWidth(), rand() % getWindowHeight());
+		NPC* npc = new NPC(randPos);
+		npc->SetObstacles(m_obstacles);
 
 		m_entities.push_back(npc);
 	}
 
-	m_entities.push_back(new NPC_Guard(glm::vec2(getWindowWidth() / 2, getWindowHeight() / 2)));
+	m_entities.push_back(new NPC_Guard(glm::vec2(getWindowWidth() / 2, getWindowHeight() / 2), 1.f, m_pf));
 #pragma endregion
 
 	return true;
@@ -195,6 +204,11 @@ void _2017_07_17_AIPractise_stoyApp::draw() {
 
 	// output some text, uses the last used colour
 	m_2dRenderer->drawText(ResourcePack::FontMap()["DEFAULT"].get(), "Press ESC to quit", 0, 0);
+
+	// FPS
+	char tmp[256];
+	sprintf(tmp, "%i", getFPS());
+	m_2dRenderer->drawText(ResourcePack::FontMap()["DEFAULT"].get(), tmp, 50, getWindowHeight() - 50);
 
 	// done drawing sprites
 	m_2dRenderer->end();

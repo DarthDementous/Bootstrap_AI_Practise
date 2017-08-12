@@ -8,6 +8,7 @@ class IAgent;
 #pragma endregion
 
 enum eMessageType {
+	MSG_NONE,
 	POS_REPORT,			// Look at message content's position
 	PLAYER_FOUND		// Converge on player's position
 };
@@ -30,15 +31,15 @@ public:
 		Message(eMessageType a_type, IAgent* a_content, IAgent* a_author = nullptr, double a_lifeTime = MESSAGE_LIFETIME, IAgent* a_target = nullptr) :
 			type(a_type), content(a_content), author(a_author), lifeTime(a_lifeTime), target(a_target) {}
 
-		eMessageType	type;				/*Type of message, depends how the content is processed.*/
+		eMessageType	type = eMessageType::MSG_NONE;				/*Type of message, depends how the content is processed. (none by default)*/
 
-		IAgent*			content = nullptr;	/*Data of the message.*/
+		IAgent*			content = nullptr;						/*Data of the message.*/
 
-		IAgent*			author = nullptr;	/*Creator of the message.*/
-		IAgent*			target = nullptr;	/*Intended recipient of message, nullptr if not for a specific target.*/
+		IAgent*			author = nullptr;						/*Creator of the message.*/
+		IAgent*			target = nullptr;						/*Intended recipient of message, nullptr if not for a specific target.*/
 		
-		double			lifeTime;			/*How long to keep the message on the blackboard before removing.*/
-		bool			toRemove = false;	/*Flag message for removal (marked as true when lifeTime exceeded)*/
+		double			lifeTime;								/*How long to keep the message on the blackboard before removing.*/
+		bool			toRemove = false;						/*Flag message for removal (marked as true when lifeTime exceeded)*/
 	};
 
 	/**

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Behaviours\IBehaviour.hpp"
+#include "Behaviours\IBehaviour.h"
 #include <Input.h>
 
 /**

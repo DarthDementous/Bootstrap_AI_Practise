@@ -1,7 +1,9 @@
 #include "Behaviours/CollisionAvoidance.h"
 #include <Renderer2D.h>
 #include <Entities/IAgent.h>
-#include <Obstacles/Circle.h>
+#include "Obstacles/Circle.h"
+#include "Obstacles/Rect.h"
+#include "Obstacles/Tri.h"
 #include <glm/gtx/norm.hpp>
 
 CollisionAvoidance::~CollisionAvoidance()
@@ -26,6 +28,8 @@ void CollisionAvoidance::Update(float deltaTime)
 	float raySpacing = m_fovAngle / (DEFAULT_COLLISION_RAYS - 1);		// Ray needs some space okay. (number of spaces is 1 less than the desired amount of rays)
 	float currAngle = m_velAngle - (m_fovAngle / 2);
 
+	bool collision = false;												// Has there been a collision this frame?
+
 #pragma region Collision Detection
 	for (int r = 0; r < DEFAULT_COLLISION_RAYS; ++r) {
 		// Create ray (origin, direction, length)
@@ -39,14 +43,40 @@ void CollisionAvoidance::Update(float deltaTime)
 
 			/// Level 1 check: Possible collision, collision point is projected on ray and isn't at its origin
 			if (collPt != ray->origin) {
-				/// Level 2 check: Definite collision, point intersects with circle
+				/// Level 2 check: Definite collision, point intersects
 				auto circle = dynamic_cast<Circle*>(collObj);
 
+				// Circle obstacle
 				if (circle) {
 					if (Util::PointVsCircle(collPt, circle) != eCollisionType::NONE) {
 						ray->HasCollided = true;
+						collision = true;
 
-						break;													// Ray has collided with something, no need to check rest of obstacles
+						break;									// Ray has collided with something, no need to check rest of obstacles
+					}
+				}
+
+				auto rect = dynamic_cast<Rect*>(collObj);
+
+				// Rectangle obstacle
+				if (rect) {
+					if (Util::PointVsRect(collPt, rect) != eCollisionType::NONE) {
+						ray->HasCollided = true;
+						collision = true;
+
+						break;									// Ray has collided with something, no need to check rest of obstacles
+					}
+				}
+
+				auto tri = dynamic_cast<Tri*>(collObj);
+				
+				// Triangle obstacle
+				if (tri) {
+					if (Util::PointVsTri(collPt, tri) != eCollisionType::NONE) {
+						ray->HasCollided = true;
+						collision = true;
+
+						break;									// Ray has collided with something, no need to check rest of obstacles
 					}
 				}
 			}
@@ -60,14 +90,17 @@ void CollisionAvoidance::Update(float deltaTime)
 #pragma endregion
 	// Find the first safe ray and apply force along it
 	for (auto ray : m_rays) {
-		if (!ray->HasCollided) {
+		if (!ray->HasCollided && collision == true) {					// Don't calculate avoid vector if there's no collision					
 			m_avoidVec = ray->CalculateVector();
 
-			break;																// Direction determined, no need to check other rays
+			break;														// Direction determined, no need to check other rays
 		}
 	}
 
-	m_obj->ApplyForce(m_avoidVec);
+	// Only apply force while one of the rays is colliding
+	if (collision == true) {
+		m_obj->ApplyForce(m_avoidVec * GetScaleFactor());
+	}
 #endif
 }
 
@@ -94,10 +127,12 @@ void CollisionAvoidance::Draw(aie::Renderer2D* a_r2d)
 
 void CollisionAvoidance::ClearRays()
 {
+	// Clean dynamically allocated rays
 	for (auto ray : m_rays) {
 		delete ray;
 	}
 
+	// Reset vector of rays
 	m_rays.clear();
 }
 

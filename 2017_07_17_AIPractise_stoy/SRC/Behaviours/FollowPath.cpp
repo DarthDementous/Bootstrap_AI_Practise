@@ -25,7 +25,7 @@ void FollowPath::Update(float deltaTime)
 			++m_currPathIndex;
 		}
 
-		m_obj->ApplyForce(normal * SEEK_STRENGTH);
+		m_obj->ApplyForce(normal * SEEK_STRENGTH * GetScaleFactor());
 	}
 }
 
@@ -60,9 +60,9 @@ void FollowPath::Draw(aie::Renderer2D* a_r2d)
 }
 
 
-void FollowPath::SetPath(Path * m_path)
+void FollowPath::SetPath(Path * a_path)
 {
 	// Change path and reset current path index
-	m_path = m_path;
+	m_path = a_path;
 	m_currPathIndex = 0;
 }

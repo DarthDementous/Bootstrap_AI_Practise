@@ -29,7 +29,7 @@ void Arrival::Update(float deltaTime)
 	glm::vec2 wishDir = glm::normalize(m_targetPos - m_obj->GetPosition());
 
 	// Replace velocity so there are no other forces acting on it during arrival process, and thus doesn't overshoot.
-	m_obj->SetVelocity(wishDir * arrivalStrength);									// Use strength to scale vector before applying force to entity
+	m_obj->SetVelocity(wishDir * arrivalStrength * GetScaleFactor());	 // Weight velocity with assigned scale factor.
 }
 
 void Arrival::Draw(aie::Renderer2D* a_r2d)

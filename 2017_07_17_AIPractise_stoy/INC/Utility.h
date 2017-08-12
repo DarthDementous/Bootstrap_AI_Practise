@@ -9,6 +9,8 @@
 #include <algorithm>
 
 class Circle;
+class Tri;
+class Rect;
 
 enum eSearchResult { FOUND, SEARCHING, NOT_FOUND};
 enum eCollisionType { INTERSECTS, ADJUST, CONTAINS, NONE };
@@ -16,9 +18,11 @@ enum eCollisionType { INTERSECTS, ADJUST, CONTAINS, NONE };
 // Default values
 #define MESSAGE_LIFETIME 3.0
 
-#define NPC_NUM 2u
+#define NPC_NUM 1u
+#define OBSTACLE_NUM 10u
 
 #define CIRCLE_RAD 30.f
+#define RECT_EXTENTS glm::vec2(100.f, 100.f)
 
 #define HEURISTIC_FUNC [this](Graph2D::Node* a_node){ return Math_Util::Magnitude(m_goalNode->GetData() - a_node->GetData()); }
 
@@ -38,6 +42,7 @@ enum eCollisionType { INTERSECTS, ADJUST, CONTAINS, NONE };
 #define GLOBAL_RESTITUTION 1.f
 
 #define WANDER_TIMER .3f
+#define PATH_TIMER 60.f
 
 #define PLAYER_FORCE 500.f
 #define PLAYER_RADIUS	8.f
@@ -105,6 +110,48 @@ public:
 	*	@return enum of type of collision: 0 = INTERSECTS, 1 = ADJUST, 2 = CONTAINS, 3 = NONE
 	*/
 	static unsigned int PointVsCircle(glm::vec2& a_pt, Circle* a_circle);
+
+	/**
+	*	@brief Determine state of collision with point vs a rectangle.
+	*	@param a_pt is the point used in the collision.
+	*	@param a_rect is the rectangle used in the collision.
+	*	@return enum of type of collision: 0 = INTERSECTS, 1 = ADJUST, 2 = CONTAINS, 3 = NONE
+	*/
+	static unsigned int PointVsRect(glm::vec2& a_pt, Rect* a_rect);
+
+	/**
+	*	@brief Determine state of collision with point vs a triangle.
+	*	@param a_pt is the point used in the collision.
+	*	@param a_tri is the triangle used in the collision.
+	*	@return enum of type of collision: 0 = INTERSECTS, 1 = ADJUST, 2 = CONTAINS, 3 = NONE
+	*/
+	static unsigned int PointVsTri(glm::vec2& a_pt, Tri* a_tri);
+
+	/**
+	*	@brief Check if two points are on the same side of a line.
+	*	@param a_pt1 is the first point to check.
+	*	@param a_pt2 is the second point to check.
+	*	@param a_lineStart is the beginning of the line.
+	*	@param a_lineEnd is the end of the line.
+	*	@return true if points on same side, else false.
+	*/
+	static bool SameSideOfLine(glm::vec2& a_pt1, glm::vec2& a_pt2, glm::vec2& a_lineStart, glm::vec2& a_lineEnd);
+
+	/**
+	*	@brief Calculate the imaginary z axis of the perpendicular vector (useful for determining whether a point is in front or behind a line.
+	*	@param a_vec1 is the first vector.
+	*	@param a_vec2 is the second vector.
+	*	@return a scalar representing the imaginary z axis of the perpendicular vector.
+	*/
+	static float CrossProduct(glm::vec2& a_vec1, glm::vec2& a_vec2);
+
+	/**
+	*	@brief Calculate the mid-point of a vector.
+	*	@param a_start is the starting point of the vector.
+	*	@param a_head is the end point of the vector.
+	*	@return mid-point of the vector of the two points.
+	*/
+	static glm::vec2 LinearHalfPoint(glm::vec2& a_start, glm::vec2& a_head);
 
 	struct Ray {
 		Ray(glm::vec2 a_origin, glm::vec2& a_dir, float a_length = 0) : origin(a_origin), dir(a_dir), length(a_length) {}

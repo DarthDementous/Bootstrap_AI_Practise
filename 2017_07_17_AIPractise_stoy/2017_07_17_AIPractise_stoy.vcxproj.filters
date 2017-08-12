@@ -75,6 +75,24 @@
     <ClCompile Include="SRC\Entities\NPC_Guard.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="SRC\Obstacles\Rect.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SRC\Obstacles\Tri.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SRC\Behaviours\IBehaviour.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SRC\States\AIState.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SRC\States\Converge.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SRC\States\PatrolPath.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="INC\_2017_07_17_AIPractise_stoyApp.h">
@@ -90,9 +108,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="INC\Graph\IGraph.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="INC\Behaviours\IBehaviour.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="INC\Behaviours\KeyboardController.h">
@@ -141,6 +156,27 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="INC\Entities\NPC_Guard.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="INC\Obstacles\Rect.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="INC\Obstacles\Tri.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="INC\Behaviours\IBehaviour.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="INC\Behaviours\Idle.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="INC\States\Converge.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="INC\States\AIState.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="INC\States\PatrolPath.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
