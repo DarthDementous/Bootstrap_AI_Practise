@@ -34,11 +34,9 @@ void IAgent::Render(aie::Renderer2D * a_r2d)
 	m_stateManager->Draw(a_r2d);
 
 	// Velocity
-#ifdef _DEBUG
 	a_r2d->setRenderColour(1.f, 1.f, 0.f);
 	glm::vec2 targetPt = m_pos + m_vel;
 	a_r2d->drawLine(m_pos.x, m_pos.y, targetPt.x, targetPt.y);
-#endif
 
 	a_r2d->setRenderColour(0xFFFFFFFF);
 }

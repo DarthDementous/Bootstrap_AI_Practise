@@ -1,5 +1,5 @@
 #include "Entities/Player.h"
-#include "Behaviours/KeyboardController.h"
+#include "States/UserControl.h"
 #include "Behaviours/CollisionAvoidance.h"
 #include <glm/vec2.hpp>
 #include <GameStateManager.h>
@@ -13,8 +13,12 @@ Player::Player(const glm::vec2 & a_pos, float a_friction)
 	m_pos = a_pos;
 	m_friction = a_friction;
 
-	// Initialise with keyboard behaviour
-
+#pragma region State Initialization
+	UserControl* uc = new UserControl(this);
+	uc->SetUtility(100.f);
+	m_stateManager->PushState("USER_CONTROL", uc);
+	m_stateManager->SetState("USER_CONTROL");
+#pragma endregion
 }
 
 Player::~Player() {
@@ -26,7 +30,7 @@ void Player::Update(float a_dt)
 	IAgent::Update(a_dt);
 
 	// Broadcast position to blackboard so npcs can use it
-	Blackboard::AddMessage(new Blackboard::Message(eMessageType::POS_REPORT, this, this));
+	Blackboard::AddMessage(new Blackboard::Message(eMessageType::POS_REPORT, this, "PLAYER"));
 }
 
 void Player::Render(aie::Renderer2D * a_r2d)

@@ -1,6 +1,7 @@
 #pragma once
 
 #include "NPC.h"
+#include "Graph/Graph2D.h"
 
 class PathFinder;
 
@@ -9,7 +10,7 @@ class PathFinder;
 */
 class NPC_Guard : public NPC {
 public:
-	NPC_Guard(glm::vec2 a_pos = glm::vec2(0.f, 0.f), float a_frict = PLAYER_FRICTION, PathFinder* a_pf = nullptr);
+	NPC_Guard(glm::vec2& a_pos = glm::vec2(0.f, 0.f), float a_frict = PLAYER_FRICTION, PathFinder* a_pf = nullptr, Graph2D::Node* a_startNode = nullptr);
 	virtual ~NPC_Guard() {}
 
 	virtual void Update(float a_dt);

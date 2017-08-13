@@ -33,6 +33,7 @@ void Wander::Update(float a_dt) {
 }
 
 void Wander::Draw(aie::Renderer2D* a_r2d) {
+#if 0
 #ifdef _DEBUG
 	// Initial wander target radius
 	a_r2d->setRenderColour(0.f, 1.f, 1.f, 0.5f);
@@ -60,6 +61,7 @@ void Wander::Draw(aie::Renderer2D* a_r2d) {
 
 	a_r2d->setRenderColour(0xFFFFFFFF);
 #endif
+#endif
 }
 
 void Wander::CalculateWander()
@@ -81,7 +83,7 @@ void Wander::CalculateWander()
 		m_projectedVec = glm::normalize(m_obj->GetVelocity()) * m_dist;		
 	}
 	else {
-		// Velocity is 0, make projection vector zreo to avoid nan errors when adding to vector
+		// Velocity is 0, make projection vector zero to avoid nan errors when adding to vector
 		m_projectedVec = glm::vec2(0.f, 0.f);
 	}
 

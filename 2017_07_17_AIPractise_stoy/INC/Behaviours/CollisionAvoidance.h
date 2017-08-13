@@ -20,6 +20,8 @@ public:
 	virtual void Draw(aie::Renderer2D* a_r2d);
 	virtual void Shutdown() {}
 
+	void SetLOSLength(float a_los) { m_losLength = a_los; }
+
 	void ClearRays();
 protected:
 	float m_velAngle;				/*Angle of the object's velocity.*/

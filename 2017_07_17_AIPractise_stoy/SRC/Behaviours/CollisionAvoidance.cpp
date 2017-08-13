@@ -14,15 +14,22 @@ CollisionAvoidance::~CollisionAvoidance()
 void CollisionAvoidance::Update(float deltaTime)
 {
 	/*
-	1. Cast three rays out in the specified cone of vision
+	1. Cast rays out in the specified cone of vision
 	2. Apply forces in direction of ray that didn't collide into anything, essentially moving around the object
 	*/
 
 	ClearRays();
 
-	// Calculate angle from object velocity
-	glm::vec2 objectDir = glm::normalize(m_obj->GetVelocity());
-	m_velAngle = atan2f(objectDir.y, objectDir.x);
+	// If there is a velocity, calculate angle from object velocity
+	if (m_obj->GetVelocity() != glm::vec2(0.f, 0.f)) {
+		glm::vec2 objectDir = glm::normalize(m_obj->GetVelocity());
+		m_velAngle = atan2f(objectDir.y, objectDir.x);
+	}
+	// No velocity, therefore angle of 0 (normalizing i.e. dividing by 0 gives nan errors)
+	else {
+		m_velAngle = 0.f;
+	}
+
 
 	// Calculate starting angle in FOV range (velocity angle - max variance) NOTE: velocity is in the middle of the fov range
 	float raySpacing = m_fovAngle / (DEFAULT_COLLISION_RAYS - 1);		// Ray needs some space okay. (number of spaces is 1 less than the desired amount of rays)
@@ -88,6 +95,7 @@ void CollisionAvoidance::Update(float deltaTime)
 #if 1
 
 #pragma endregion
+	
 	// Find the first safe ray and apply force along it
 	for (auto ray : m_rays) {
 		if (!ray->HasCollided && collision == true) {					// Don't calculate avoid vector if there's no collision					
@@ -106,6 +114,7 @@ void CollisionAvoidance::Update(float deltaTime)
 
 void CollisionAvoidance::Draw(aie::Renderer2D* a_r2d)
 {
+#ifdef _DEBUG
 	a_r2d->setRenderColour(1.f, 0.f, 0.f);
 
 	/*glm::vec2 anglePt = m_obj->GetPosition() + glm::vec2(cosf(m_velAngle), sinf(m_velAngle)) * 50.f;
@@ -123,6 +132,7 @@ void CollisionAvoidance::Draw(aie::Renderer2D* a_r2d)
 	a_r2d->drawLine(m_obj->GetPosition().x, m_obj->GetPosition().y, avoidPt.x, avoidPt.y, 2.f);
 
 	a_r2d->setRenderColour(0xFFFFFFFF);
+#endif
 }
 
 void CollisionAvoidance::ClearRays()
@@ -134,5 +144,8 @@ void CollisionAvoidance::ClearRays()
 
 	// Reset vector of rays
 	m_rays.clear();
+
+	// Zero avoid vector so there's no force being applied in case of no collisions
+	m_avoidVec = glm::vec2(0.f, 0.f);
 }
 

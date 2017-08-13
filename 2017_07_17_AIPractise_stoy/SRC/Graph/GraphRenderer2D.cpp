@@ -8,8 +8,6 @@
 
 void GraphRenderer2D::Draw(aie::Renderer2D* a_r2d)
 {
-	a_r2d->drawText(ResourcePack::FontMap()["DBG"].get(), "This is a successful test, holy shit.", 100, 100);
-
 #pragma region Graph
 	a_r2d->setRenderColour(0x6b6c6dFF);
 	for (auto node : *(m_graph->GetNodes())) {

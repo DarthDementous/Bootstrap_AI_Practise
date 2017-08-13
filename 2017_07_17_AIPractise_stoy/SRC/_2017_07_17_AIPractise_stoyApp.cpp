@@ -15,7 +15,7 @@
 #include "Obstacles/Circle.h"
 #include "Obstacles/Rect.h"
 #include "Obstacles/Tri.h"
-#include "Entities/NPC.h"
+#include "Entities/NPC_Minion.h"
 #include "Entities/NPC_Guard.h"
 #include "Blackboard.h"
 #include <Behaviours/Seek.h>
@@ -35,45 +35,36 @@ bool _2017_07_17_AIPractise_stoyApp::startup() {
 	//m_font = new aie::Font("./font/consolas.ttf", 32);
 	ResourcePack::FontMap()["DEFAULT"] = ResourceManager::loadResource<aie::Font>("./font/consolas.ttf", 32);
 	ResourcePack::FontMap()["DBG"] = ResourceManager::loadResource<aie::Font>("./font/consolas.ttf", 12);
-
-	ResourcePack::TextureMap()["TEST"] = ResourceManager::loadResource<aie::Texture>("./textures/JPG_test.jpg");
-
-	std::vector<unsigned char> pixelVec;
-	aie::Texture* a_tex = ResourcePack::TextureMap()["TEST"].get();
-
-	for (int i = 0; i < (a_tex->getWidth() * a_tex->getHeight()); ++i) {
-		pixelVec.push_back(a_tex->getPixels()[i]);
-	}
 	
 #pragma region Graph
 	m_graph = new Graph2D;
+	m_graph->LoadFromFile("./graph.txt");
+	//// Add a grid of nodes to the graph (rows first from top left down)
+	//for (size_t y = 0; y < GRAPH_HEIGHT; ++y) {
+	//	for (size_t x = 0; x < GRAPH_WIDTH; ++x) {
+	//		// Ensure the spacing is negative for the y because in Bootstrap it starts from 0.
+	//		/* NOTE: Since we're multiplying with unsigned ints make sure its with something of higher precision (like a float)
+	//		since otherwise the result of the expression will always be an unsigned int, leading to wrap around when made negative*/
+	//		glm::vec2 pos((GRAPH_START_X + GRAPH_OFFSET_X) + (x * GRAPH_SPACING), (GRAPH_START_Y + GRAPH_OFFSET_Y) + (y * -GRAPH_SPACING));
 
-	// Add a grid of nodes to the graph (rows first from top left down)
-	for (size_t y = 0; y < GRAPH_HEIGHT; ++y) {
-		for (size_t x = 0; x < GRAPH_WIDTH; ++x) {
-			// Ensure the spacing is negative for the y because in Bootstrap it starts from 0.
-			/* NOTE: Since we're multiplying with unsigned ints make sure its with something of higher precision (like a float)
-			since otherwise the result of the expression will always be an unsigned int, leading to wrap around when made negative*/
-			glm::vec2 pos((GRAPH_START_X + GRAPH_OFFSET_X) + (x * GRAPH_SPACING), (GRAPH_START_Y + GRAPH_OFFSET_Y) + (y * -GRAPH_SPACING));
+	//		m_graph->AddNode(new Graph2D::Node(pos));
+	//	}
+	//}
 
-			m_graph->AddNode(new Graph2D::Node(pos));
-		}
-	}
+	//// Add bidirected edges
+	//for (auto node : *m_graph->GetNodes()) {
+	//	// Connect current node to all nearby nodes specified by a radius
+	//	auto nearbyNodes = m_graph->GetNearbyNodes(node->GetData(), SEARCH_RADIUS);
 
-	// Add bidirected edges
-	for (auto node : *m_graph->GetNodes()) {
-		// Connect current node to all nearby nodes specified by a radius
-		auto nearbyNodes = m_graph->GetNearbyNodes(node->GetData(), SEARCH_RADIUS);
-
-		for (auto nearNode : nearbyNodes) {
-			// Don't connect node to itself
-			if (node == nearNode) {
-				continue;
-			}
-			// Add edge to home node with a weight of the distance from the home node
-			m_graph->AddEdge(node, nearNode, true, glm::length(nearNode->GetData() - node->GetData()));
-		}
-	}
+	//	for (auto nearNode : nearbyNodes) {
+	//		// Don't connect node to itself
+	//		if (node == nearNode) {
+	//			continue;
+	//		}
+	//		// Add edge to home node with a weight of the distance from the home node
+	//		m_graph->AddEdge(node, nearNode, true, glm::length(nearNode->GetData() - node->GetData()));
+	//	}
+	//}
 
 #pragma endregion
 
@@ -82,10 +73,13 @@ bool _2017_07_17_AIPractise_stoyApp::startup() {
 	m_pf = new PathFinder(m_graph);
 
 #pragma region Obstacles
+	m_obstacles.push_back(new Tri(glm::vec2(200.f, 200.f), glm::vec2(250.f, 250.f), glm::vec2(300.f, 200.f)));
+	m_obstacles.push_back(new Tri(glm::vec2(300.f, 300.f), glm::vec2(350.f, 350.f), glm::vec2(400.f, 300.f)));
+	m_obstacles.push_back(new Tri(glm::vec2(400.f, 400.f), glm::vec2(450.f, 450.f), glm::vec2(500.f, 400.f)));
+
 	for (size_t i = 0; i < OBSTACLE_NUM; ++i) {
 		m_obstacles.push_back(new Circle(glm::vec2(rand() % getWindowWidth(), rand() % getWindowHeight())));
 		m_obstacles.push_back(new Rect(glm::vec2(rand() % getWindowWidth(), rand() % getWindowHeight())));
-		m_obstacles.push_back(new Tri(glm::vec2(200.f, 200.f), glm::vec2(250.f, 250.f), glm::vec2(300.f, 200.f)));
 	}
 
 
@@ -93,23 +87,31 @@ bool _2017_07_17_AIPractise_stoyApp::startup() {
 
 #pragma region Player (must come after obstacles)
 	m_player = new Player(glm::vec2(getWindowWidth() / 3, getWindowHeight() / 3));
-	m_player->SetVelocity(glm::vec2(10.f, 10.f));
-
-	m_player->SetObstacles(m_obstacles);
 
 	m_entities.push_back(m_player);
 #pragma endregion
 
 #pragma region NPCS (must come after obstacles)
-	for (size_t i = 0; i < NPC_NUM; ++i) {
+	// Minions
+	for (size_t i = 0; i < NPC_MINION_NUM; ++i) {
 		glm::vec2 randPos = glm::vec2(rand() % getWindowWidth(), rand() % getWindowHeight());
-		NPC* npc = new NPC(randPos);
+		NPC_Minion* npc = new NPC_Minion(randPos);
 		npc->SetObstacles(m_obstacles);
 
 		m_entities.push_back(npc);
 	}
 
-	m_entities.push_back(new NPC_Guard(glm::vec2(getWindowWidth() / 2, getWindowHeight() / 2), 1.f, m_pf));
+	// Guards
+	for (size_t i = 0; i < NPC_GUARD_NUM; ++i) {
+		glm::vec2 randPos = glm::vec2(rand() % getWindowWidth(), rand() % getWindowHeight());
+		Graph2D::Node* randStartNode = m_graph->GetNodeByID(rand() % m_graph->GetNodes()->size());	
+
+		NPC_Guard* npc = new NPC_Guard(randPos, 1.f, m_pf, randStartNode);
+		npc->SetObstacles(m_obstacles);
+
+		m_entities.push_back(npc);
+	}
+
 #pragma endregion
 
 	return true;
@@ -192,6 +194,7 @@ void _2017_07_17_AIPractise_stoyApp::draw() {
 
 	m_pf->Render(m_2dRenderer);
 	
+	// Obstacles
 	for (auto obj : m_obstacles) {
 		obj->Render(m_2dRenderer);
 	}
@@ -207,8 +210,8 @@ void _2017_07_17_AIPractise_stoyApp::draw() {
 
 	// FPS
 	char tmp[256];
-	sprintf(tmp, "%i", getFPS());
-	m_2dRenderer->drawText(ResourcePack::FontMap()["DEFAULT"].get(), tmp, 50, getWindowHeight() - 50);
+	sprintf(tmp, "%i FPS", getFPS());
+	m_2dRenderer->drawText(ResourcePack::FontMap()["DEFAULT"].get(), tmp, 50, (float)getWindowHeight() - 50);
 
 	// done drawing sprites
 	m_2dRenderer->end();

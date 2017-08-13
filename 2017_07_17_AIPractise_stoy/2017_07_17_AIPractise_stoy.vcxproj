@@ -44,19 +44,19 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <OutDir>$(ProjectDir)ProjectName\</OutDir>
+    <OutDir>$(ProjectDir)AIProject\</OutDir>
     <IntDir>$(ProjectDir)tmp\$(Configuration)\</IntDir>
     <IncludePath>$(SolutionDir)dependencies/SebContainers;$(SolutionDir)dependencies/GSM Library/include;$(SolutionDir)dependencies/mathutil;$(SolutionDir)dependencies\rpack;$(SolutionDir)dependencies/rm;$(SolutionDir)bootstrap;$(SolutionDir)dependencies/imgui;$(SolutionDir)dependencies/glm;$(VC_IncludePath);$(WindowsSDK_IncludePath);$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)dependencies/GSM Library;$(SolutionDir)temp\bootstrap\$(Configuration);$(VC_LibraryPath_x86);$(WindowsSDK_LibraryPath_x86);$(NETFXKitsDir)Lib\um\x86;$(SolutionDir)dependencies\rpack;$(LibraryPath)</LibraryPath>
-    <TargetName>projectname_$(Configuration)</TargetName>
+    <TargetName>aiproject_$(Configuration)</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
-    <OutDir>$(ProjectDir)ProjectName\</OutDir>
+    <OutDir>$(ProjectDir)AIProject\</OutDir>
     <IntDir>$(ProjectDir)tmp\$(Configuration)\</IntDir>
     <IncludePath>$(SolutionDir)dependencies/SebContainers;$(SolutionDir)dependencies/GSM Library/include;$(SolutionDir)dependencies/mathutil;$(SolutionDir)dependencies\rpack;$(SolutionDir)dependencies/rm;$(SolutionDir)bootstrap;$(SolutionDir)dependencies/imgui;$(SolutionDir)dependencies/glm;$(VC_IncludePath);$(WindowsSDK_IncludePath);$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)dependencies/GSM Library;$(SolutionDir)temp\bootstrap\$(Configuration);$(VC_LibraryPath_x86);$(WindowsSDK_LibraryPath_x86);$(NETFXKitsDir)Lib\um\x86;$(SolutionDir)dependencies\rpack;$(LibraryPath)</LibraryPath>
-    <TargetName>projectname_$(Configuration)</TargetName>
+    <TargetName>aiproject_$(Configuration)</TargetName>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -121,6 +121,8 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="SRC\Entities\NPC_Minion.cpp" />
+    <ClCompile Include="SRC\States\Patrol.cpp" />
     <ClCompile Include="SRC\States\PatrolPath.cpp" />
     <ClCompile Include="SRC\Behaviours\Arrival.cpp" />
     <ClCompile Include="SRC\Behaviours\CollisionAvoidance.cpp" />
@@ -144,6 +146,8 @@
     <ClCompile Include="SRC\PathFinder.cpp" />
     <ClCompile Include="SRC\States\AIState.cpp" />
     <ClCompile Include="SRC\States\Converge.cpp" />
+    <ClCompile Include="SRC\States\Return.cpp" />
+    <ClCompile Include="SRC\States\UserControl.cpp" />
     <ClCompile Include="SRC\Utility.cpp" />
     <ClCompile Include="SRC\_2017_07_17_AIPractise_stoyApp.cpp" />
     <ClCompile Include="SRC\main.cpp" />
@@ -161,6 +165,7 @@
     <ClInclude Include="INC\Entities\IAgent.h" />
     <ClInclude Include="INC\Entities\NPC.h" />
     <ClInclude Include="INC\Entities\NPC_Guard.h" />
+    <ClInclude Include="INC\Entities\NPC_Minion.h" />
     <ClInclude Include="INC\Entities\Player.h" />
     <ClInclude Include="INC\Graph\IGraph.hpp" />
     <ClInclude Include="INC\Graph\Graph2D.h" />
@@ -174,7 +179,10 @@
     <ClInclude Include="INC\PathFinder.h" />
     <ClInclude Include="INC\States\AIState.h" />
     <ClInclude Include="INC\States\Converge.h" />
+    <ClInclude Include="INC\States\Patrol.h" />
     <ClInclude Include="INC\States\PatrolPath.h" />
+    <ClInclude Include="INC\States\Return.h" />
+    <ClInclude Include="INC\States\UserControl.h" />
     <ClInclude Include="INC\Utility.h" />
     <ClInclude Include="INC\_2017_07_17_AIPractise_stoyApp.h" />
   </ItemGroup>

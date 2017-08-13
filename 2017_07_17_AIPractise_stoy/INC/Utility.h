@@ -16,22 +16,26 @@ enum eSearchResult { FOUND, SEARCHING, NOT_FOUND};
 enum eCollisionType { INTERSECTS, ADJUST, CONTAINS, NONE };
 
 // Default values
+#define HOME_POS glm::vec2(1000.f, 200.f)
+
+#define FOUND_TIMER 10.0
 #define MESSAGE_LIFETIME 3.0
 
-#define NPC_NUM 1u
-#define OBSTACLE_NUM 10u
+#define NPC_MINION_NUM 10u
+#define NPC_GUARD_NUM 4u
+#define OBSTACLE_NUM 4u
 
 #define CIRCLE_RAD 30.f
 #define RECT_EXTENTS glm::vec2(100.f, 100.f)
 
 #define HEURISTIC_FUNC [this](Graph2D::Node* a_node){ return Math_Util::Magnitude(m_goalNode->GetData() - a_node->GetData()); }
 
-#define ARRIVAL_MIN 0.001f
+#define ARRIVAL_MIN 10.f
 
 #define DEFAULT_COLLISION_RAYS 3
 
 #define FOV_RANGE 45.f
-#define LOS_LENGTH 100.f
+#define LOS_LENGTH 200.f
 
 #define RAND_VEC_MIN -10
 #define RAND_VEC_MAX 10
@@ -41,6 +45,7 @@ enum eCollisionType { INTERSECTS, ADJUST, CONTAINS, NONE };
 
 #define GLOBAL_RESTITUTION 1.f
 
+#define WANDER_INTERVAL 1.f
 #define WANDER_TIMER .3f
 #define PATH_TIMER 60.f
 
@@ -187,7 +192,7 @@ public:
 	*	@brief Determine possible collision with ray and find point of collision on ray.
 	*	@param a_ray is the ray used in the calculations.
 	*	@param a_pt is the point used in the calculations.
-	*	@return point of collision on the ray. If no collision, vector will be zeroed.
+	*	@return point of collision on the ray. If no collision, point will be the origin of the ray.
 	*/
 	static glm::vec2 FindCollisionPointOnRay(Ray& a_ray, glm::vec2 a_pt) {
 		glm::vec2 collisionVector = a_pt - a_ray.origin;							/*Vector between ray origin and point of collision*/

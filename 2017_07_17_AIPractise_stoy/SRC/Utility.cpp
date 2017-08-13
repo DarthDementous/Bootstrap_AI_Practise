@@ -53,7 +53,7 @@ unsigned int Util::PointVsTri(glm::vec2 & a_pt, Tri * a_tri)
 	}
 	else {
 		// One or more checks failed, is not inside triangle
-		return false;
+		return eCollisionType::NONE;
 	}
 }
 

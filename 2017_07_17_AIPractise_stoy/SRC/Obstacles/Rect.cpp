@@ -8,7 +8,7 @@ Rect::Rect(glm::vec2 a_pos, glm::vec2 a_extents) : m_extents(a_extents)
 
 void Rect::Render(aie::Renderer2D * a_r2d)
 {
-	a_r2d->setRenderColour(1.f, 1.f, 0.f);
+	a_r2d->setRenderColour(0.f, 1.f, 0.f);
 	a_r2d->drawBox(m_pos.x, m_pos.y, m_extents.x, m_extents.y);
 
 	// Max and min

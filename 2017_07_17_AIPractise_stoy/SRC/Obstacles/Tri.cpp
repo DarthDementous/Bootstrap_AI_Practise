@@ -32,7 +32,7 @@ Tri::~Tri()
 
 void Tri::Render(aie::Renderer2D * a_r2d)
 {
-	a_r2d->setRenderColour(1.f, 1.f, 0.f);
+	a_r2d->setRenderColour(0.f, 1.f, 0.f);
 
 	// AB
 	a_r2d->drawLine(m_verts[0].x, m_verts[0].y, m_verts[1].x, m_verts[1].y);

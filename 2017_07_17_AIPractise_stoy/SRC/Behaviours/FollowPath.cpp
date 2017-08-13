@@ -13,9 +13,13 @@ void FollowPath::Update(float deltaTime)
 {
 	// If there is a path to follow
 	if (!m_path->GetPathPoints().empty()) {
-		/* Wrap index back around in case it is out of range
-		(e.g. index is 4 and size is 4, 4 % 4 = 0 || e.g. index is 2 and size is 8, 2 % 8 = 2 because 2 / 8 is 0, remainder 2) */
-		m_currPathIndex = m_currPathIndex % m_path->GetPathPoints().size();
+		// Reached end of path, reverse path so it loops
+		if (m_currPathIndex == m_path->GetPathPoints().size() - 1) {
+			std::reverse(m_path->GetPathPoints().begin(), m_path->GetPathPoints().end());
+
+			// Reset index
+			m_currPathIndex = 0;
+		}
 
 		glm::vec2 wishDir = m_path->At(m_currPathIndex) - m_obj->GetPosition();
 		glm::vec2 normal = glm::normalize(wishDir);
@@ -47,7 +51,6 @@ void FollowPath::Draw(aie::Renderer2D* a_r2d)
 			glm::vec2 prevPt = *(iter - 1);
 
 			// Make line gold to indicate the current edge being traversed
-			m_currPathIndex = m_currPathIndex % m_path->GetPathPoints().size();		// Wrap around to avoid crashing while out of range
 			if (*iter == m_path->At(m_currPathIndex)) {
 				a_r2d->setRenderColour(0xf4d142FF);
 			}

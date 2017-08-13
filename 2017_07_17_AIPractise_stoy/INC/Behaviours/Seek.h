@@ -28,7 +28,7 @@ public:
 	float GetInnerRadius() { return m_innerRadius; }
 	float GetOuterRadius() { return m_outerRadius; }
 
-	void SetTarget(glm::vec2& a_pos) { m_targetPos = a_pos; }
+	void SetTarget(const glm::vec2& a_pos) { m_targetPos = a_pos; }
 	void SetStrength(float a_str) { m_strength = a_str; }
 	void SetInnerRadius(float a_rad) { m_innerRadius = a_rad; }
 	void SetOuterRadius(float a_rad) { m_outerRadius = a_rad; }

@@ -1,31 +1,10 @@
-﻿  Arrival.cpp
-  CollisionAvoidance.cpp
-  FollowPath.cpp
-  IBehaviour.cpp
-  KeyboardController.cpp
-  Seek.cpp
-  Wander.cpp
-  Blackboard.cpp
-  IAgent.cpp
-  NPC.cpp
-  NPC_Guard.cpp
-  Player.cpp
-  Graph2D.cpp
-  GraphRenderer2D.cpp
-  Circle.cpp
-  Rect.cpp
-  Tri.cpp
-  PathFinder.cpp
-  Utility.cpp
-  _2017_07_17_AIPractise_stoyApp.cpp
-SRC\_2017_07_17_AIPractise_stoyApp.cpp(44): warning C4018: '<': signed/unsigned mismatch
-SRC\_2017_07_17_AIPractise_stoyApp.cpp(208): warning C4244: 'argument': conversion from 'unsigned int' to 'float', possible loss of data
-SRC\_2017_07_17_AIPractise_stoyApp.cpp(207): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+﻿  _2017_07_17_AIPractise_stoyApp.cpp
+SRC\_2017_07_17_AIPractise_stoyApp.cpp(213): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
   C:\Program Files (x86)\Windows Kits\10\Include\10.0.10240.0\ucrt\stdio.h(1769): note: see declaration of 'sprintf'
   Generating code
-  1 of 4009 functions ( 0.0%) were compiled, the rest were copied from previous compilation.
+  4 of 4029 functions ( 0.1%) were compiled, the rest were copied from previous compilation.
     0 functions were new in current compilation
-    2 functions had inline decision re-evaluated but remain unchanged
+    25 functions had inline decision re-evaluated but remain unchanged
   Finished generating code
-  2017_07_17_AIPractise_stoy.vcxproj -> C:\Users\ATWindows7\Documents\Repositories\Bootstrap_AI_Practise\2017_07_17_AIPractise_stoy\ProjectName\projectname_Release.exe
+  2017_07_17_AIPractise_stoy.vcxproj -> C:\Users\ATWindows7\Documents\Repositories\Bootstrap_AI_Practise\2017_07_17_AIPractise_stoy\AIProject\aiproject_Release.exe
   0 File(s) copied
